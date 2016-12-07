@@ -1,0 +1,124 @@
+
+命令记录
+	
+##############
+常用快捷键	
+	Ctrl+C		取消当前操作
+	Ctrl+D		
+	Ctrl+U		删除
+	Ctrl+Delete	逐个删除
+
+
+
+ifconfig		查看ip地址	
+ifconfig eth0
+tab按键			命令补全、路径、文件
+ifup [网卡名称]		启动网卡
+ifdown [网卡名称]	关闭网卡
+
+yum grouplist		查看已经安装的包
+yum groupinstall “Debugging Tools”   安装
+
+
+sed 's# #  #g'
+	
+	
+ps -ef  查看进程  |grep ssh  
+	
+ping 192.168.157.128 -t
+ping ip -t 检测物理网络是否通畅
+
+su - YJJ   切换账户
+
+whoami
+
+useradd		添加用户
+passwd		为用户设置或修改密码	后面接用户名	如果直接使用passwd则是修改当前用户密码
+非交互式更改密码 ：echo “”  |passwd --stdin YJJ（用户名）
+
+给普通用户设置密码（需要root权限）
+
+uname	打印系统信息
+	-m 系统位数 -r 内核版本  -a （显示所有）
+
+hostname	显示和设置主机名	默认是显示主机名
+	设置主机名可以	hostname 名字（临时生效）
+	
+	
+	
+	
+	
+init		切换运行级别，后面接对应级别的数字，例如：init 6 就是重启Linux
+
+shutdown（halt、init 0）	关机
+		shutdown -h now		关机
+		shutdown -r			重启
+reboot		重启
+	
+	
+runlevel
+
+/etc/init.d/iptables stop		关闭防火墙
+
+chkconfig iptables off		开启也不启动	
+	
+history		查看历史记录	-c清空所有	-d	删除指定历史记录
+
+	
+1.ifconfig 
+2.ifup  
+3.ifdown
+4.mkdir  make directory 创建目录  
+5.ls     list 列表 查看文件或目录  	
+6.cd  change directory 切换当前工作目录
+7.pwd print working directory  查看当前工作目录（看我们现在在哪里）
+8.touch    触摸 摸 创建文件或修改文件时间戳（文件属性 ）
+9.vi	   linux命令行文本编辑器  ===>windows 记事本/文本文档 
+10.cat 文件名   #查看文件里面的内容
+12.xargs   从标准输入中执行各种命令   
+13.cp   copy 复制文件或目录  
+14.mv move 移动或重命名文件或目录 
+15.rm remove 删除文件或目录  
+16.find /data -type f -name "oldboy.txt"   去哪里找东西
+17.grep   三剑客老三 抓    ====>抓出来一行===>默认打印出匹配的行
+18.head 取文件前几行，默认是前10行
+19.tail 取文件的最后几行，默认是最后10行
+20.seq  产生数字序列
+21.sed  三剑客老二 	擅长取行	可以对文件进行增删查改
+22 which 命令
+23.alias	设置或查看系统的别名
+24.help	命令 查看bash内置的命令帮助
+25. man	命令/配置文件	查看命令或配置文件的帮助
+26.source	让你配置文件/etc/bashrc		/etc/profile的配置生效  eg：别名生效
+27.ping  测试网络是否通畅
+28.ps	-ef		查看当前所有的进程
+29.netstat -lntup	查看系统当前监听的端口和正在监听的服务
+30.telnet 测试服务器端口是否开启
+31.uname	显示系统信息（系统内核版本 系统32/64位）
+32.useradd old 添加用户
+33.passwd	
+34.su	切换用户
+35.	setenforce	#设置SELinux的状态	1：开启SELinux	0：关闭SELinux
+	getenforce
+36.runlevel	#查看当前系统的运行级别
+37.	init 3 	#切换系统当前的运行级别
+38.shutdown	#关机	
+39.history		命令行里执行过的命令记录
+40.chkconfig		#管理下次开机启动服务	
+41.tree	以树状形式显示目录结构
+42.df	显示磁盘分区的使用情况
+43.mount	设备 挂载点（目录） 把设备挂载到目录上
+	umount	卸载
+44.hostname 显示或临时设置主机名	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+

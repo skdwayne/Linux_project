@@ -1,0 +1,76 @@
+linux文件属性和权限===>用户和用户组
+
+回顾：
+用户、用户组的概念
+
+每个文件和进程，都需要对应一个用户和用户组。
+
+
+linux系统通过UID和GID来识别用户和组的。
+
+用户名相当于人名（给人看的）====>
+human-readable 人类可读 （  ls -lhi  ;df -h   ）
+
+recursive ===> 递归   -r  rm -r ;  cp -r   ;chmod /chown -R
+
+
+
+linux管理员:root 
+
+
+用户和组的关系：
+一对一，多对一，一对多，多对多
+
+
+
+linux系统用户分类：
+超级用户：UID为0代表root，皇帝
+普通用户：UID是500-65535，由超级用户或具备超级用户权限的用户创建的用户（贫民老百姓，大臣，布衣）
+
+虚拟用户：UID范围1-499，存在满足文件或服务启动的需要。一般不能登录，只是傀儡。
+               每个文件和进程，都需要对应一个用户和用户组。
+               
+               
+合用户关联的四个文件：
+/etc/passwd /etc/shadow /etc/group /etc/gshadow
+               
+
+chattr
+
+
+
+1、和用户相关的配置文件知识点：
+/etc/passwd 账号文件及不同列内容
+/etc/shadow 账号密码文件及不同列内容
+/etc/group   组的文件及不同列内容
+/etc/gshadow组密码文件及不同列内容
+2、用户管理命令
+useradd -u -g -G -s -M -e -c -d
+初始化用户对应的几个文件/etc/skel,/etc/default/useradd,/etc/login.defs
+userdel -r
+usermod -u -g -G -s -M -e -c -d -L -U -l 
+chage -l（小写字母l） -E -M -W -m -I(大写字母i)
+passwd --stdin -n -i -w -x  (suid位重点)   =====>setuid passwd  setgid locate   粘滞位 /tmp
+
+su
+sudo
+visudo
+3、组管理命令
+groupadd -g
+groupdel
+groupmod
+
+id w last 
+
+
+1.sudo权限集中管理
+2.sudo命令用户行为日志审计
+
+python开发的开源产品
+开源跳板机(堡垒机) Jumpserver部署详解
+http://blog.51cto.com/zt/658
+CrazyEye
+http://3060674.blog.51cto.com/3050674/1700814
+Jumpserver
+gateone web跳板机
+shell跳板机

@@ -1,0 +1,193 @@
+
+
+=========================正则  awk  sed  grep...
+
+
+awk -v FS=
+
+---------------------
+取出指定内容中间的某些字符的计数
+
+[root@backup ~]# awk '/device: {/,/}/{a[$0]++}END{for (n in a);print a["oldboy"]}' count.log
+4
+----------
+
+取IP
+ifconfig eth0|awk 'NR==2{split($0,a,"[ :]+");print a[4]}'
+
+
+
+grep -Po  "^.*(?=Triggers)" oracle
+
+指定分隔符Triggers
+sed后向引用
+从行首取到Triggers，然后删除Triggers
+
+直接删除Triggers到行尾
+
+egrep -o "^.*Triggers" qiang.txt|sed -n 's#Triggers##gp'
+
+
+egrep -no "^.*Triggers" cc|awk -F "Triggers" '{print $1}'
+
+sed -nr 's#(^.*)Triggers.*$#\1#gp' qiang.txt
+
+
+
+
+1.把/etc/passwd 中用户名和最后一个单词调换位置
+
+sed -r 's#(\w+)(.*)\/(.*)#\3\2/\1#g' /etc/passwd
+    \w  [a-zA-Z0-9_]
+
+2.把/etc/passwd 中出现的第一个数字和最后一个单词调换位置
+
+[root@www ~]# sed -r 's#([^0-9]+)([0-9])(.*)\/(.*)#\1\4\3/\2#g' /etc/passwd|head -1
+
+
+3.把/etc/passwd 中第一个数字移动到行末尾
+
+[root@www ~]# sed -r 's#([^0-9]+)([0-9])(.*)#\1\3\2#g' /etc/passwd|head -1
+
+
+4.把/etc/passwd 15行到末行最前面加"#"。
+
+[root@www ~]# sed '15,$ s#^#\##' /etc/passwd
+
+
+
+
+--------------------------------------
+Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300
+Betty Boop:245-836-8357:635 Cutesy Lane, Hollywood, CA 91464:6/23/23:14500
+Igor Chevsky:385-375-8395:3567 Populus Place, Caldwell, NJ 23875:6/18/68:23400
+Norma Corder:397-857-2735:74 Pine Street, Dearborn, MI 23874:3/28/45:245700
+Jennifer Cowan:548-834-2348:583 Laurel Ave., Kingsville, TX 83745:10/1/35:58900
+Jon DeLoach:408-253-3122:123 Park St., San Jose, CA 04086:7/25/53:85100
+Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln , NB 92743:7/25/53:85100
+Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200
+Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200
+Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900
+Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900
+Lori Gortz:327-832-5728:3465 Mirlo Street, Peabody, MA 34756:10/2/65:35200
+Paco Gutierrez:835-365-1284:454 Easy Street, Decatur, IL 75732:2/28/53:123500
+Ephram Hardy:293-259-5395:235 CarltonLane, Joliet, IL 73858:8/12/20:56700
+James Ikeda:834-938-8376:23445 Aster Ave., Allentown, NJ 83745:12/1/38:45000
+Barbara Kertz:385-573-8326:832 Ponce Drive, Gzary, IN 83756:12/1/46:268500
+Lesley Kirstin:408-456-1234:4 Harvard Square, Boston, MA 02133:4/22/62:52600
+William Kopf:846-836-2837:6937 Ware Road, Milton, PA 93756:9/21/46:43500
+Sir Lancelot:837-835-8257:474 Camelot Boulevard, Bath, WY 28356:5/13/69:24500
+Jesse Neal:408-233-8971:45 Rose Terrace, San Francisco, CA 92303:2/3/36:25000
+Zippy Pinhead:834-823-8319:2356 Bizarro Ave., Farmount, IL 84357:1/1/67:89500
+Arthur Putie:923-835-8745:23 Wimp Lane, Kensington, DL 38758:8/31/69:126000
+Popeye Sailor:156-454-3322:945 Bluto Street, Anywhere, USA 29358:3/19/35:22350
+Jose Santiago:385-898-8357:38 Fife Way, Abilene, TX 39673:1/5/58:95600
+Tommy Savage:408-724-0140:1222 Oxbow Court, Sunnyvale, CA 94087:5/19/66:34200
+Yukio Takeshida:387-827-1095:13 Uno Lane, Ashville, NC 23556:7/1/29:57000
+Vinh Tranh:438-910-7449:8235 Maple Street, Wilmington, VM 29085:9/23/63:68900
+
+
+1. 把Jon的名字改为Jonathan。
+$ sed -n '/Jon/{p; s/Jon/Jonathan/g; p;}' datebook
+匹配到Jon时，做三个动作，1.打印该行；2.用Jonathan替换Jon，g表示行内全局替换，如果没有这个g则只替换第一个Jon；3.打印替换后的行。
+2. 删除头3行。
+$ sed '1,3d' datebook
+3. 打印第5~10行。
+$ sed -n '5,10p' datebook
+sed默认打印所有行，-n选项取消了默认打印的动作。第5~10行执行p这个打印的动作。
+4. 删除含有Lane的所有行。
+$ sed '/Lane/d' datebook
+5. 打印所有生日在十一月或十二月的行。
+$ sed -n '/:1[12]\//p' datebook
+通过观察文本发现，在冒号(:)和斜线(/)中间夹着的数字表示生日的月份。
+6. 在以Kare开关的行末尾加上3颗星。
+$ sed -n 's/^Kare.*$/&***/p' datebook
+^表示开头，$表示结尾。在替换内容中&表示匹配到的内容，在这里就是以Kare的一整行。这里的意思是用以Kare开头的行后面加上3颗星替换原来的行再打印。
+7. 将所有包含Jose的行都替换为JOSE HAS RETIRED。
+
+$ sed '/Jose/c JOSE HAS RETIRED' datebook
+命令c表示change修改。匹配到Jose时，把当前行修改为JOSE HAS RETIRED。
+8. 把Popeye的生日改为11/14/46，假定您不知道Popeye的生日，设法用正则式查找出来。
+$ sed -n '/Popeye/{p; sx[0-9][0-9]*/[0-9][0-9]*/[0-9][0-9]*x11/14/46x; p}' datebook
+s命令在进行替换时，允许用户指定定界符（分隔符），这里指定了x为定界符。因为如果使用的/的话，后面日期里的/就不得不进行转义，不仅写起来麻烦，还容易出错。
+我尝试过把[0-9][0-9]*换成[0-9]+，但结果不对。
+9. 删除所有空行。
+$ sed '/^\s*$/d' datebook
+\s表示空格和制表符\t，这里命令行是把所有只包含空格和制表符的行进行了d删除操作。
+10. 写一个能完成下列任务的sed脚本。
+    a) 在第一行上方插入标题PERSONNEL FILE.
+    b) 删除以500结尾的工资项。
+    c) 把名字和姓的内容颠倒后，打印文件内容。
+    d) 在文件末尾加上THE END。
+
+1i PERSONNEL FILE #在第一行进行i插入操作。
+s/[0-9]*500$// #用空串替换行尾以500结束的数字。
+s/^\(\w*\)\s*\(\w*\)/\2 \1/ #观察文本可知，名字和姓是在行开头以空格分隔的若干字符串。\1, \2分别第一个和第二个括号匹配到的内容。
+$a THE END  #在文件最后一行（用$表示）进行a(append追加)操作。
+
+
+
+-------------------
+cat file:
+a b c a d a
+s d d d x s a
+h j s a s h j h
+j d f j a s j k j
+
+要求：删除行内与第一列字符重复的字符，shell、sed、awk各写一个。达到这个结果：
+a b c d
+s d d d x a
+h j s a s j
+j d f a s k
+
+
+awk '{a=$1;gsub(" ?"a,"");print a""$0}' file
+
+sed -r ':y;s#^(.)(.*) \1#\1\2#;ty' file
+
+shell
+while read a b;do echo "$a ${b// $a}";done <file
+
+
+
+
+
+
+
+1.解释下面这个命令的含义
+
+tr -c "[:alpha:]" "\012" < /etc/passwd | tr -cd "[a-zA-Z\012]" | sort | uniq -c | sort >wordlist
+
+2. rm a? 和 rm a\? 分别代表什么意思
+----------------------------------
+[root@www dd]# cat test
+I
+am
+Linux.
+
+----------------------
+在Linux上面一行插入studying
+
+[root@www dd]# sed '/Linux/i studying' test
+I
+am
+studying
+Linux.
+[root@www dd]# sed '3i studying' test
+I
+am
+studying
+Linux.
+
+[root@www dd]# sed '2a studying' test
+I
+am
+studying
+Linux.
+
+
+grep -w 'north' datafile是什么意思
+
+grep '2\.\?[0-9]' a.txt是什么意思
+
+grep root /etc/passwd >/dev/null 2>&1是什么意思

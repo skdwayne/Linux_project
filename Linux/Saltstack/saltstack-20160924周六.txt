@@ -1,0 +1,45 @@
+
+=================Saltstack安装配置==============================
+1.安装epel源
+
+2.管理机 m01 安装 master 
+  yum install -y salt-master
+
+3.其他被管理的服务器  安装  minion
+  
+  nfs01  backup  web01
+  yum install -y salt-minion
+
+4.修改minion端配置文件   /etc/salt/minion
+
+	指定master   ####管理机IP地址
+	指定id       ####默认是  grains   fqdn名    用来匹配的
+	
+echo -e "master: 172.16.1.61" >>/etc/salt/minion
+	
+	
+5.修改master端配置文件  /etc/salt/master	
+	
+
+
+	
+ll /etc/salt/pki/minion    ###存放key的地方，minion启动的时候会自动创建
+   /etc/salt/pki/master
+	
+	
+	
+=================Saltstack远程执行==============================
+
+
+
+
+
+
+
+
+
+
+
+
+
+

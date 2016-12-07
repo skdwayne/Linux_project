@@ -1,0 +1,34 @@
+
+Linux程序前台后台切换
+
+1、在Linux终端运行命令的时候，在命令末尾加上 & 符号，就可以让程序在后台运行
+
+root@Ubuntu$ ./tcpserv01 &
+
+
+2、如果程序正在前台运行，可以使用 Ctrl+z 选项把程序暂停，然后用 bg %[number] 命令把这个程序放到后台运行
+
+cat@Ubuntu:~/unp/unpv13e/tcpcliserv$ ./tcpserv01
+^Z
+[1]+  Stopped                 ./tcpserv01
+cat@Ubuntu:~/unp/unpv13e/tcpcliserv$ bg %1
+[1]+ ./tcpserv01 &
+cat@Ubuntu:~/unp/unpv13e/tcpcliserv$
+
+
+3、对于所有运行的程序，我们可以用jobs –l 指令查看
+
+cat@Ubuntu:~/unp/unpv13e/tcpcliserv$ jobs -l
+[1]+  4524 Running                 ./tcpserv01 &
+
+
+4、也可以用 fg %[number] 指令把一个程序掉到前台运行
+
+cat@Ubuntu:~/unp/unpv13e/tcpcliserv$ fg %1
+./tcpserv01
+
+
+5、也可以直接终止后台运行的程序，使用 kill 命令
+
+cat@Ubuntu:~/unp/unpv13e/tcpcliserv$ kill %1
+

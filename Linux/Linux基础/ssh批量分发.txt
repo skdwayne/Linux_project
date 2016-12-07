@@ -1,0 +1,37 @@
+
+ssh ---批量分发
+
+
+####创建用户
+useradd ztt
+echo 111111|passwd --stdin ztt
+
+####用户提权
+sed -ri.bak '99 iztt     ALL=(ALL)      NOPASSWD: ALL' /etc/sudoers
+visudo -c
+
+#####修改sshd_config
+sed -ri.bak '13 iPort 52113\nPermitRootLogin no\nPermitEmptyPasswords no\nUseDNS no\nGSSAPIAuthentication no' /etc/ssh/sshd_config
+
+
+####重启sshd服务
+/etc/init.d/sshd restart
+
+####[ztt@backup ~]$ sudo diff /etc/ssh/sshd_config /etc/ssh/sshd_config.bak 
+####13,17d12
+####< Port 52113
+####< PermitRootLogin no
+####< PermitEmptyPasswords no
+####< UseDNS no
+####< GSSAPIAuthentication no
+
+ListenAddress 172.16.1.61:52113
+
+
+
+
+
+
+	
+	
+	

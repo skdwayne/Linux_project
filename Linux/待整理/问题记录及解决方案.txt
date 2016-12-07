@@ -1,0 +1,21 @@
+问题记录及解决方案
+
+安装了错误的源   
+	需要移除源  yum remove epel-release
+	删除缓存   /var/cache/yum/   ...
+
+$1$cobler$XJnisBweZJlhL651HxAM00
+
+cobbler profile edit --name=CentOS-6-x86_64 --kickstart=/var/lib/cobbler/kickstarts/CentOS-6.7-ks.cfg 
+
+[root@linux-one ~]# vim /etc/cobbler/settings
+
+openssl passwd -l -salt string 'cobler' 'cobler'    ##创建密码
+#####################################################################
+
+
+
+
+
+
+

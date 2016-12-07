@@ -1,0 +1,38 @@
+大小写转换
+
+awk '{print toupper($0)}'
+  toupper()
+	tolower()
+
+ sed之大小写转换 2011-08-04 12:15:39
+分类： LINUX
+1)
+this is a dog!
+请把每个单词的第一个字母替换成大写。
+sed 's/\b[a-z]/\u&/g
+[解析]
+  \b大家应该知道是锚定的意思，说白了就是边界符，那么这就只会匹配第一个开头的字母，然后\U的意思在元字符里的解释是“大写（不是标题首字符）\E 以前的字符”，而\u只是将下一个字符变为大写，注意它们的区别噢。
+
+2)
+http://www.a.com/aaafkslafjlxcv/fsfa/8/Xxxx.XxXX
+把URL中的大写字符替换成小写。
+sed 's/[A-Z]/\l&/g' file
+[解析]
+  同理\L的意思是使之变为小写。
+# 全文大小写转换
+tr a-z A-Z
+tr A-Z a-z
+
+# 大小写互换
+echo "aBcDE" | tr '[a-zA-Z]' '[A-Za-z]'
+3)
+比如说：a.txt b.txt c.txt
+更名变成 A.txt B.txt C.txt
+
+ls *.txt|sed -nr 's/(.)(\..*)/mv & \u\1\2/e'
+[解析]
+	\u 是转换后面的内容第一个字母为大写，\U是全部为大写直到遇到 \E 为止。这就是区别：
+echo 'abc'|sed 's/^../\u&/'
+Abc
+echo 'abc'|sed 's/^../\U&\E/'
+ABc

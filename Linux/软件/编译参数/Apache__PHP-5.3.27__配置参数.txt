@@ -1,0 +1,68 @@
+Apache  PHP-5.3.27  配置参数
+
+--with-mysql=mysqlnd
+
+./configure \
+--prefix=/application/php-5.3.27 \
+--with-apxs2=/application/apache/bin/apxs \
+--with-mysql=mysqlnd \
+--enable-mysqlnd \
+--with-mysqli=mysqlnd \
+--with-pdo-mysql=mysqlnd \
+--with-iconv-dir=/usr/local/libiconv \
+--with-freetype-dir \
+--with-jpeg-dir \
+--with-png-dir \
+--with-zlib \
+--with-libxml-dir=/usr \
+--enable-xml \
+--disable-rpath \
+--enable-bcmath \
+--enable-shmop \
+--enable-sysvsem \
+--enable-inline-optimization \
+--with-curl \
+--enable-mbregex \
+--enable-mbstring \
+--with-mcrypt \
+--with-gd \
+--enable-gd-native-ttf \
+--with-openssl \
+--with-mhash \
+--enable-pcntl \
+--enable-sockets \
+--with-xmlrpc \
+--enable-zip \
+--enable-soap \
+--enable-short-tags \
+--enable-static \
+--with-xsl \
+--enable-ftp
+
+make
+make install
+ln -s /application/php-5.3.27/ /application/php
+cp php.ini-production /application/php/lib/php.ini
+ls /application/php/
+
+指定了--with-apxs2=/usr/local/apache/bin/apxs以后，就不要再激活--enable-fpm和--enable-fastCGI，apxs是以php module的模式加载PHP的。
+
+Mysql在编译了Mysql开发library以后，可以不用指定mysql的路径。
+
+PHP编译存在基础的依赖的关系，编译PHP首先需要安装XML扩展，因为php5核心默认打开了XML的支持，其他的基础库，相应需要：
+
+GD -> zlib, Png, Jpg, 如果需要支持其他，仍需要根据实际情况编译扩展库，ttf库需要freetype库的支持。
+
+--enable-magic-quotes，是一个极其不推荐的参数，当然，如果你需要PHP为你做这些底下的工作，实际上他也没有很彻底的解决问题。
+
+--with-openssl，需要openssl库。
+
+mysqli是MySQL团队提供的MySQL驱动，具有很多实用的功能和典型特征。不过他不是MySQL于PHP平台最好的选择，PDO被证实，是一个简易、高并发性，而且易于创建和回收的标准接口。不过PDO也经历了5.3以前的内存溢出的问题，在5.3以后，在读取Oracle的LOB资源时，若不对内存进行限制，仍会内存溢出。
+
+如果是产品模式，好像pear、shmop、ftp等，都不推荐使用，他们要做的事情，用C/C++，用Java，甚至其他脚本语言，都有很好很快速的选择，无需局限于使用PHP去实现。不熟悉的类库和不常用的库，也不推荐使用。magic-quote、session.auto_start、PHP服务器信息、PHP报错信息等在编译完成后，应该第一时间关闭，避免暴露服务器信息。
+
+PHP对应的Web Server模式，Module、fastcgi、fpm只需要一种即可，服务器不是你的试验田。fastcgi可以选择Nginx和lighttpd，其实Nginx也是使用lighttpd的spwan-fcgi进行fcgi进程管理的。fpm是使用PHP自身去管理多进程，有点类似一个后端代理。无论什么模式，在发布产品服务器，都应该做进程和线程调优，做足够多的压力测试，找出最好的进程数组合。
+
+选好一种PHP OPCode cache的扩展，这个也是很重要的，linux 2.6核心下，fcgi下，xcache有较好的实践经验，其他的在并发数增加以后，性能衰减严重。
+
+如果真的想体验，宁可编译多几个PHP版本，也不要针对一个版本的PHP集合各种扩展，适应各种环境，这会让把你自己逼进窘境的。

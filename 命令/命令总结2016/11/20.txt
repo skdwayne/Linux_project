@@ -1,0 +1,643 @@
+1.ifconfig
+	ip a   查看所有网络接口的信息（ip addr）可以简写
+	ip addr show eth0
+	ip a s eth0
+2.ifup
+3.ifdown
+
+4.mkdir  make directory 创建目录
+        -p parents   创建多级目录
+
+
+
+5.ls     list 列表 查看文件或目录
+		-l (long 长格式（详细信息）)
+		-d （directory ）查看目录属性信息的，把目录当做普通文件对待
+		-i	显示inode节点	索引节点号
+		-h	人类可读
+		-p	给目录添加标识  /
+		-F	给不同文件添加标识
+				“*”表示具有可执行权限的普通文件，“/”表示目录，“@”表示符号链接，“|”表示命令管道FIFO，“=”表示sockets套接字。
+				当文件为普通文件时，不输出任何标识符
+		-t	根据修改时间机型排序
+		-r	将排序内容反转，倒序
+		-c  ctime 根据属性改变时间排序
+		-u  atime 根据访问时间排序
+	ls -l --time-style=iso
+	ls -l --time-style=long-iso
+	ls -l --time-style=full-iso
+
+
+		仅查看目录的属性用  ls -d
+
+
+
+
+6.cd  change directory 切换当前工作目录
+  cd  没有任何参数 ===>回当前用户的老家（家目录）相当于 cd ~
+	cd -	###进入到上一次的工作目录
+	cd ~	###进入到用户主目录
+	cd ..	###进入到上一层目录
+	cd .	###当前目录
+	-P 		直接进入到真实路径，而不是符号链接路径
+7.pwd print working directory  查看当前工作目录（看我们现在在哪里）
+	-P  显示当前真实路径，不显示符号链接后的路径
+8.touch    触摸 摸 创建文件或修改文件时间戳（文件属性 ）
+	-t 时间	指定文件的创建时间    touch -t 201605171314 文件名   2016年5月17日13：14
+	-t STAM	use [[CC]YY]MMDDhhmm[.s]
+	century
+	CCYYMMDDhhmm
+	CC century世纪
+	YY 年
+	MM 月
+	DD 日
+	hh 小时
+	mm 分钟
+
+	-d "日期的说明"
+	touch -d "-2day" 2day
+
+
+9.vi/vim	   linux命令行文本编辑器  ===>windows 记事本/文本文档
+    1.vi  oldboy.txt
+    2.进入命令模式
+    3.需要进入编辑模式（insert插入模式） a/i
+    4.打字
+    5.编辑结束后退出 编辑模式 ====>esc
+    6.保存退出  :wq    不保存强制退出  :q!
+
+	vi命令:
+	:set nu     :set nonu
+	G   移动到文件的最后一行
+	gg	移动到文件的第一行（首行）
+	ngg	移动到文件的第n行
+
+	yy	复制当前整行
+	p	粘贴
+	np	粘贴n次，n次数
+
+	dd	剪切当前一行
+	ndd	剪切接下来的多少行，包括 光标所在行
+	dG	shanchu 剪切当前行到文件结尾
+	D/d$	剪切光标后位置到行尾
+
+	x	删除光标位置字符
+
+	u	撤销上一次操作
+
+	消除高亮：:noh
+
+
+
+
+
+10.cat 文件名   #查看文件里面的内容
+<<结束标记 ，必须在一行的开头。
+		cat -n 添加行号，并且显示每行内容
+		cat -A 显示文件所有内容  比如 $
+
+11.echo
+	-n ：不换行输出
+	-e ：处理特殊字符
+		[root@www data]# echo -n "oldboy";echo "oldboy"
+		oldboyoldboy
+
+		[root@www data]# echo -ne "oldboy\t";echo "oldboy"
+		oldboy	oldboy
+
+
+
+
+12.xargs   从标准输入中执行各种命令
+		   -n(number参数的数量) num     把文件里面的内容分成了 num组。
+			-i 参数
+			find /data -type d -name "*oldboy*" |xargs -i mv {} /tmp/
+				使用-i参数  把管道传递过来的内容  放到{}位置
+				默认会放到文件末尾
+				如果此处  用  tar 打包，那就不需要-i参数
+			不过  如果mv  使用 -t 参数，改变
+			mv 源文件 目标  的顺序   为 mv 目标  源文件   xargs可以不使用-i参数
+			cp 也有 -t 参数
+
+13.cp   copy 复制文件或目录
+  -r,--recursive  递归， 如果是目录复制目录及目录的子孙后代
+  -a  相当于 -pdr
+  -i  --interactive 覆盖之前，询问是否覆盖
+
+
+14.mv move 移动或重命名文件或目录
+15.rm remove 删除文件或目录
+   -f force  强制删除
+   -r recursive 递归 删除目录及目录里面的内容（子孙后代）
+
+16.find /data -type f -name "oldboy.txt"   去哪里找东西
+   /data 表示路径 去哪里找东西
+    data 可以使用相对路径
+	不写 当前的工作目录
+
+   -maxdepth	搜索深度	-maxdepth 1 #深度为1   放在所有参数前面
+   -type f  f(file) d(directory)
+   -name "oldboy.txt"
+   -mtime +7   表示7天以前修改的 7 第7天修改的  -7 最近7天修改的
+   -size
+		默认单位为 K
+		-size +1M  ##表示搜索大于1M的文件
+   ! 表示非，取反
+		find . -type f ! -name "passwd"
+		排除passwd文件
+
+			-o	并集
+			-a	交集
+			[root@www oldboy]# find . -type f -name "old*" -o -name "jea*"
+	-perm	按权限查找
+	-inum	按inode查找
+		find /usr/bin -type f -perm 4755 |xargs ls -l
+
+
+
+[root@oldboyedu-30 data]# find /data/ -type f -name "oldboy.txt"
+/data/oldboy.txt
+
+
+17.grep   三剑客老三 抓    ====>抓出来一行===>默认打印出匹配的行
+		grep "oldboy" test.txt
+		去 test.txt 里面抓oldboy
+			-v 排除已经抓到的行 ====>打印出不匹配的行
+			-A 10 --after-context 显示匹配行之后的10行
+			-B 10 				 显示匹配行之前的10行
+			-C  5				 显示匹配行前后各5行
+			-i	表示忽略大小写
+			-n	显示匹配行的行号
+			-w 只显示全字符合的列。
+
+	grep [-acinv]	'搜索字符串' filename
+		-o 只显示grep 匹配到的内容
+
+
+		[root@oldboyedu-30 data]# grep "oldboy" test.txt
+		oldboy
+		[root@oldboyedu-30 data]# grep -v "oldboy" test.txt
+		test
+		liyao
+
+18.head 取文件前几行，默认是前10行
+		head  -2 test.txt
+19.tail 取文件的最后几行，默认是最后10行
+			[root@oldboyedu-30 data]# tail -1 test.txt
+			oldboy
+			-num 相当于 -n  显示文件左后的n行
+			-f 尾随 跟随  文件名，实时显示文件尾部更新的内容
+
+20.seq  产生数字序列
+	seq 5 6 100
+		从5开始到100 每次加6
+	seq -w 10  输出的时候加0
+	seq -f "ztt%02g" 10
+
+
+21.sed  三剑客老二 	擅长取行	可以对文件进行增删查改
+       -n 取消默认输出   ===>sed  '' ett.txt
+
+	sed命令 p ===>print 打印
+	   sed -n '20,30p' ett.txt
+
+22 which 命令	查看二进制命令所在路径（从PATH变量里面的路径查找）
+		which cp	找cp命令所在路径
+
+23.alias	设置或查看系统的别名
+	alias rm='echo does not use this command'   ##单引号里面必须是命令
+
+	unalias
+
+24.help	命令 查看bash内置的命令帮助
+	help alias
+
+25. man	命令/配置文件	查看命令或配置文件的帮助
+	命令  --help  ###简洁的命令参数的说明。
+
+
+26.source	让你配置文件/etc/bashrc		/etc/profile的配置生效  eg：别名生效
+	或者 . /etc/bashrc		##别名
+	. /etc/profile			##特殊变量（环境变量） PS1
+
+
+27.ping  测试网络是否通畅
+		window下需要加 -t 一直运行
+		linux默认就是一直运行
+28.ps	-ef	-->process	查看当前所有的进程
+		ps -ef|grep ssh
+29.netstat -lntup	查看系统当前监听的端口和正在监听的服务
+	ss -lntup
+
+
+30.telnet 测试服务器端口是否开启
+
+31.uname	显示系统信息（系统内核版本 系统32/64位）
+	-r 查看系统内核版本
+	-m 查看系统32位/64位
+	-a 显示所有信息
+
+32.useradd old 添加用户
+		-M 	不创建家目录
+		-s	指定登录的shell   /bin/bahs    /sbin/nologin
+
+		-u	指定gid		useradd -u 600 oldboy
+		-g	指定用户组（主组）
+		-G 	指定多个组（附加组）
+		-d	指定用户的家目录
+		-c 	用户的注释信息  说明信息
+
+		-D 	修改或显示/etc/default/useradd
+			-s
+			-
+
+33.passwd
+	--stdin	非交互式创建密码， 一般从管道获取密码
+
+	echo "123456" |passwd --stdin  old
+
+34.su	切换用户
+su - old
+
+	关于su和su -的区别谈运维方法
+		http://oldboy.blog.51cto.com/2561410/1053606
+
+35.	setenforce	#设置SELinux的状态	1：开启SELinux	0：关闭SELinux
+	getenforce	#获取当前SELinux状态
+
+36.runlevel	#查看当前系统的运行级别
+
+37.	init 3 	#切换系统当前的运行级别
+	init 0	关机	shutdown -h now，halt，poweroff
+	init 6	重启	reboot，shutdown -r now
+
+38.shutdown	#关机
+		-h now 	#halt now（立刻关机）    如果后面接10  表示10分钟后关机
+		-r now 	#reboot now（立刻重启）
+		-c 		取消重启或关机命令
+
+39.history		命令行里执行过的命令记录
+	-c	清除所有的历史记录
+	-d 	删除指定历史记录
+
+40.chkconfig		#管理下次开机启动服务
+	chkconfig iptables off
+	chkconfig --list iptables
+	--level
+
+41.tree	以树状形式显示目录结构
+	-L	层级	-L 1
+	-d	只显示目录
+
+42.df	显示磁盘分区的使用情况  report file system disk space usage
+	-h 	 	以人类可读的方式显示出来MB，GB等
+	-i 	查看inode
+	-T	type 显示文件系统类型
+	-a
+
+
+43.mount	设备 挂载点（目录） 把设备挂载到目录上
+	umount	卸载
+44.hostname 显示或临时设置主机名
+#######################################
+
+45.awk	三剑客老大，擅长取列
+	NR	行号
+	awk '{print NR}' /etc/services
+	$0	表示整行
+	awk '{print $0}' /etc/services
+	-F "[ ,]"	指定多个分隔符    [] :或
+
+	函数
+	split(string,array,regexp)
+	split($4,a,/:+/)
+
+	Splits the string s into the array a on the regular expression r
+	s===>string 字符串 ====>你要替换哪里的东西
+	a===>处理后的字符串放在哪里 数组 a[1]  a[2] a[3]
+	r===>通过什么来切割  regular expression
+
+	[root@web01 ~]# ifconfig eth0|awk '/inet a/{split($0,a,/[: ]+/);print a[4]}'
+	10.0.0.8
+
+
+
+46.less	和more相反，回车一次一行，空格向下一次一屏，按b可以一次回退一屏
+			more	按页一次一屏。回车一次一行，空格向下一次一屏。不能回退
+		常用less，参数不用记
+47.tar	压缩文件 打包 解压
+		-C 解压到指定路径
+		tar zcvf 筐 苹果
+			zcf
+		tar zcvf 筐	苹果	--exclude 苹果
+
+		查看压缩包
+		tar ztf 筐
+			tf
+
+		解压包
+		tar zxvf 筐
+			xf
+	（z c v f j x X N p P C --exclude）
+
+48.cut	割取，取列
+		-d	指定分隔符
+		-f	取列
+		-c	字符
+	cut -d" " -f3,6 a.txt
+
+49.tr	替换  translate or delete characters （逐个字符替换）
+		只能从标准输入读取文件
+		echo ywy|tr "ywy" "123"    首先两个y替换成1   第二个w替换成2    然后 两个y替换成3
+
+50.wc	统计字符 行数
+	-l	统计文件里面有多少行
+
+	-L	统计文件里面最长的行里面的字符个数，
+	echo oldboy |wc -L 统计字符串的长度
+
+51.stat	显示文件和文件系统状态（查看文件的详细属性）
+	接文件
+	查看文件的inode
+-------------------------------2016年8月10日
+52. ln 创建连接	默认创建硬链接
+	-s 创建软链接
+		readlink  接软链接，读取软链接里面的值
+
+53. whereis	查找命令的帮助、源代码、帮助文件	-b二进制
+54.	locate 	find files by name
+		查updatedb数据库里内容
+		locate从/var/lib/mlocate/mlocate.db查找
+55.	userdel	删除用户
+	userdel -r oldboy   删除家目录
+56.	groupadd	添加组
+	groupadd test
+
+57.	id	查看用户身份，直接执行则显示当前用户的用户信息
+58.	w 	查看谁在登录，每个人在做什么
+59.	who	查看谁登录
+
+60.	whoami	查看当前正在使用的用户
+61.	chmod	设置文件或目录权限
+		-R  递归修改权限
+
+62.	chown	修改文件或目录所属关系
+		-R	递归修改所属关系
+63.	chgrp	修改文件或目录的组
+
+64.	umask 	控制文件默认权限（需要减去的权限）
+
+65.	chattr	修改文件基于文件系统的属性
+	给文件加锁
+	chattr +i /etc/passwd
+66. lsattr 	查看文件的文件系统的属性
+		-d	查看目录的属性
+           /etc/passwd
+67.	last	查看用户登录信息 /var/log/wtmp数据文件
+	lastlog	显示最近登录的用户信息。/var/log/lastlog数据文件
+
+68.file	查看文件或目录的类型信息
+
+69.	watch 默认每2s执行一次后面的命令
+		watch ls -lrt
+70.	date  显示当前日期
+		-s set "日期的说明" 根据日期说明设置日期设置日期
+		-d display "日期的说明"	根据日期说明显示日期
+		+%F_%H 以某种格式显示日期
+		+%F  2016-08-24
+		+%H 小时
+		+%m 分钟
+		+%u（1-7） %w（0-6）
+
+71.	dirname 取文件的路径名称（只能接单个文件）
+	绝对路径的时候取
+
+72.	basename 取文件名称
+
+73.	uniq  	去重，
+		-c 去重之后，计数显示在行首
+
+74.	sort	排序命令，默认根据
+		-n 根据数字的值排序
+		-r	reverse 倒序 逆序  （ls -lrt ）
+
+75.	dd	convert and copy a file
+76.	fdisk 创建分区  磁盘分区工具（小于2T）
+	-l	查看系统的分区信息，显示设备的分区表
+	-cu	    -c Switch off DOS-compatible mode. (Recommended)
+			-u When listing partition tables,  give  sizes  in  sectors instead of cylinders.
+77.	parted  gpt分区表
+		mklabel
+		mkpart
+		rm
+		print
+		help
+
+78.	partprobe	通知系统，分区表改变了
+79.	mount 挂载文件系统到目录上
+		mount -a   根据/etc/fstab 挂载所有分区  测试自动挂载
+		-t type 挂载的时候指定文件系统类型
+		-o 挂载参数
+80.	umount -lf  强制卸载
+		或者 -l
+
+81.	tune2fs	调整ext2/3/4文件系统的参数
+82. mkfs  make fielsystem
+		-t ext4 /dev/sdb1
+	mkfs.ext4 /dev/sdb1
+
+83.	dumpe2fs	导出ext2/3/4文件系统内部信息（元数据）
+
+84.	resize2fs	调整文件系统大小	  ext2/3/4(raid lvm)
+85.	fsck	文件系统检查并修复
+		正常的磁盘不要使用此命令
+	e2fsck
+86. mkswap 创建swap分区
+	swapon	挂载swap分区
+	swapoff	卸载swap分区
+
+87.	sync - flush file system buffers
+88.	ss
+89.	pkill   killall
+90. tcpdump
+91.	dig   dns 解析工具
+		+trace  从根开始解析
+92.	nslookup dns 解析工具
+93.	host www.baidu.com  dns 解析工具
+94.	diff （普通比较）   vimdiff	（优雅的比较）
+
+95. rpm   rpm包管理器  不会自动安装依赖关系的
+
+		-qa		查看软件是否安装，名字必须写对了（可以通过管道grep查询）
+		-ivh	安装软件      -hdrid
+		-e		erase  卸载
+		-qf     加上命令全路径，找命令所属的包
+
+	[root@web01 logs]# rpm -qf /usr/bin/inotifywait
+inotify-tools-3.14-1.el6.x86_64
+
+
+96.	yum	安装软件并安装软件依赖的包
+		yum install lrzsz dos2unix nmap nc tree telnet
+		yum groupinstall
+		yum	grouplist
+
+		##yum remove## 会删除依赖
+
+97.	tracert windows 命令  traceroute linux  下   查看经过的路由的命令
+		-n 不把IP解析成域名
+		windows下查看命令帮助 tracert /?
+
+98. nmap 网络扫描命令
+		-p 指定端口号或者端口范围
+		nmap -p 52110-52114 172.16.1.41
+99.	ssh ssh远程连接命令（客户端）
+		-p 指定端口号
+
+100.scp	远程文件拷贝
+		-P（大写） 指定端口号
+		-r 			递归 可以传输目录
+		-p（小写） 保持属性
+
+101.curl 浏览网页（URL）
+	-I 只获取http响应报文的头部
+	-s/--silent  Silent  or  quiet  mode.  Don’t  show progress meter or error messages. Makes Curl mute.
+	-w
+
+	curl -I -s -o /dev/null -w '%{http_code}\n' www.baidu.com
+
+102.wget   下载
+		-q quite
+		-O  file  --output-document=file
+
+
+megacli  查看raid信息
+ipimtools 查看系统硬件信息
+
+
+dmesg 查询系统故障信息
+nl 		number lines 显示行号
+
+
+du	查看文件和目录大小 -sh
+
+lsof |grep delete
+lsof -i:80
+lsof -i:22
+
+[root@www ~]# date -d"-2 day"   两天以前     两天以后 +2
+
+echo $((RANDOM%42))
+
+
+
+
+
+
+
+cp /etc/skel/.bash* ~oldboy
+
+crontab -l	查看定时任务
+		-e  编辑定时任务
+			现在命令行里执行成功
+			在编辑定时任务
+
+文件批量重命名
+
+ls *txt |sed -r 's#(^.*).txt#mv & \10811.txt#g'|bash
+
+
+
+
+find /etc/ -type f|xargs -n1 dirname
+
+dirname后面不能接多个文件
+所以通过xargs -n1 将find找到的文件一个个传给dirname
+
+echo stu{00..10} |xargs -n1 useradd
+
+
+
+磁盘满故障 http://oldboy.blog.51cto.com/2561410/612351
+
+	查看tttp进程数
+	ps -ef|grep http
+
+``  反引号     相当于$()    引用命令的结果
+	ls -l $(which cat)
+
+
+
+应用时间的时候注意转义
+
+ +	() {} 等等  使用转义字符    可用于普通正则
+
+---------------------------------------------------------
+./ 和 sh 执行 *.sh程序有什么不同？
+
+./ *.sh 必须保证脚本文件可执行，执行前应该用chmod +x *.sh来改变该脚本文件的属性！
+sh *.sh 可以直接执行脚本而不需要改变脚本的属性！
+句点 . 命令可以强行让脚本影响当前shell的环境，它执行脚本中的全部命令，而不管脚本文件的权限如何设置。
+
+
+grep -w
+grep -m
+column -t
+df -h a T
+lrzsz
+
+awk '{i=3;while(i<10){$10+=$i;i++};print $0}' chengji.txt
+
+column -t
+
+mkpasswd -l 8   需要安装expect
+iotop
+
+vim取消高亮	:nohl
+
+salt-minion -d
+
+salt -E 正则
+
+有关进程管理的Linux相关命令如下。
+	kill、killall、pkill：杀掉进程。
+	ps：查看进程。
+	pstree：显示进程状态树。
+	top：显示进程。
+	nice：改变优先权。
+	nohup：用户退出系统之后继续工作。
+	pgrep：查找匹配条件的进程。
+	strace：跟踪一个进程的系统调用情况。
+	ltrace：跟踪进程调用库函数的情况。
+
+
+pstree 树状结构显示进程
+
+killall   根据名字kill进程
+pkill
+
+rename .txt .sh *.txt  修改什么  改成什么   改哪些文件
+
+[root@web01 logs]# rpm -qf /usr/bin/htpasswd
+httpd-tools-2.2.15-54.el6.centos.x86_64
+
+nmap -p 22 172.16.1.41
+
+	rpm -e 接软件  删除软件
+
+docker设置代理
+HTTP_PROXY=http://10.167.251.83:8080 docker -d
+
+列表列出当前使用的源
+yum repolist
+
+make clean   删除编译出错的文件
+
+make clean all  删除所有编译文件
+
+生成UUID
+[root@elk-node2 ~]# uuidgen
+752cf5c0-e8f3-491a-8b0a-7d4dfdb6ef18
+
+curl
+curl -A iphone  www.etiantian.org/upload/   模拟客户端访问

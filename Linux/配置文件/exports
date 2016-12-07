@@ -1,0 +1,3 @@
+#share /data for web by yjj at 20160910
+/data/w_shared 172.16.1.0/24(rw,sync,all_squash)
+/data/r_shared 172.16.1.0/24(ro,sync,all_squash)

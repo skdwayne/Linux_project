@@ -1,0 +1,81 @@
+ELKStack快速安装
+ELKStack简介
+对于日志来说，最常见的需求就是收集、存储、查询、展示，开源社区正好有相对应的开源项目：logstash（收集）、elasticsearch（存储+搜索）、kibana（展示），我们将这三个组合起来的技术称之为ELKStack，所以说ELKStack指的是Elasticsearch、Logstash、Kibana技术栈的结合。
+
+Elasticsearch部署
+Elasticsearch首先需要Java环境，所以需要提前安装好JDK，可以直接使用yum安装。也可以从Oracle官网下载JDK进行安装。开始之前要确保JDK正常安装并且环境变量也配置正确。
+
+安装JDK
+[root@linux-node1 ~]# yum localinstall jdk-8u102-linux-x64.rpm
+[root@linux-node1 ~]# java -version
+java version "1.8.0_102"
+Java(TM) SE Runtime Environment (build 1.8.0_102-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 25.102-b14, mixed mode)
+
+YUM安装ElasticSearch
+1.下载并安装GPG key
+[root@linux-node1 ~]# rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
+
+2.添加yum仓库
+[root@linux-node1 ~]# cat > /etc/yum.repos.d/elasticsearch.repo << 'EOF'
+[elasticsearch-2.x]
+name=Elasticsearch repository for 2.x packages
+#baseurl=https://packages.elastic.co/elasticsearch/2.x/centos
+baseurl=https://mirrors.tuna.tsinghua.edu.cn/ELK/yum/elasticsearch-2.x
+gpgcheck=1
+gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+EOF
+
+3.安装elasticsearch
+[root@linux-node1 ~]# yum install elasticsearch -y
+
+LogStash部署与配置
+和Elasticsearch一样，在开始部署LogStash之前也需要你的环境中正确的安装的JDK。可以下载安装Oracle的JDK或者使用 yum安装openjdk。
+
+安装JDK
+[root@linux-node1 ~]# yum localinstall jdk-8u102-linux-x64.rpm
+[root@linux-node1 ~]# java -version
+java version "1.8.0_102"
+Java(TM) SE Runtime Environment (build 1.8.0_102-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 25.102-b14, mixed mode)
+
+YUM部署LogStash
+
+1.下载并安装GPG key
+[root@linux-node1 ~]# rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
+
+2.添加yum仓库
+[root@linux-node1 ~]# cat > /etc/yum.repos.d/logstash.repo << 'EOF'
+[logstash-2.3]
+name=Logstash repository for 2.3.x packages
+#baseurl=https://packages.elastic.co/logstash/2.3/centos
+baseurl=https://mirrors.tuna.tsinghua.edu.cn/ELK/yum/logstash-2.3
+gpgcheck=1
+gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+EOF
+
+3.安装logstash
+[root@linux-node1 ~]# yum install logstash -y
+
+Kibana简介
+Kibana 是为 Elasticsearch 设计的开源分析和可视化平台。你可以使用 Kibana 来搜索，查看存储在 Elasticsearch 索引中的数据并与之交互。你可以很容易实现高级的数据分析和可视化，以图表的形式展现出来。
+
+Yum安装Kibana
+1.下载并安装GPG key
+[root@linux-node1 ~]# rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
+
+2.添加yum仓库
+[root@linux-node1 ~]# cat > /etc/yum.repos.d/kibana.repo << 'EOF'
+[kibana-4.5]
+name=Kibana repository for 4.5.x packages
+#baseurl=http://packages.elastic.co/kibana/4.5/centos
+baseurl=https://mirrors.tuna.tsinghua.edu.cn/ELK/yum/kibana-4.5
+gpgcheck=1
+gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+EOF
+
+3.安装kibana
+[root@linux-node1 ~]# yum install kibana -y

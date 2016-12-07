@@ -1,0 +1,39 @@
+个人博客
+Hexo
+
+https://zttfaith.github.io/
+
+
+Username for 'https://github.com': zttfaith
+Password for 'https://zttfaith@github.com': 
+To https://github.com/zttfaith/zttfaith.github.io.git
+
+
+域名解析到   GitHub
+http://www.jianshu.com/p/1d427e888dda
+
+
+
+https://yq.aliyun.com/articles/8608
+https://yq.aliyun.com/articles/8608
+
+-----------------------------------------------------yangjinjie.github.io.git
+
+
+https://github.com/yangjinjie/yangjinjie.github.io.git
+
+git@github.com:yangjinjie/yangjinjie.github.io.git
+
+
+…or create a new repository on the command line
+
+echo "# yangjinjie.github.io" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin git@github.com:yangjinjie/yangjinjie.github.io.git
+git push -u origin master
+…or push an existing repository from the command line
+
+git remote add origin git@github.com:yangjinjie/yangjinjie.github.io.git
+git push -u origin master

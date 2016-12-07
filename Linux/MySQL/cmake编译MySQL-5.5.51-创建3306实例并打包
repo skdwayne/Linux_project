@@ -1,0 +1,68 @@
+cmake编译MySQL-5.5.51-创建3306实例并打包
+
+--------------------编译参数
+cmake . \
+-DCMAKE_INSTALL_PREFIX=/application/mysql-5.5.51 \
+-DMYSQL_DATADIR=/application/mysql-5.5.51/data \
+-DMYSQL_UNIX_ADDR=/application/mysql-5.5.51/tmp/mysqld.sock \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci \
+-DEXTRA_CHARSETS=gbk,gb2312,utf8,ascii \
+-DENABLED_LOCAL_INFILE=ON \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DWITH_FEDERATED_STORAGE_ENGINE=1 \
+-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+-DWITHOUT_EXAMPLE_STORAGE_ENGINE=1 \
+-DWITHOUT_PARTITION_STORAGE_ENGINE=1 \
+-DWITH_FAST_MUTEXES=1 \
+-DWITH_ZLIB=bundled \
+-DENABLED_LOCAL_INFILE=1 \
+-DWITH_READLINE=1 \
+-DWITH_EMBEDDED_SERVER=1 \
+-DWITH_DEBUG=0
+
+------------
+make && make install 
+-------------
+
+[root@db51 application]# cat mysql_rpm.sh 
+#!/bin/bash
+
+grep -qc mysql /etc/passwd || useradd -s /sbin/nologin -M mysql
+
+ln -s /application/mysql-5.5.51/ /application/mysql
+
+\cp /application/mysql/bin/mysql* /usr/local/sbin/
+
+
+/application/mysql/scripts/mysql_install_db --basedir=/application/mysql --datadir=/data/3306/data --user=mysql
+
+chown -R mysql.mysql /data/3306
+
+sed -i "s#server-id = 1#server-id = `ifconfig eth0|grep -Po '\w+\.\K\d+(?=  B)'`#g" /data/3306/my.cnf
+
+/data/3306/mysql start
+
+mysqladmin password '111111' -S /data/3306/mysql.sock
+
+
+
+----------------打包参数
+
+fpm -s dir -t rpm -n mysql-yjj -v 5.5.51.6 --description 'mysql-5.5.51-cmake-by-yjj' -d 'ncurses-devel,libaio-devel' --post-install mysql_rpm.sh -f /application/mysql-5.5.51/ /data/
+
+
+sed -i "s#server-id = 1#server-id = `ifconfig eth0|grep -Po '\w+\.\K\d+(?=  B)'`#g" /data/3306/my.cnf
+
+
+
+---------------
+
+
+
+
+
+
+
+
+

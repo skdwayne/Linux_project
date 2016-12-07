@@ -1,0 +1,30 @@
+http://mawing.me/Linux/CentOS-LAMP.html
+http://mawing.me/Linux/CentOS-Zabbix.html
+[root@ruin ~]# yum install httpd -y
+[root@ruin ~]# /etc/init.d/httpd start
+
+[root@ruin ~]# yum install mysql-server mysql -y
+[root@ruin ~]# /etc/init.d/mysqld start
+[root@ruin ~]# mysql
+mysql> create database zabbix character set utf8 collate utf8_bin;
+mysql> grant all on zabbix.* to zabbix@'localhost' identified by '123456';
+mysql> flush privileges;
+
+#zabbix3.0必须要php5.4以上因此需要安装特殊源，才能够安装php5.5
+http://www.blogjava.net/nkjava/archive/2015/01/20/422289.html
+[root@ruin ~]# yum list installed | grep php
+[root@ruin ~]# yum remove php-cli.x86_64 php-common.x86_64 php-pdo.x86_64 -y
+[root@ruin ~]# rpm -Uvh http://mirror.webtatic.com/yum/el6/latest.rpm
+[root@ruin ~]# yum install -y php55w.x86_64 php55w-cli.x86_64 php55w-common.x86_64 php55w-gd.x86_64 php55w-ldap.x86_64 php55w-mbstring.x86_64 php55w-mcrypt.x86_64 php55w-mysql.x86_64 php55w-pdo.x86_64
+[root@ruin ~]# vi /var/www/html/testphp.php
+[root@ruin ~]# cat /var/www/html/testphp.php
+<?php
+phpinfo();
+?>
+[root@ruin ~]# /etc/init.d/httpd restart
+http://10.0.11.103/testphp.php
+
+[root@ruin ~]# yum install zabbix zabbix-server zabbix-web zabbix-server-mysql zabbix-web-mysql -y
+https://pkgs.org/centos-6/epel-x86_64/zabbix-1.8.22-1.el6.x86_64.rpm.html
+
+[root@ruin ~]# yum install -y zabbix-java-gateway

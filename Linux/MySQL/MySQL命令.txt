@@ -1,0 +1,86 @@
+MySQL命令
+
+#创建数据库;
+create database wordpress;
+
+###搭建wordpress博客程序
+#1、创建用户
+mysql -uroot -poldboy123
+create database wordpress;
+show databases;
+
+grant all on wordpress.* to wordpress@'localhost' identified by '123456';
+flush privileges;
+##查看所有用户
+select user,host from mysql.user;
+###查看用户的权限
+show grants for wordpress@'localhost';
+
+
+mysql> show grants for wordpress@'localhost';
+
+
+show databases;
+
+select user,host from mysql.user;
+show grants for root@'localhost';
+show grants for root@'localhost';
+show grants for root@'localhost'\G
+
+
+flush privileges;
+mysql -uroot -poldboy123 -e "show databases;"
+
+
+
+mysqldump --help
+
+mysqldump -uroot -poldboy123 -B wordpress |gzip >/backup/bak.sql.gz
+
+gzip -d bak.sql.gz
+
+mysql -uroot -p </root/bak.sql
+
+help create database
+help create
+
+
+mysql> use wordpress;
+Database changed
+mysql> show tables;
++------------------------+
+| Tables_in_wordpress    |
++------------------------+
+| yjj_commentmeta        |
+| yjj_comments           |
+| yjj_links              |
+| yjj_options            |
+| yjj_postmeta           |
+| yjj_posts              |
+| yjj_term_relationships |
+| yjj_term_taxonomy      |
+| yjj_termmeta           |
+| yjj_terms              |
+| yjj_usermeta           |
+| yjj_users              |
++------------------------+
+12 rows in set (0.00 sec)
+
+
+grant all on wordpress.* to wordpress@'172.16.1.%' identified by '123456';
+flush privileges;
+
+
+
+
+
+
+mysql这个文件发送到其他服务器，其他服务器就可以使用此命令，远程登录
+
+
+mysql -uroot -p111111  默认连接本地数据库
+
+root用户默认禁止远程连接登录
+
+远程连接数据库
+mysql -uwordpress -p111111 -h 172.16.1.51

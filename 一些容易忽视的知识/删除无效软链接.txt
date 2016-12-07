@@ -1,0 +1,14 @@
+删除无效软链接
+
+方法1.for f in $(find $1 -type l); do [ -e $f ] && rm -f $f; done
+
+方法2.symlinks -d
+
+symlinks:    scan/change symbolic links - v1.2 - by Mark Lord
+
+Usage:       symlinks [-crsv] dirlist
+Flags:         -c == change absolute/messy links to relative
+                   -d == delete dangling links
+                   -r == recurse into subdirs
+                   -s == shorten lengthy links (only displayed if -c not specified)
+                   -v == verbose (show all symlinks)

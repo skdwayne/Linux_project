@@ -1,0 +1,19 @@
+
+vim相关知识
+学习命令   vimtutor
+
+vim下命令行快捷键
+gg  到文件的第一行
+G	但文件最后一行
+
+vi/vim
+命令行模式  设置行号 :set nu   取消行号  :set nonu
+
+
+
+
+
+
+
+
+

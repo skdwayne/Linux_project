@@ -1,0 +1,372 @@
+未曾学艺先习礼，未曾学武先习德
+
+#################################################
+
+文件名 最好不要有:  比如定时任务使用时间做文件名的时候时间不要用:
+
+#################################################
+
+sed '$d' test.sh
+
+strace -f passwd 追踪分析原因
+
+./ 和 sh 执行 *.sh程序有什么不同？
+
+./ *.sh 必须保证脚本文件可执行，执行前应该用chmod +x *.sh来改变该脚本文件的属性！
+sh *.sh 可以直接执行脚本而不需要改变脚本的属性！
+句点 . 命令可以强行让脚本影响当前shell的环境，它执行脚本中的全部命令，而不管脚本文件的权限如何设置。
+
+#################################################
+文件太多   用rm 删除报错的时候，可以使用 ls |xargs rm -f 删除
+
+
+
+#################################################待整理
+学习成功人的思维和习惯，可以让你在你任何想做的事情上提高成功的概率！
+
+
+#####################################################################################
+[root@www ~]#  route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+192.168.157.0   0.0.0.0         255.255.255.0   U     0      0        0 eth0
+169.254.0.0     0.0.0.0         255.255.0.0     U     1002   0        0 eth0
+0.0.0.0         192.168.157.2   0.0.0.0         UG    0      0        0 eth0
+[root@www ~]#
+
+#####################################################################################
+
+
+
+[root@www ~]# yum install -y lrzsz dos2unix nmap telnet
+
+df -h	现在的挂载情况
+fdisk -l
+cat /etc/fstab
+blkid
+------------------------------
+使用rz往服务器发送文件   sz从服务器下载文件  后面接文件，自动下载到XShell设置的目录
+
+lrzsz
+yum install -y lrzsz
+
+####################################################### 第二关课前考试题
+
+find oldboy -maxdepth 1 -type d		会显示当前目录
+
+find oldboy/* -maxdepth 1 -type d
+find oldboy -maxdepth 1 -type d ! -name "."
+---------------------------------------------------
+查询帮助的时候使用grep筛选
+[root@www oldboy]# ls --help |grep "\-F"
+[root@www oldboy]# ls --help |grep  "\-F" -A5
+
+
+"*"表示具有可执行权限的普通文件，"/"表示目录，"@"表示符号链接，"|"表示命令管道FIFO，"="表示sockets套接字。当文件为普通文件时，不输出任何标识符
+
+
+
+sed  使用正则   '/正则表达式/'   使用两个单引号  两个斜线
+
+
+[root@www data]# sed '/oldboy/d' test.txt
+test
+liyao
+[root@www data]# sed -n '/[^oldboy]/p' test.txt
+test
+liyao
+[root@www data]# awk   '/[^oldboy]/' test.txt
+
+
+-----------------------------------------------第三次考试题
+
+	注意xargs   默认分一行显示
+
+
+mkdir -p /data
+cd /data
+mkdir -p oldboy{01..10}/{a..g}
+touch  oldboy{01..10}/{a..g}/stu{00..10}
+
+
+
+1.6 如何把/data目录下所有包含oldboy的目录（可能目录的目录的目录里还有oldboy目录） 目录都打包出来。
+要求:解压打包后的目录结构不能改变 。
+mkdir -p /data
+cd /data
+mkdir -p oldboy{01..10}/{a..g}
+touch  oldboy{01..10}/{a..g}/stu{00..10}
+
+
+后向引用
+	sed -n 's#()()#\1\2#gp' file
+
+
+-----------------------------------------------------------------
+
+####################################################5:02 PM 8/5/2016
+
+[root@oldboyedu-vm1 ~]# tar jtf oldboy.tar.gz
+bzip2: (stdin) is not a bzip2 file.
+tar: Child returned status 2
+
+12:20 PM 8/5/2016
+
+tar: Error is not recoverable: exiting now
+[root@oldboyedu-vm1 ~]# tar ztf oldboy.tar.gz
+./oldboy/
+./oldboy/yingsui.gz
+./oldboy/xiaodong/
+./oldboy/xingfujie/
+./oldboy/jeacen
+./oldboy/oldboy
+./oldboy/xiaofan/
+./oldboy/wodi.gz
+./oldboy/ext/
+./oldboy/ext/oldboy
+./oldboy/test/
+
+[root@oldboyedu-vm1 ~]# file ett
+ett: ASCII text
+[root@oldboyedu-vm1 ~]# file /bin/cat
+/bin/cat: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.18, stripped
+[root@oldboyedu-vm1 ~]# file /var/log/lastlog
+/var/log/lastlog: data
+
+
+
+[root@oldboyedu-vm1 ~]# ll -d /etc/init.d/
+drwxr-xr-x. 2 root root 4096 Jul 18 12:20 /etc/init.d/
+[root@oldboyedu-vm1 ~]# ll -d /etc/init.d
+lrwxrwxrwx. 1 root root 11 Jul 18 12:18 /etc/init.d -> rc.d/init.d
+[root@oldboyedu-vm1 ~]# ll -d /etc/init.d /etc/rc.d/init.d/
+lrwxrwxrwx. 1 root root   11 Jul 18 12:18 /etc/init.d -> rc.d/init.d
+drwxr-xr-x. 2 root root 4096 Jul 18 12:20 /etc/rc.d/init.d/
+
+###################################################################
+
+################################################################################################
+知识画圈
+时间花在有用的地方
+
+----------------------------------
+命令行里面的变量一般都是临时生效
+
+LANG特殊变量
+
+给阶段性的知识做小结
+
+通过inode来删除文件
+查看文件  ls -ilh
+rm `find . -inum 159004`
+find .  -inum 159004 -exec rm {} \;
+
+
+for n in `seq 100 5 200` ;do echo $n >$n.txt;done
+
+文件类型可以使用  find  查询
+################################################
+
+##########################################################筛选不能登录的用户
+[root@www logs]# grep "nologin" /etc/passwd
+
+[root@www logs]# awk -F ":" '$3>=1&&$3<=499' /etc/passwd
+##########################################################筛选不能登录的用户
+
+
+
+
+
+$RANDOM 的范围是 [0, 32767]
+
+
+
+==========================================
+
+文件去重
+
+步骤一:站成一队
+xargs -n1 <awk_blank.txt
+awk 'BEGIN{RS=" "}{print $0}' awk_blank.txt
+egrep -o "[a-zA-Z0-9]+" awk_blank.txt
+步骤二：
+排序 去重
+sort|uniq -c
+
+
+[root@swz files]# awk 'BEGIN{RS="(:|/)+"}{array[$1]++}{for(key in array)print key,array[key]}' awkfile.txt
+
+[root@oldboyedu files]# awk 'BEGIN{RS="([^a-z]+)"}{array[$0]++}END{for(key in array) print key, array[key]}' awkfile.txt
+
+
+----------------------------------------------------------
+
+
+涉及到修改和删除的操作，都需要格外谨慎
+
+修改、删除文件都要进行备份。（比如XShell可以cat一下，以后还能在log里面找到）
+
+
+每个文件和进程，都需要对应一个用户和用户组。
+UID为0代表root用户
+-====-------------=============================================================
+
+
+批量创建用户并随机给定一个8位密码
+
+echo a{00..10}|xargs -n1|sed -r 's#(.*)#useradd \1;passwd=`echo $RANDOM|md5sum|cut -c -8`;echo "$passwd"|passwd --stdin \1;echo -e "\1 \t `echo $passwd`">>/tmp/passwd #g'|bash
+
+echo stu{00..10}|xargs -n1|awk '{print "useradd "$1";""passwd=`date +%N|md5sum`;echo ""$passwd""|passwd --stdin " $1";echo  "$1" $passwd"">>/tmp/passawk "}'|bash
+
+echo stu{00..10}|xargs -n1|awk '{print "useradd "$1";""passwd=`date +%N|sha512sum`;echo ""$passwd""|passwd --stdin " $1";echo  "$1" $passwd"">>/tmp/passawk "}'
+
+
+
+
+批量删除命令
+echo a{00..50}|xargs -n1|sed -r 's#(.*)#userdel -r \1#g'|bash
+
+----------------------------------      sha256sum
+date +%N|sha256sum
+
+
+for n in `seq 10000`;do useradd stu$n;passwd=`echo $RANDOM|md5sum`;echo "$passwd"|passwd --stdin stu$n;echo -e "stu$n\t$passwd ">>/tmp/passwdfor;done
+
+for ((i=1;i<1000;i+=1)) ;do  echo $i ;done
+
+从i=1，开始循环，  每次循环之后，i+1   再继续循环  一直到i=999 循环之后  跳出循环
+
+
+rename  .jpg -`date +%F`.jpg  *.jpg
+
+
+
+for n in `find / -type d`;do link1=`ls $n |awk -F" " '{print $2}'`;link2=0;if(link1>link2);then link=link1;else link=link2 fi;done
+
+
+-----------------------------------------------------------------------------------
+
+
+egrep 支持扩展正则  使用反斜线之后  {}原本的特殊含义没有了   所以匹配   0{1,4}
+
+Linux正则表达式语法
+	http://aresxin.blog.51cto.com/4734097/1602624
+正则表达式30分钟入门教程
+http://deerchao.net/tutorials/regex/regex.htm#mission
+
+文件删除案例1：
+Web服务器磁盘满故障深入解析
+http://oldboy.blog.51cto.com/2561410/612351
+inode满案例2：
+因inode节点导致执行passwd命令报错处理记录
+http://blog.sina.com.cn/s/blog_506ed9e6010106kj.html
+
+man grep  info grep  man 7 glob
+
+[root@www ~]# ls -l /etc/hosts|awk -F ""
+'BEGIN {
+
+	switch ($1)
+	case $1==r:c=4;print "c"}
+
+	s1=s2=s3=0}{s1=$2+$3+$4; s2=$5+$6+$7;s3=$8+$9+$10}END{print s1 s2 s3}'
+644
+
+ls -l /etc/hosts|awk -F ""  'BEGIN {switch ($1) case $1=="r":c=4; break;  $print c}'
+
+ls -l /etc/hosts|gawk -F --enable-switch  ""  'BEGIN for(i=1;i<=10;i++){switch ($i) case $i=="r":c=4; break; default print 10; print c}
+
+date +%N    纳秒   设置随机密码
+
+date +	%Y_%m_%d
+		+%F
+---------------------------------------------------------------------------------
+[ztt@www ~]$ z
+zcat      zdump     zforce    zip       zipinfo   zless     zsoelim
+zcmp      zegrep    zgrep     zipcloak  zipnote   zmore
+zdiff     zfgrep    zic       zipgrep   zipsplit  znew
+
+zgrep  可直接搜索zip压缩包里面文本里面的内容
+----------------------------------------
+
+awk   getline
+
+ps -ef |grep [r]sync
+
+seq -s + 100|bc
+
+
+netstat -ant
+ss -lntup
+
+echo 1234567|sed -r 's#(.)(.)#\1#g'
+
+匹配到的内容被替换成空，\1 再现被替换的第一个括号里面的内容
+
+xargs -n1   一次只传一个参数给后面的命令
+
+UID 也是一个变量
+GID没有
+
+echo 99999/365|bc
+awk 'BEGIN{print 99999/365}'
+
+
+
+
+
+xfs
+写入/etc/fstab之后   测试挂载
+
+ls  /lib/modules/`uname -r`/kernel/fs
+
+yum install xfsprogs kmod-xfs xfsdump xfsprogs-devel -y
+rpm -qa xfsprogs kmod-xfs xfsdump xfsprogs-devel
+modprobe xfs
+lsmod |grep xfs
+mkfs.xfs  /dev/sdb1 ##<==分区要大一点
+ mount /dev/sdb1 /mnt
+
+
+ReiserFS
+http://www.ibm.com/developerworks/cn/linux/filesystem/ReiserFS/intro/
+
+
+Benchmarks
+
+
+[ztt@www ~]$ sort -nk2 -t ":" sort.txt
+1 : 2
+3 : 4
+2 : 5
+
+awk 'BEGIN{FS=OFS=}'
+
+
+awk '1' /etc/passwd  条件   非零   满足
+awk '0' /etc/passwd      0   不满足
+
+echo -e "\033[31m +-------------------------------------------------+ \033[0m"
+echo -e "\033[31m |               optimizer is done                 | \033[0m"
+echo -e "\033[31m |            E-mail:493535459@QQ.COM              | \033[0m"
+echo -e "\033[31m |            ^_^ ^_^ ^_^ ^_^ ^_^ ^_^              | \033[0m"
+echo -e "\033[31m +-------------------------------------------------+ \033[0m"
+
+==========================
+乘法口诀表
+
+
+[root@web01 ~]# for i in {1..9}; do for j in `seq 1 $i`; do echo -ne "\033[47;30m${j}*${i}=$((j*i))\033[0m \t"; done; echo; done
+
+[root@web01 ~]# awk 'BEGIN{for(i=1;i<=9;i++){for(j=1;j<=i;j++){printf j"*"i"="i*j"\t"}printf "\n"}}'
+
+echo -ne "\033[47;30m`awk 'BEGIN{for(i=1;i<=9;i++){for(j=1;j<=i;j++){printf j"*"i"="i*j"\t"}printf "\n"}}'`\033[0m\n"
+
+seq 9 | sed 'H;g' | awk -v RS='' '{for(i=1;i<=NF;i++)printf("\033[47;30m%dx%d=%d%s", i, NR, i*NR, i==NR?"\033[0m\n":"\t")}'
+
+echo -e "\e[44;37;5m `awk 'BEGIN{for(i=1;i<10;i++) {for(k=1;k<=i;k++) {printf "%d%s%d%s%;}printf "\n"}}'` \e[0m "
+
+---------------------------
+for i in {1..9}; do for j in `seq 1 $i`; do echo -ne "\033[47;30m${j}*${i}=$((j*i))\033[0m \t"; done; echo; done
+
+seq 9 | sed 'H;g' | awk -v RS='' '{for(i=1;i<=NF;i++)printf("\033[47;30m%dx%d=%d%s", i, NR, i*NR, i==NR?"\033[0m\n":"\t")}'

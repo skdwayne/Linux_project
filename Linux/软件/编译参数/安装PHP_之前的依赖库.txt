@@ -1,0 +1,23 @@
+安装PHP 之前的依赖库
+
+cd ~/src
+wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
+tar xf libiconv-1.14.tar.gz
+cd libiconv-1.14
+./configure --prefix=/usr/local/libiconv
+make && make install
+
+
+yum install -y libmcrypt-devel
+yum install -y mhash
+yum install -y mcrypt
+
+
+
+make
+make install
+
+ln -s /application/php-5.5.38 /application/php
+
+
+apache 依赖  zlib-devel zlib

@@ -1,0 +1,113 @@
+nginx优化
+
+
+[root@web02 mappers]# /application/apache/bin/apxs -c mod_rewrite.c
+[root@web02 mappers]# /application/apache/bin/apxs -i -a -n mod_rewrite mod_rewrite.la
+
+
+yslow   测试压缩
+firebug
+
+
+fastcgi_connect_timeout 240;
+fastcgi_send_timeout 240;
+fastcgi_read_timeout 240;
+fastcgi_buffer_size 64k;
+fastcgi_buffers 4 64k;
+fastcgi_busy_buffers_size 128k;
+fastcgi_temp_file_write_size 128k;
+#fastcgi_temp_path /data/ngx_fcgi_tmp;
+fastcgi_cache_path /data/ngx_fcgi_cache levels=2:2 keys_zone=ngx_fcgi_cache:512m inactive=1d max_size=40g;
+
+
+
+完整参数
+------------------------------------------------------
+
+
+
+fastcgi常见参数的Nginx配置示例如下：
+[root@nginx conf]# cat nginx.conf
+worker_processes  4;
+worker_cpu_affinity 0001 0010 0100 1000;
+worker_rlimit_nofile 65535;
+user nginx;
+events {
+    use epoll;
+    worker_connections  10240;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    tcp_nopush on;
+    keepalive_timeout  65;
+    tcp_nodelay on;
+    client_header_timeout 15; 
+    client_body_timeout 15; 
+    send_timeout 15;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    server_tokens off;
+fastcgi_connect_timeout 240;
+fastcgi_send_timeout 240;
+fastcgi_read_timeout 240;
+fastcgi_buffer_size 64k;
+fastcgi_buffers 4 64k;
+fastcgi_busy_buffers_size 128k;
+fastcgi_temp_file_write_size 128k;
+#fastcgi_temp_path /data/ngx_fcgi_tmp;
+fastcgi_cache_path /data/ngx_fcgi_cache levels=2:2 keys_zone=ngx_fcgi_cache:512m inactive=1d max_size=40g;
+    #web...............
+    server {
+        listen       80;
+        server_name  blog.etiantian.org;
+        root   html/blog;
+        location / {
+            root   html/blog;
+            index  index.php index.html index.htm;
+                }
+        location ~ .*\.(php|php5)?$
+        {      
+         fastcgi_pass  127.0.0.1:9000;
+         fastcgi_index index.php;
+         include fastcgi.conf;
+        fastcgi_cache ngx_fcgi_cache;
+        fastcgi_cache_valid 200 302 1h;
+        fastcgi_cache_valid 301 1d;
+        fastcgi_cache_valid any 1m;
+        fastcgi_cache_min_uses 1;
+        fastcgi_cache_use_stale error timeout invalid_header http_500;
+        fastcgi_cache_key http://$host$request_uri;
+         }
+         access_log  logs/web_blog_access.log  main;
+           }
+upstream blog_etiantian{
+    server 10.0.0.8:8000 weight=1;
+}
+    server {
+        listen       8000;
+        server_name  blog.etiantian.org;
+        location / {
+            proxy_pass http://blog_etiantian;
+            proxy_set_header Host  $host;
+            proxy_set_header X-Forwarded-For  $remote_addr;
+              }
+         access_log  logs/proxy_blog_access.log  main;
+           }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

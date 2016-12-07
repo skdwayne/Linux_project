@@ -1,0 +1,11 @@
+
+nginx编译参数
+
+ ./configure \
+ --user=www \
+ --group=www \
+ --with-http_ssl_module \
+ --with-http_stub_status_module \
+ --prefix=/application/nginx-1.6.3/
+
+ echo $?    ###返回0，表示配置成功

@@ -1,0 +1,319 @@
+
+命令    --help 命令的简单帮助
+man     ==命令的复杂帮助
+help    ==命令的帮助(bash的内置命令)
+ls      ==list，查看目录列表，-l（long），-d（directory）
+          -F 给不同文件类型结尾加标识
+          -p 给目录加斜线  -r（reverse）反转排序
+          -t 按修改时间排序  
+          --color=auto 给输出不同类型文件加不同颜色
+          -a 显示隐藏文件
+
+mkdir   ==make directory 作用是创建目录，例如：mkdir /data
+          -p 递归创建目录
+
+cd      ==change directory 作用是切换路径  例如  cd /
+touch   ==摸一下，作用是创建文件，例如 ，touch  oldboy.txt
+vi      ==编辑器，相当于记事本，有编辑功能，但较弱。
+vim     ==复杂编辑器，相当于，emeditor，editplus，notepad++
+
+echo    ==打印输出内容，配合“>或>>”可以为文件里覆盖及追加内容，
+        echo "oldboy
+              oldgirl" >oldboy.txt
+        -e  解析转义字符   \t tab  \n 回车  \b 退
+        -n  不换行输出
+cat     ==查看文件内容
+        特殊用法：增加内容
+        cat >>/data/oldboy.txt<<EOF
+        I am studying linux.
+        EOF
+        EOF 要成对出现，EOF可以被任意成对内容替换。
+cp      ==copy  复制命令ctrl+c，例如 cp oldboy.txt  /tmp
+        -r：递归，用于复制目录；
+        -p：保持属性
+        -a：相当于 -pdr
+        cp='cp -i'  -i 需要确认
+mv      ==移动目录和文件，例如：mv /data  /root/
+pwd     ==print work directory   查看当前用户所在的路径
+rm      ==remove  删除文件或者目录 -f 强制，-r 删除目录
+        生产场景尽量不要使用rm，如果非要用，一定要CP备份。
+           替代方法：
+           mv移动到一个临时目录，回收站。
+           find删除
+           find /root/data -type f  -exec rm -f {} \;
+           find /root/data -type f |xargs rm -f
+find *****  查找 -type  按文件类型查找，-name 按照名字查找，
+           查找的内容最好用双引号括起来，！取反。
+           -a (and)   -o(or)   -maxdepth  数字  查找深度
+           find /oldboy  -maxdepth 1 -type d ! -name "oldboy" 
+
+head    ==头部，取文件的前N行，默认前十行，取前三行-n 3
+           简写 - 3
+tail    ==尾巴，取文件的后N行，默认后十行，去最后三行
+         -n 3  简写 -3
+         -f 跟踪一个文件的尾部时时变化
+awk     （linux三剑客 老大*****）
+        ==一门语言，过滤内容（擅长取列）
+        awk -F "分隔符" '{print $1}' 文件  《==$1 第一列，
+        $2 第二列...$NF最后一列，$(NF-1) 倒数第二列
+        例子：awk '{if(NR<31 && NR>19)print $1"\n"}' text.txt 
+        NR 代表行号，&&（and）并且 \n 回车换行 $0 表示整行
+        
+grep    （linux三剑客 老三 擅长过滤 *****）
+        ==过滤器，把想要的或者不想要的分离开。-v 排除 
+          -i 不区分大小写  -E过滤多个字符串
+          -o 输出精确匹配的字符而不是整行
+          -A NUM 显示匹配行，并显示该行之前的NUM行
+          -B NUM 显示匹配行，并显示该行之后的NUM行
+          -C NUM 显示匹配行，并显示该行之前后的NUM行
+          grep "string"  -B 10 text.txt 
+          -a :在二进制文件中，以文本文件文件的方式搜索数据
+          -c :计算找出‘搜索字符串’的次数
+          -o ：仅显示出匹配regrep
+          -i ：忽略大小写的不同 *****
+          -n ：在行首显示行号   *****
+          -v ：反向选择         *****
+          -E ：扩展的grep，即egrep  *****
+sed      （stream editor linux三剑客 老二 擅长取行*****）
+           过滤：sed -n '/过滤的内容/处理的命令'  文件
+           -n 取消sed的默认输出。
+           -i 改变文件内容。
+           处理的命令：p  print打印， d delete删除
+           例子：
+                sed '/oldboy/d' text.txt 
+                sed -n '/oldboy/p' text.txt 
+           sed替换：*****
+           sed -i 's#boy#girl#g' test.txt
+           s:常说的查找替换，用一个字符串替换另一个
+           g：与s联用，表示对当前行全局匹配替换
+           #是分隔符，可以用/@等替换
+           sed -r 's#(.*)#I am \1#g' test.txt
+           =  表示显示行号
+           例子：sed '=' /etc/rsyslog.conf
+
+
+yum     linux里包管理器，帮助解决依赖问题。
+              yum update -y  《==upgrade  windows打补丁
+        例子：yum install tree -y  
+              下载tree包，然后调用rpm命令安装tree包
+              如果需要依赖包，帮你下载帮你提前安装。
+              yum grouplist 里选包组
+              yum groupinstall “包组” -y
+              yum search  包名 或 yum serach all
+              yum removed tree -y  （不要用）
+   
+rpm     -ivh（安装，显示输出，人类可读展示）
+        例子:rpm -ivh 包名.rpm(提前下载好)
+        最大问题，依赖问题不好解决：
+        a---b----c-----d
+[root@ruin ~]# rpm -qa tree 
+tree-1.5.3-2.el6.x86_64
+        -q
+        -a
+        -l
+tree    ==显示目录树结构
+        -L 层数  -d 目录
+alias   ==查看以及定义别名（外号，小名）
+        例子：
+        oldboy='echo"I am oldboy linux."'
+        alias rm='echo"rm can not be used,pls use mv"'
+        别名生效的位置：root用户：/root/.bashrc
+        所有用户生效：/etc/bashr或者/etc/profile定义
+        生效 source /etc/profiles
+        别名的作用：
+        1.通过给危险命令加一些保护参数，防止人为误操作。
+        2.把很多复杂的字符串或命令变成简单的字符串或命令。
+
+unalias ==取消别名
+seq     ==sequence，seq序列  -s 指定序列的分隔符 -w 对齐
+
+        seq [OPTION]... LAST
+        seq [OPTION]... FIRST LAST
+        seq [OPTION]... FIRST INCREMENT LAST
+history ==打印用户操作的历史记录。
+          -c清除所有记录 -d 清除指定记录
+
+hostname==查看主机名
+uname   ==打印系统信息 -r 内核  -m 32 bit or 64 bit
+        -a  所有      -n  查看主机名 
+whoami  ==查看当前用户
+===========磁盘管理========
+dumpe2fs  - dump ext2/ext3/ext4  filesystem information
+fdisk -l   查看磁盘及分区，fdisk /dev/sdb *****
+parted   分区，大于2T ***
+partprobe  通知系统分区表的变化 ***
+mkfs -t ext4 -I inodesize -b blocksize ***
+tune2fs -c -1 /dev/sdb1 调整文件系统参数 
+mount   -t ext4 -o 挂载  *****
+df -h   以人类可读信息查看磁盘挂载信息 -i 查看挂载磁盘inode使用情况 *****
+du -sh  查看目录和文件大小 ****
+free  -m 查看内存大小 （buffer，cache）*****
+fsck  检查修复文件系统 ，卸载状态检查，没问题不检查***
+
+
+su      ==用户角色切换   su - 用户名 -参数切换用户环境变量
+runlevel==查看当前系统运行级别。
+init    ==切换运行级别，后面接对应级别的数字
+chkconfig ==设定开机自启动命令
+diff    ==比较接，两个文件
+vimdiff == 高级比较，高亮显示两个文件不同内容
+which   ==查找命令所在路径，搜索范围来自全局环境PATH变量所对应路径
+locate  ==从数据库查相关信息，新命令需提前update跟新数据库
+whereis ==查找相关信息 -b 查二进制命令
+ulimit  ==
+wget    ==下载   wget http //url  -o  下载到指定路径改名
+                 --spider 爬虫，检查网站是不是好的，不会下载只会检查。
+                 -T  --timeout==second 超时时间。
+                 --tries =2  指定重试次数
+                 -q  ---quiet  关闭输出
+visudo  ==编辑sudo配置文件（vi /etc/sudoers）  -c 检查语法
+sudo    ==调兵虎符，sudo配置文件授权后，执行命令需要前带sudo
+ps
+
+export
+netstat（ss）
+ifconfig
+source
+ntpdate
+less    ==按屏（空格，page up / page down）或按行（回车）查看文件
+more    ==按屏（空格）或按行（回车）查看文件，不能向上翻
+ifup    ==网卡启动
+ifdown  ==网卡关闭
+df -h   ==以人类可读信息查看磁盘挂载block信息  -i 查看挂载磁盘inode情况
+fsck    ==磁盘检查（不要检查好磁盘），卸载的状态检查。
+dmesg   ==内核打印的错误信息，例如硬件故障警告
+
+tar     ==
+        -c, --create
+              extract files from an archive
+        -x, --extract, --get
+              extract files from an archive
+        -f, --file=ARCHIVE
+              use archive file or device ARCHIVE
+        -v, --verbose
+              verbosely list files processed
+        -z, --gzip
+              filter the archive through gzip
+        -j, --bzip2
+              filter the archive through bzip2
+        -p, --preserve-permissions
+              extract  information  about  file permissions (default for superuser)
+
+gzip unzip zip  压缩解压缩
+
+cut     ==切割，简单的取列命令，
+        -d  指定分隔符  -f  数字  取第几列，如-f3,6
+        -c 按字符取
+wc      ==
+       -c, --bytes
+              print the byte counts
+
+       -m, --chars
+              print the character counts
+
+       -l, --lines
+              print the newline counts
+
+useradd  == 
+       -c, --comment COMMENT
+           Any text string. It is generally a short description of the login, and is
+           currently used as the field for the user's full name.
+
+       -d, --home HOME_DIR
+           The new user will be created using HOME_DIR as the value for the user's login
+           directory. The default is to append the LOGIN name to BASE_DIR and use that as
+           the login directory name. The parent directory of HOME_DIR must exist otherwise
+           the home directory cannot be created.
+
+       -D, --defaults
+           See below, the subsection "Changing the default values".
+
+       -e, --expiredate EXPIRE_DATE
+           The date on which the user account will be disabled. The date is specified in the
+           format YYYY-MM-DD.
+       
+       -g, --gid GROUP
+           The group name or number of the user's initial login group. The group name must
+           exist. A group number must refer to an already existing group.
+      
+       -G, --groups GROUP1[,GROUP2,...[,GROUPN]]]
+           A list of supplementary groups which the user is also a member of. Each group is
+           separated from the next by a comma, with no intervening whitespace. The groups
+           are subject to the same restrictions as the group given with the -g option. The
+           default is for the user to belong only to the initial group.
+
+
+
+
+快捷键：
+TAB  命令，路径补全
+
+
+
+特殊字符命令：
+> 或1>重定向，会清除文件里所有以前数据，会增加新数据。*****
+>>或1>>追加重定向，文件结尾加入内容，不会删除已有文件内容。*****
+<0输入重定向
+<<0追加输入输入重定向
+2>错误重定向
+2>>错误追加重定向
+===========================================
+1.标准输入（stdin）：代码为0，使用<或<<数据流向从右往左。
+2.正常输出（stdout）：代码为1，使用>或>>数据流从左向右。
+3.错误输出（stderr）：代码为2，使用2>或2>>。
+箭头的流向就是数据的流向。
+三种方法等价
+/dev/null  空设备 黑洞
+（1）1>/dev/null   2>/dev/null
+（2）1>/dev/null   2>&1  *****
+ (3) &>/dev/null
+
+\     让一个有意义的字符，脱掉马甲。
+..    相对路径，表示上级目录 ****
+.     相对路径，当前目录   \.代表点号。****
+      以点开头的文件代表影藏文件
+|     管道（把前一个命令结果的输出交给后一个程序继续处理）
+~     用户的家目录，针对root环境，~代表root的家目录*****
+{}    中间为命令快组合或内容序列
+*     通配符，代表任意（0到多个）字符 *****
+?     通配符，代表一个字符
+；    连续不同命令的分隔符 *****
+#     配置文件注释 *****
+-     上一次的目录 *****
+$     变量前需加的符号
+/     路径的分割符号
+'     单引号，不具有变量置换功能，输出时所见即所得
+"     双引号，具有变量置换功能，解析变量后输出
+`     tab上面的键，反引号，两个``中间为命令，会先执行，等价$（）。
+！    逻辑运算中的“非”（not）
+&&    当前一个指令执行成功时，执行后一个指令
+||    当前一个指令执行失败时，执行后一个指令
+
+
+
+
+基础正则表达式：一些特殊的符号  表示一些特殊的作用和功能
+.    单个任意字符
+*    重复前面任意0个或多个字符
+.*   匹配任意字符
+sed -i 's#(可以用正则匹配)#\1#g' oldboy.txt 
+把前面正则匹配的括号内的结果，在后面\1取出来操作。
+
+
+环境变量：
+PATH 系统路径变量，执行ls，cp等非内置命令时，系统会首先查找
+PATH里对应的路径是否有，如果没有就报告找不到该命令。
+
+当执行which cp来查看命令所在路径的时候，也就是从PATH变量去搜索。
+
+临时修改export PATH="/tmp":$PATH",永久修改前面临时修改的的命令
+到/etc/profile下，使用 source /etc/profile使的立即生效。
+
+
+
+
+
+
+
+
+

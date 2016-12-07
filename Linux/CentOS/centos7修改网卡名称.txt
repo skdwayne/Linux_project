@@ -1,0 +1,79 @@
+网卡名称修改
+
+1、进入网卡设备目录
+vim /etc/sysconfig/network-scripts/ifcfg-eno16777736 
+
+#未修改
+TYPE=Ethernet
+DEFROUTE=yes
+PEERDNS=yes
+PEERROUTES=yes
+IPV4_FAILURE_FATAL=no
+UUID=a48588aa-0ea6-4441-be70-0e178fac46a1
+DEVICE=eno16777736 
+ONBOOT=yes
+BOOTPROTO=none
+IPADDR=192.168.2.113
+PREFIX=24
+GATEWAY=192.168.2.1
+DNS1=114.114.114.114
+
+#修改后
+TYPE=Ethernet
+DEFROUTE=yes
+PEERDNS=yes
+PEERROUTES=yes
+IPV4_FAILURE_FATAL=no
+UUID=a48588aa-0ea6-4441-be70-0e178fac46a1
+DEVICE=eth0
+ONBOOT=yes
+BOOTPROTO=none
+IPADDR=192.168.2.104
+PREFIX=24
+GATEWAY=192.168.2.1
+DNS1=114.114.114.114
+~                
+
+2、修改设备文件名称
+
+mv ifcfg-eno16777736 ifcfg-eth0
+
+
+3、修改GRUB内核参数即可
+vim /etc/default/grub
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap net.ifnames=0 biosdevname=0 rhgb quiet"
+GRUB_DISABLE_RECOVERY="true"
+
+#新增的内容net.ifnames=0 biosdevname=0，只需要再上面添加前面两行即可完成。
+
+4、配置更新grub内核
+
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
+#到这里，网上有些童鞋说重启网卡就可以了，但是我尝试后，发现，启动失败，原因需要重启计算机。
+
+5、接着配置规则，根据Centos 官方WIKI的FAQ中得知，如果你有多个接口，并且想要控制其设备名，而不是让内核以它自己的方式命名
+
+vim /etc/udev/rules.d/70-persistent-ipoib.rules 
+
+# ACTION=="add", SUBSYSTEM=="net", DRIVERS=="?*", ATTR{type}=="32", ATTR{address}=="?*00:02:c9:03:00:35:73:f2", NAME="eth0"
+
+#修改只需要修改最后面的NAME名称的设备名称和你配置名称一致即可，前面的#号去掉，即可，上面这种方法，同样适用于，所有的克隆的虚拟主机，需要注意，克隆的主机前面的这个MAC地址不能一样需要修改
+
+最后，修改网卡的配置完成了，(*^__^*) 嘻嘻……
+
+
+
+
+
+
+
+
+
+
+

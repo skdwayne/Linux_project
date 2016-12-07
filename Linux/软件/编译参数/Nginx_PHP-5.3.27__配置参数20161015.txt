@@ -1,0 +1,89 @@
+与Nginx配合的PHP的编译参数：本地有MySQL以及没有MySQL，2016/10/22
+
+Nginx   PHP-5.3.27  本地有安装MySQL的配置参数
+
+./configure \
+--prefix=/application/php5.3.27 \
+--with-mysql=/application/mysql/ \
+--with-iconv-dir=/usr/local/libiconv \
+--with-freetype-dir \
+--with-jpeg-dir \
+--with-png-dir \
+--with-zlib \
+--with-libxml-dir=/usr \
+--enable-xml \
+--disable-rpath \
+--enable-safe-mode \
+--enable-bcmath \
+--enable-shmop \
+--enable-sysvsem \
+--enable-inline-optimization \
+--with-curl \
+--with-curlwrappers \
+--enable-mbregex \
+--enable-mbstring \
+--with-mcrypt \
+--with-gd \
+--enable-gd-native-ttf \
+--with-openssl \
+--with-mhash \
+--enable-pcntl \
+--enable-sockets \
+--with-xmlrpc \
+--enable-zip \
+--enable-soap \
+--enable-short-tags \
+--enable-zend-multibyte \
+--enable-static \
+--with-xsl \
+--enable-ftp \
+--enable-fpm \
+--with-fpm-user=www \
+--with-fpm-group=www
+
+--------------------------------------------------本地没有MySQL的编译参数
+如果使用mysqlnd还是，有博客或者网站显示不正常，那就在本地安装一个MySQL，并指定到编译参数里面
+如果提示ltdl库不存在：# yum install -y libtool-ltdl-devel
+
+./configure \
+--prefix=/application/php-5.5.38 \
+--with-mysql=mysqlnd \
+--enable-mysqlnd \
+--with-mysqli=mysqlnd \
+--with-pdo-mysql=mysqlnd \
+--with-iconv-dir=/usr/local/libiconv \
+--with-freetype-dir \
+--with-jpeg-dir \
+--with-png-dir \
+--with-zlib \
+--with-libxml-dir=/usr \
+--enable-xml \
+--disable-rpath \
+--enable-bcmath \
+--enable-shmop \
+--enable-sysvsem \
+--enable-inline-optimization \
+--with-curl \
+--enable-mbregex \
+--enable-fpm \
+--enable-mbstring \
+--with-mcrypt \
+--with-gd \
+--enable-gd-native-ttf \
+--with-openssl \
+--with-mhash \
+--enable-pcntl \
+--enable-sockets \
+--with-xmlrpc \
+--enable-soap \
+--enable-short-tags \
+--enable-static \
+--with-xsl \
+--with-fpm-user=www \
+--with-fpm-group=www \
+--enable-opcache=no
+
+make
+make install
+
+ln -s /application/php-5.5.38 /application/php

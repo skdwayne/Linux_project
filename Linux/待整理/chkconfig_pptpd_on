@@ -1,0 +1,6 @@
+chkconfig pptpd on
+chkconfig --list|grep pptpd
+
+
+[ $(hostname) = "nfs01" ] && drbdadm -- --overwrite-data-of-peer primary drbd && mkfs.e
+xt4 /dev/drbd0

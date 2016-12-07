@@ -1,0 +1,71 @@
+
+
+2016/09/13  nfs
+
+hostname web01
+sed -i 's#oldboy#web01#g'  /etc/sysconfig/network
+
+yum install -y lrzsz nc dos2unix unix2dos nmap tree nc telnet
+
+sed -i 's#keepcache=0#keepcache=1#g' /etc/yum.conf 
+grep keep /etc/yum.conf 
+
+find /var/cache/yum/x86_64/6/ -type f  -name "*.rpm"
+
+rpm -aq nfs-utils rpcbind
+
+yum install nfs-utils rpcbind -y
+
+[root@nfs01 ~]# rpcinfo -p localhost
+
+[root@nfs01 ~]# /etc/init.d/rpc
+ 
+[root@nfs01 ~]# /etc/init.d/rpcbind start 
+
+[root@nfs01 ~]# rpcinfo -p localhost
+
+[root@nfs01 ~]# /etc/init.d/rpcbind status
+
+[root@nfs01 ~]# lsof -i:111
+
+[root@nfs01 ~]# netstat -lntup|grep 111
+
+
+[root@nfs01 ~]# /etc/init.d/nfs start 
+
+[root@nfs01 ~]# rpcinfo -p localhost
+
+[root@nfs01 tmp]# ps -ef |egrep "nfs|rpc"
+
+
+mkdir -p /data
+ls -ld /data
+id  nfsnobody
+
+chown -R  nfsnobody.nfsnobody /data
+
+
+客户端 
+/etc/init.d/rpcbind start
+chkconfig rpcbind on 
+
+mount -t nfs 172.16.1.31:/data /mnt
+
+echo 'mount -t nfs 172.16.1.31:/data /mnt' >>/etc/rc.local
+
+
+[root@nfs01 data]# cat /var/lib/nfs/etab 
+/data	172.16.1.0/24(rw,sync,wdelay,hide,nocrossmnt,secure,root_squash,no_all_squash,no_subtree_check,secure_locks,acl,anonuid=65534,anongid=65534,sec=sys,rw,root_squash,no_all_squash)
+
+
+
+
+
+
+
+
+
+
+
+
+

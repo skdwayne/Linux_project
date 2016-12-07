@@ -1,0 +1,129 @@
+从库配置同步参数
+
+mysql -uroot -poldboy123 -S /tmp/mysql.sock<<EOF
+CHANGE MASTER TO
+MASTER_HOST='172.16.1.51',
+MASTER_PORT=3306,
+MASTER_USER='mysqlrep',
+MASTER_PASSWORD='111111',
+MASTER_LOG_FILE='mysql-bin.000002',
+MASTER_LOG_POS=330;
+EOF
+
+
+
+
+mysql -uroot -poldboy123 -S /tmp/mysql.sock<<EOF
+CHANGE MASTER TO
+MASTER_HOST='172.16.1.51',
+MASTER_PORT=3306,
+MASTER_USER='mysqlrep',
+MASTER_PASSWORD='111111',
+MASTER_LOG_FILE='mysql-bin.000003',
+MASTER_LOG_POS=508;
+EOF
+
+从库配置
+---------------------------------
+slave  2
+
+###安装并初始化
+yum install mysql-yjj -y
+
+[root@db03 ~]# egrep "server-id|log-bin" /etc/my.cnf 
+server-id	= 3
+log-bin=mysql-bin
+
+[root@db03 ~]# /etc/init.d/mysqld restart
+
+mysql -uroot -poldboy123 -S /tmp/mysql.sock<<EOF
+CHANGE MASTER TO
+MASTER_HOST='172.16.1.51',
+MASTER_PORT=3306,
+MASTER_USER='mysqlrep',
+MASTER_PASSWORD='111111',
+MASTER_LOG_FILE='mysql-bin.000003',
+MASTER_LOG_POS=508;
+EOF
+
+[root@db03 ~]# mysql -uroot -poldboy123 -e "start slave;"
+[root@db03 ~]# mysql -uroot -poldboy123 -e "show slave status\G"
+
+[root@db01 ~]# mysqldump -uroot -poldboy123 --events -S /tmp/mysql.sock -A -B|gzip >bak_$(date +%F).sql.gz
+
+[root@db01 ~]# scp bak_2016-10-20.sql.gz 172.16.1.53:~
+
+[root@db03 ~]# gzip -d bak_2016-10-20.sql.gz 
+[root@db03 ~]# mysql -uroot -poldboy123 -S /tmp/mysql.sock <bak_2016-10-20.sql
+
+
+
+
+修改mysql进程用户
+修改my.cnf   添加  user。。。。  忘了
+查看官网帮助
+
+
+------
+MHA
+
+
+创建用户mha管理的账号，在所有mysql服务器上都需要执行：
+
+grant super,reload,replication client,select on *.* to mha@'172.16.1.%' identified by '111111';
+
+grant create,insert,update,delete,drop on *.* to mha@'172.16.1.%';
+
+创建主从账号，在所有mysql服务器上都需要执行：
+
+grant reload,super,replication slave on *.* to 'mysqlrep'@'172.16.1.%' identified by '111111'; 
+
+3)两台slave设置read_only(从库对外只提供读，因为slave可能选为master，因此不把它写入配置文件)
+
+mysql -e 'set global read_only=1'
+
+
+MySQL keepalived高可用
+cat /etc/keepalived/keepalived.conf
+#Configuration File for keepalived
+global_defs {
+notification_email {                         ######定义接受邮件的邮箱
+  wangjj@hrloo.com
+        }
+  notification_email_from jiankong@staff.tuge.com    ######定义发送邮件的邮箱
+  smtp_server mail.tuge.com
+  smtp_connect_timeout 10
+}
+vrrp_script check_mysql {                    ######定义监控mysql的脚本
+     script "/etc/keepalived/check_mysql.sh"
+     interval 2                              ######监控时间间隔
+     weight 2                                ######负载参数
+     }
+
+vrrp_instance vrrptest {                  ######定义vrrptest实例
+        state MASTER                ######服务器状态（主为MASTER，从为BACKUP）
+        interface eth0                       ######使用的接口
+        virtual_router_id 51                 ######虚拟路由的标志，一组lvs的虚拟路由标识必须相同，这样才能切换
+        priority 150                         ######服务启动优先级，值越大，优先级越高，BACKUP 不能大于MASTER
+        advert_int 1                         ######服务器之间的存活检查时间
+        notify /etc/keepalived/alert.sh    ######keepalive发生切换的报警邮件
+authentication {
+        auth_type PASS          ######认证类型
+        auth_pass ufsoft       ######认证密码，一组lvs 服务器的认证密码必须一致
+}
+
+track_script {                ######执行监控mysql进程的脚本
+     check_mysql
+
+     }
+virtual_ipaddress {    ######虚拟IP地址
+
+         10.1.1.190
+}
+}
+
+
+
+
+
+

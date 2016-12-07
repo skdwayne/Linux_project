@@ -1,0 +1,10 @@
+create table student
+
+create database oldboy CHARACTER SET utf8  COLLATE utf8_general_ci;
+use oldboy;
+CREATE TABLE `student` (
+  `id` bigint(12) NOT NULL auto_increment COMMENT '主键',
+  `name` varchar(12) NOT NULL COMMENT '姓名',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+ 

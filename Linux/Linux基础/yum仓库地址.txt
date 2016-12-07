@@ -1,0 +1,15 @@
+
+
+http://10.0.0.155/yum_data/
+
+http://10.0.0.132/cobbler/
+
+http://10.0.0.132/cobbler/repo_mirror/my-repo/
+
+rpm -qpl packetname
+
+
+http://10.0.0.132/cobbler/ks_mirror/config/
+
+
+

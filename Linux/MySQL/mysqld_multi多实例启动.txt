@@ -1,0 +1,7 @@
+http://blog.csdn.net/xiegh2014/article/details/48039033
+
+[root@db02 data]# mysqld_multi --defaults-file=/data/multi_my.cnf start 3306
+[root@db02 data]# mysqld_multi --defaults-file=/data/multi_my.cnf report 3306
+Reporting MySQL servers
+MySQL server from group: mysqld3306 is running
+

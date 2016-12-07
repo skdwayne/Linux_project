@@ -1,0 +1,2 @@
+如何查 php-fpm进程占用cpu高
+使用strace  跟踪查询

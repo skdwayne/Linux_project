@@ -1,0 +1,2 @@
+如果zabbix 数据库sleep连接太多，可以在
+zabbix_server.conf里设置超时时间

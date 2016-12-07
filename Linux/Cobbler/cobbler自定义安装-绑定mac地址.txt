@@ -1,0 +1,29 @@
+
+
+## m01
+cobbler system add --name=m01 --mac=00:50:56:30:A7:B0 --profile=CentOS-6.7-init --ip-address=10.0.0.61 --subnet=255.255.255.0 --gateway=10.0.0.2 --interface=eth0 --static=1 --hostname=m01 --name-servers="223.5.5.5 10.0.0.2"
+
+##backup
+cobbler system add --name=backup --mac=00:50:56:33:4C:E1 --profile=CentOS-6.7-init --ip-address=10.0.0.41 --subnet=255.255.255.0 --gateway=10.0.0.2 --interface=eth0 --static=1 --hostname=backup --name-servers="223.5.5.5 10.0.0.2"
+
+##nfs01
+cobbler system add --name=nfs01 --mac=00:50:56:37:41:B0 --profile=CentOS-6.7-init  --ip-address=10.0.0.31 --subnet=255.255.255.0 --gateway=10.0.0.2 --interface=eth0 --static=1  --name-servers="223.5.5.5 10.0.0.2" --hostname=nfs01
+
+##web01
+cobbler system add --name=web01 --mac=00:50:56:37:52:84 --profile=CentOS-6.7-init --ip-address=10.0.0.8 --subnet=255.255.255.0 --gateway=10.0.0.2 --interface=eth0 --static=1  --name-servers="223.5.5.5 10.0.0.2" --hostname=web01
+
+##db01
+cobbler system add --name=db01 --mac=00:50:56:3D:DB:BF --profile=CentOS-6.7-init --ip-address=10.0.0.51 --subnet=255.255.255.0 --gateway=10.0.0.2 --interface=eth0 --static=1  --name-servers="223.5.5.5 10.0.0.2" --hostname=db01
+
+##web02
+cobbler system add --name=web02 --mac=00:50:56:3F:79:BB --profile=CentOS-6.7-init  --ip-address=10.0.0.7 --subnet=255.255.255.0 --gateway=10.0.0.2 --interface=eth0 --static=1  --name-servers="223.5.5.5 10.0.0.2" --hostname=web02
+
+##lb01
+cobbler system add --name=lb01 --mac=00:50:56:3D:5E:13 --profile=CentOS-6.7-init  --ip-address=10.0.0.5 --subnet=255.255.255.0 --gateway=10.0.0.2 --interface=eth0 --static=1  --name-servers="223.5.5.5 10.0.0.2" --hostname=lb01
+
+##lb02
+
+cobbler system add --name=lb02 --mac=00:50:56:3C:58:47 --profile=CentOS-6.7-init  --ip-address=10.0.0.6 --subnet=255.255.255.0 --gateway=10.0.0.2 --interface=eth0 --static=1  --name-servers="223.5.5.5 10.0.0.2" --hostname=lb02
+
+##jumpserver
+cobbler system add --name=jumpserver --mac=00:0C:29:39:23:78 --profile=CentOS-6.7-init  --ip-address=10.0.0.62 --subnet=255.255.255.0 --gateway=10.0.0.2 --interface=eth0 --static=1  --name-servers="223.5.5.5 10.0.0.2" --hostname=jumpserver

@@ -1,0 +1,32 @@
+MySQL备份
+mysqldump -uroot -poldboy123 wordpress -B |gzip >wbak.sql.gz
+mysqldump -uroot -poldboy123 ultrax -B |gzip >ubak.sql.gz
+mysqldump -uroot -poldboy123 edusoho -B |gzip >ebak.sql.gz
+mysqldump -uroot -poldboy123 dedecms -B |gzip >dbak.sql.gz
+
+filename=mysql.backup$(date +%F-%H%M%S).tar.gz
+
+tar zcf $filename * &&\
+sz $filename && rm -f *
+
+
+for n in w u e d
+do  
+  gzip -d ${n}bak.sql.gz   
+  mysql -uroot -poldboy123 <${n}bak.sql
+done
+
+
+
+
+
+
+grant all on wordpress.* to wordpress@'172.16.1.%' identified by '111111';
+grant all on ultrax.* to ultrax@'172.16.1.%' identified by '111111';
+grant all on edusoho.* to edusoho@'172.16.1.%' identified by '111111';
+grant all on dedecms.* to dedecms@'172.16.1.%' identified by '111111';
+
+4.3 phpMyAdmin
+
+grant all on *.* to phpMyAdmin@'172.16.1.%' identified by '111111';
+flush privileges;

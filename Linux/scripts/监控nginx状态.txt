@@ -1,0 +1,8 @@
+
+
+nginx_status=($(curl -s 127.0.0.1/nginx_status|grep -Po '\d+'))
+
+Active connections: 1
+server accepts handled requests
+ 23 23 23
+Reading: 0 Writing: 1 Waiting: 0

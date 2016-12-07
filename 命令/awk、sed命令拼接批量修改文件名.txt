@@ -1,0 +1,33 @@
+awk、sed、rename批量修改文件名 
+-----------------------------------
+源文件名：
+stu_102999_1_hello.jpg
+stu_102999_2_hello.jpg
+stu_102999_3_hello.jpg
+stu_102999_4_hello.jpg
+stu_102999_5_hello.jpg
+------------------------------
+修改后：
+stu_102999_1_.jpg
+stu_102999_2_.jpg
+stu_102999_3_.jpg
+stu_102999_4_.jpg
+stu_102999_5_.jpg
+
+使用awk，gsub
+
+ls|awk '{print "mv "$0,$0}'|awk '{gsub("_hello","",$3)}1'
+
+ls|awk 'BEGIN{ORS=""}{print "mv",$0" ";gsub("_hello","",$0);print $0"\n"}'
+
+ls|awk '{$3=$2=$1;$1="mv";sub("_hello","",$3)}1'
+
+
+
+直接使用print拼接
+
+使用sed命令拼接
+使用rename批量修改
+
+
+

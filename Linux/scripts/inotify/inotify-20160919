@@ -1,0 +1,7 @@
+#!/bin/bash
+/usr/bin/inotifywait -mrq  --format '%w%f' -e create,close_write,delete /data \
+| while read file
+  do
+    cd /data &&\
+    rsync -az ./ --delete rsync_backup@172.16.1.41::nfsbackup --password-file=/etc/rsync.password
+  done

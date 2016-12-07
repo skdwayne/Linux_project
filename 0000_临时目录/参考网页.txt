@@ -1,0 +1,151 @@
+
+参考网页
+
+http://oldboy.blog.51cto.com/2561410/1862041 400篇博文汇总
+
+http://oldboy.blog.51cto.com/2561410/1296694  运维就是一场没有硝烟的战争
+
+
+select 和epoll模型区别
+http://oldboy.blog.51cto.com/2561410/1855201
+
+HTTP1.0与HTTP1.1的区别：
+http://blog.chinaunix.net/uid-16865301-id-97351.html
+http://blog.csdn.net/forgotaboutgirl/article/details/6936982
+
+
+生产环境常见的HTTP状态码列表(老男孩整理)
+http://oldboy.blog.51cto.com/2561410/716294
+
+
+1.运维人员如何最大限度避免误删除文件
+http://oldboy.blog.51cto.com/2561410/1687300 
+2.企业面试题：linux面试题：删除一个目录下的所有文件，但保留一个指定文件
+http://oldboy.blog.51cto.com/2561410/1650380
+
+
+
+
+linux运维初级班课前综合考试及参考答案20110529
+http://oldboy.blog.51cto.com/2561410/577227
+
+运维的自我批评之
+http://mp.weixin.qq.com/s?__biz=MzI2ODAzMjA4MQ==&mid=402015255&idx=1&sn=78be21fa1623940ab523d70cd772a47e#rd
+
+
+深入浅出三剑客之awk sed
+http://oldboy.blog.51cto.com/2561410/950730
+http://oldboy.blog.51cto.com/2561410/949365
+
+10.21 【企业案例】 提示文件系统只读（read-only file system）
+ 93）fstab修改错误导致系统无法启动故障修复案例
+维护模式或救援模式：
+mount -o rw,remount /
+然后修改/etc/fstab
+94）文件系统只读故障修复案例
+1)RSYNC bug.
+2)文件系统内部自动一致性（只读）
+维护模式或救援模式：
+mount -o rw,remount /
+案例：
+http://blog.sina.com.cn/s/blog_4a2fadfb010131jf.html
+
+
+【课后作业】 自己 研究 kill -9 和-15的区别
+
+第一篇：详解linux netstat输出的网络连接状态信息
+http://oldboy.blog.51cto.com/2561410/1184139
+第二篇：庖丁解牛获取连接状态数的awk数组命令
+http://oldboy.blog.51cto.com/blog/2561410/1184165
+第三篇：awk数组命令经典生产实战应用拓展
+http://oldboy.blog.51cto.com/blog/2561410/1184177
+第四篇：老男孩培训第八节课前awk考试题案例(门户面试题解答) 
+http://oldboy.blog.51cto.com/2561410/1184206
+第五篇：linux生产服务器有关网络状态的优化措施（告一段落） 
+http://oldboy.blog.51cto.com/2561410/1184228
+
+http://oldboy.blog.51cto.com/2561410/845349
+网站DDOS攻击防护实战老男孩经验心得分享
+
+
+svn部署大中小型企业上线解决方案(四)
+http://www.mamicode.com/info-detail-869549.html
+
+
+Sonar
+http://www.ibm.com/developerworks/cn/java/j-lo-sonar/
+
+--------------------------------wordpress 不错的模板
+http://qzhai.net/
+
+CDN流量暴高如何分析与解决企业案例
+http://oldboy.blog.51cto.com/2561410/909696
+
+
+
+http://shanhu.blog.51cto.com/1293405/1069909
+
+http://www.gnu.org/software/gawk/manual/gawk.html
+
+
+4.5.5 www动态服务软件Resin
+Resin官方号称是世界上最快的Web服务，是大型动态Web服务主流，为互联网Java程序的解析容器，百度、人人都曾用过Resin。
+其发展的主要版本：3.0、3.1、4.0，目前企业较多的使用3.1系列，并正在向4.0过渡。
+
+
+
+http://edu.51cto.com/course/course_id-3093.html
+
+http://www.nginx.org/
+http://www.apache.org/
+http://tengine.taobao.org/
+
+http://alexa.chinaz.com/
+pwiki官网
+https://piwik.org/
+
+记录一次linux线上服务器被黑事件
+http://bbs.51cto.com/thread-1376655-1.html
+
+“浅谈千万级PV/IP规模高性能高并发网站架构”：http://oldboy.blog.51cto.com/2561410/736710 。
+
+亿级PV超大型网站集群架构图形化深度揭秘讲解
+http://edu.csdn.net/course/detail/2278
+老板不在，你不得不做出越权的决定，咋办？（考试题系列）
+http://oldboy.blog.51cto.com/2561410/803606
+
+Nginx 403 forbidden多种原因及故障模拟重现
+http://oldboy.blog.51cto.com/2561410/1633952
+apache服务Forbidden 403问题精彩总结
+http://oldboy.blog.51cto.com/2561410/581383
+
+
+待整理网站
+http://blog.csdn.net/itsenlin/article/details/21129405
+
+
+
+LVS Nginx HAProxy 优缺点
+http://www.cnblogs.com/softidea/p/5510137.html
+
+
+		 
+做一个无法被替代的人		 
+	
+http://www.cnblogs.com/qq78292959/p/3637135.html
+
+
+
+Codis集群的搭建与使用
+http://www.cnblogs.com/xuanzhi201111/p/4425194.html
+
+http://os.51cto.com/art/201401/426316.htm
+Linux 文件删除恢复工具
+
+企业Linux运维几百个重点面试题汇总(持续更新)
+http://user.qzone.qq.com/49000448/blog/1426314681?ptlang=2052&ptlang=2052&ADUIN=493535459&ADSESSION=1479784335&ADTAG=CLIENT.QQ.5457_.0&ADPUBNO=26551
+
+
+MySQL5.6中新增特性、不推荐使用的功能以及废弃的功能
+http://blog.csdn.net/zyz511919766/article/details/49865091
+

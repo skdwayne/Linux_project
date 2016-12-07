@@ -1,0 +1,49 @@
+
+
+    # 添加elasticsearch的yum仓库
+    cat >/etc/yum.repos.d/elasticsearch.repo<<EOF
+    [elasticsearch-2.x]
+    name=Elasticsearch repository for 2.x packages
+    baseurl=http://packages.elastic.co/elasticsearch/2.x/centos
+    gpgcheck=1
+    gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
+    enabled=1
+    EOF
+
+### 配置Elasticsearch
+
+    [root@m01 ~]# mkdir -p /data/es-data
+    [root@m01 ~]# chown -R elasticsearch.elasticsearch /data/es-data/
+
+    cat >/etc/elasticsearch/elasticsearch.yml<<EOF
+    cluster.name: elk-cluter
+    node.name: m01
+    path.data: /data/es-data
+    path.logs: /var/log/elasticsearch/
+    bootstrap.mlockall: true
+    network.host: 172.16.1.61
+    http.port: 9200
+    EOF
+
+    [root@m01 ~]# grep '^[a-z]' /etc/elasticsearch/elasticsearch.yml
+    cluster.name: elk-cluter
+    node.name: m01
+    path.data: /data/es-data
+    path.logs: /var/log/elasticsearch/
+    bootstrap.mlockall: true
+    network.host: 172.16.1.61
+    http.port: 9200
+
+>配置详解
+
+    cluster.name: elk-cluter #集群名称
+    node.name: linux-node1  #节点的名称
+    path.data: /data/es-data #数据存放路径
+    path.logs: /var/log/elasticsearch/  #日志存放日志
+    bootstrap.mlockall: true    #不使用swap分区,锁住内存
+    network.host: 172.16.1.61   #允许访问的IP
+    http.port: 9200  #elasticsearch访问端口
+
+>启动Elasticsearch
+
+    [root@m01 ~]# /etc/init.d/elasticsearch start

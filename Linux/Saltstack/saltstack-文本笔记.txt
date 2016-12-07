@@ -1,0 +1,300 @@
+
+
+ssh    串行
+saltstack    并行
+
+saltstack Python API  halite
+管理工具
+
+截图里面   zn - root   是因为 su被改成zn了
+
+
+monion 做标识   ###   源文件是  #id 
+id: nfs
+管理/etc/hosts文件   文件管理使用全路径
+/etc/hosts:
+  file.managed:
+    - source: salt://files/hosts
+	- user: root
+	- group: root
+	- mode: 644
+	
+/usr/sbin/ntpdate times.aliyum.com >>/dev/null:
+  cron.present:
+    - user: root
+    - minute: '*/5'    ###其他的不写默认是  *
+
+----------------------  minute hour 	
+base
+	路径
+		下路径或文件名
+
+
+
+
+
+
+Saltstack运行模式：
+
+Local
+Master/Minion
+Salt SSH
+Saltstack三大功能：
+
+远程执行（执行远程命令）
+配置管理（状态管理）
+云管理
+
+
+=================Saltstack安装配置==============================
+-------1.安装epel源
+mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup
+mv /etc/yum.repos.d/epel-testing.repo /etc/yum.repos.d/epel-testing.repo.backup
+wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
+
+-------------------------------------------------------------
+-------2.管理机 m01 安装 master 
+
+  yum install -y salt-master
+-------------------------------------------------------------
+-------3.其他被管理的服务器  安装  minion
+  
+  nfs01  backup  web01
+  yum install -y salt-minion
+
+ 
+-------------------------------------------------------------
+-------4.修改master端配置文件  /etc/salt/master	
+
+~/ 
+salt://
+
+    vim /etc/salt/master
+
+	
+	
+416 file_roots:
+417   base:
+418     - /srv/salt
+
+
+
+529 pillar_roots:
+530   base:
+531     - /srv/pillar
+    
+**************自动接受minion发来的key
+
+interface: 115.28.2.1  #此处是server端监听的地址。
+auto_accept: True    #此处是自动接受客户端发送过来的key，如果服务器很多的话，需要开启该功能。
+**************自动接受minion发来的key
+    
+    
+egrep -v "^#|^$" /etc/salt/master
+mkdir -p /srv/{salt,pillar}
+    
+/etc/init.d/salt-master start    
+	
+ll /etc/salt/pki/minion    ###存放key的地方，minion启动的时候会自动创建
+ll /etc/salt/pki/master
+
+-------------------------------------------------------------	
+-------5.修改minion端配置文件   /etc/salt/minion
+
+指定master   ####管理机IP地址   master服务器地址
+指定id       ####默认是  grains   fqdn名    用来匹配的
+				#建议这里修改成主机名，便于master端分辨
+	
+    echo -e "master: 172.16.1.61" >>/etc/salt/minion
+ 
+    egrep -v "^#|^$" /etc/salt/minion
+    /etc/init.d/salt-minion start    
+
+	
+/etc/salt/master -d  #后台启动
+/etc/salt/master  #前台启动，方便调试，还有启动为调试模式
+-------------------------------------------------------------    
+master执行
+salt-key   
+如果列表没有我们想要的key  重启minion	
+    
+    
+
+
+
+====================================
+salt-key 
+	-a xxx	接受指定证书
+	-A		接受所有证书
+	-d XXX	删除单个证书
+	-D		删除所有
+	-L		查看，默认不使用参数的时候就是以列表的方式查看
+
+salt-key -A
+salt '*' test.ping
+
+
+master端证书存放路径：/etc/salt/pki/master/minions
+
+
+	
+=================Saltstack远程执行==============================
+
+salt实时批量操作
+语法：
+
+salt [选项]  '<target>'   <function>  [arguments]
+常用命令举例：
+
+salt '*'  test.ping   
+#*为匹配所有主机，test.ping为salt一个函数，注：*号是正则，若分了多个组，可以类似于web*,只匹配web服务器
+salt '*'  cmd.run 'df -h'  
+#查看所有主机的磁盘信息，cmd.run执行单个命令
+salt '*'  cmd.script salt://hello.sh 
+salt '*'  cmd.script  salt://scripts/runme.sh 'arg1 arg2 "arg 3"'
+#cmd.script执行一个脚本，即把本地脚本拷贝到远程主机上执行，hello.sh要放在指定的文件存放路径，默认是/srv/salt/
+salt '*'  state.highstate
+       #向客户端推送master端配置。
+salt '*' cmd.run 'df -h '  -t 5   
+    #超时控制
+
+
+
+=================salt帮助
+
+salt命令  ‘client’ 模块.方法   ‘参数’
+
+salt 'Minion' sys.doc grains  
+
+salt 'Minion' sys.doc pillar
+
+salt 'Minion' sys.list_modules
+
+查看指定模块的所有function
+salt 'Minion' sys.list_functions cmd
+
+module详细用法    
+salt 'Minion' sys.doc cmd
+
+查看minion支持的所有states
+salt 'Minion' sys.list_state_modules
+
+salt 'Minion' sys.list_state_function file
+
+查看指定states的详细用法
+salt 'Minion' sys.state_doc file
+
+查看指定states指定function用法
+salt 'Minion' sys.state_doc file.managed
+
+
+
+
+=================Saltstack配置管理==============================
+
+sls
+
+YAML
+空格缩进
+
+只要不是结尾的冒号  ：   后面都有一个空格
+
+横线 后面必须加空格
+
+file
+
+
+service
+
+
+cron
+
+minute：分
+hour：时
+daymonth：日
+month：月
+dayweek：周
+
+user：用户名
+present：创建计划
+absent
+
+
+cmd模块：
+user模块：
+mount模块:
+pkg模块：
+service模块：
+
+--------------------高级状态
+#在配置文件末尾加入下面内容，每隔5分钟自动同步master配置，效果等同于在客户端执行salt-call state.highstate或在server端执行 salt '*'state.highstate
+schedule:
+  highstate:
+    function: state.highstate
+    minutes: 5
+
+
+===========================================
+
+grains
+
+
+
+pillar
+
+
+==========================================
+
+salt://  代表states的工作目录
+
+
+salt '*' state.sls one 
+
+salt-run -d|grep jobs
+
+salt \* sys.doc saltutil |grep job
+
+
+vim /srv/salt/base/init/dns.sls
+/etc/resolv.conf:
+  file.managed:
+    - source: salt://init/files/resolv.conf
+	- user: root
+	- group: root
+	- mode: 644
+
+vim /srv/salt/base/init/history.sls
+/etc/profile:
+  file.append:
+    - text:
+	  - export HISTTIMEFORMAT="%F  %T  `whoami`"
+
+	  
+命令操作审计
+vim /srv/salt/base/init/audit.sls
+/etc/bashrc:
+  file.append:
+    - text:
+    - export PROMPT_COMMAND='{ msg=$(history 1 | { read x y; echo $y;});logger "[euid=$(whoami)]":$(who am i):['pwd']"$msg"; }'	
+
+
+vim /srv/salt/base/nit/epel.sls
+yum_repo_release:
+  pkg.installed:
+    - sources:
+	  - epel-release: http://mirrors.aliyun.com/epel/6/x86_64/epel-release-6-8.noarch.rpm
+	- unless: rpm -qa | grep epel-release-6-8
+
+
+
+            onlyif
+                A command to run as a check, run the named command only if the command
+                passed to the ``onlyif`` option returns true
+        
+            unless
+                A command to run as a check, only run the named command if the command
+                passed to the ``unless`` option returns false
+
+
+
+
