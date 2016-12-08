@@ -5,7 +5,7 @@ create database wordpress;
 
 ###搭建wordpress博客程序
 #1、创建用户
-mysql -uroot -poldboy123
+mysql -uroot -p111111
 create database wordpress;
 show databases;
 
@@ -29,13 +29,13 @@ show grants for root@'localhost'\G
 
 
 flush privileges;
-mysql -uroot -poldboy123 -e "show databases;"
+mysql -uroot -p111111 -e "show databases;"
 
 
 
 mysqldump --help
 
-mysqldump -uroot -poldboy123 -B wordpress |gzip >/backup/bak.sql.gz
+mysqldump -uroot -p111111 -B wordpress |gzip >/backup/bak.sql.gz
 
 gzip -d bak.sql.gz
 

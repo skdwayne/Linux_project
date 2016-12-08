@@ -1,7 +1,5 @@
 
 backup() {
-
-
 cat >/etc/rsyncd.conf 
 \#rsync_config_______________start
 \##rsyncd.conf start##
@@ -21,22 +19,15 @@ hosts allow = 172.16.1.0/24
 auth users = rsync_backup
 secrets file = /etc/rsync.password
 
-[oldboy]
-path = /oldboy/
 [backup]
 path = /backup/
 [nfsbackup]
 path = /nfsbackup/
 
-
-
-
 }
 
 
-
 main (){
-
-
+    backup
 }
 main

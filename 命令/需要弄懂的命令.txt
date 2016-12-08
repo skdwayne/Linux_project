@@ -5,4 +5,4 @@ ifconfig eth0 |sed -nr '/inet addr/ s#[^0-9]*([0-9.]*).*#\1#gp'
 ifconfig |sed -nr 's#^.*dr:(.*)  Bc.*#\1#gp'
 ifconfig eth0 | awk -F "[: ]*" '$2~/inet$/ {print $4}'
 
-find /oldboy -type f -name '*.log' -size +1M -mtime +7|sed -r 's#(.*)#mv \1 /tmp#gp'|bash
+find /path -type f -name '*.log' -size +1M -mtime +7|sed -r 's#(.*)#mv \1 /tmp#gp'|bash

@@ -5,7 +5,7 @@
 
 useradd -s /sbin/nologin  -M mysql
 
-#cd /home/oldboy/tools
+#cd root/tools
 tar xf mysql-5.5.51-linux2.6-x86_64.tar.gz
 mkdir -p /application/
 mv mysql-5.5.51-linux2.6-x86_64 /application/mysql-5.5.51

@@ -1,6 +1,5 @@
 ---------MySQL cmake 编译安装
 
-
 [root@test ~]# wget https://cmake.org/files/v3.6/cmake-3.6.3.tar.gz
 [root@test ~]# tar xf cmake-3.6.3.tar.gz 
 [root@test ~]# cd cmake-3.6.3
@@ -112,7 +111,7 @@ cmake . -DCMAKE_INSTALL_PREFIX=/application/mysql-5.5.49 \   ## 安装路径
 -DWITH_DEBUG=0
 -------------------
 
-#-- Build files have been written to: /home/oldboy/tools/mysql-5.5.49
+#-- Build files have been written to: /root/tools/mysql-5.5.49
 提示，编译时可配置的选项很多，具体可参考结尾附录或官方文档：
 make
 #[100%] Built target my_safe_process

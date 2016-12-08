@@ -16,11 +16,6 @@ do
   mysql -uroot -poldboy123 <${n}bak.sql
 done
 
-
-
-
-
-
 grant all on wordpress.* to wordpress@'172.16.1.%' identified by '111111';
 grant all on ultrax.* to ultrax@'172.16.1.%' identified by '111111';
 grant all on edusoho.* to edusoho@'172.16.1.%' identified by '111111';

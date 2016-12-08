@@ -1,9 +1,10 @@
 
 
-2016/09/13  nfs
+nfs
 
+修改主机名
 hostname web01
-sed -i 's#oldboy#web01#g'  /etc/sysconfig/network
+sed -i 's#localhost#web01#g'  /etc/sysconfig/network
 
 yum install -y lrzsz nc dos2unix unix2dos nmap tree nc telnet
 
@@ -17,19 +18,12 @@ rpm -aq nfs-utils rpcbind
 yum install nfs-utils rpcbind -y
 
 [root@nfs01 ~]# rpcinfo -p localhost
-
 [root@nfs01 ~]# /etc/init.d/rpc
- 
 [root@nfs01 ~]# /etc/init.d/rpcbind start 
-
 [root@nfs01 ~]# rpcinfo -p localhost
-
 [root@nfs01 ~]# /etc/init.d/rpcbind status
-
 [root@nfs01 ~]# lsof -i:111
-
 [root@nfs01 ~]# netstat -lntup|grep 111
-
 
 [root@nfs01 ~]# /etc/init.d/nfs start 
 
