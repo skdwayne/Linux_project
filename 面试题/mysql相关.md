@@ -1,15 +1,10 @@
 mysql相关
 
 
-
-
 Atlas
 Atlas是由 Qihoo 360,  Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。
 
 中间件可放在web上    节省服务器
-
-
-
 
 mysql -uroot -poldboy123 -S /data/3308/mysql.sock<<EOF
 change master  to
@@ -34,16 +29,11 @@ log-slave-updates  #<==必须要有这个参数
      log-bin = /data/3307/mysql-bin
      expire_logs_days = 7  #<==相当于find /data/3307/ -type f -name " mysql-bin.000*" -mtime +7 |xargs rm -f
 
-	 
-	 
-	  
-			   
-
 innodb_buffer_pool_size = 2048M   给数据库所有内存的百分之30 左右  具体还需要看业务
-			   
+
 不要用MySQL自带的缓存
-query  什么什么的			   
-			   
+query  什么什么的
+
 共享表空间对应物理数据文件：
 [root@resin01 3306]# ll /data/3306/data/ibdata1 
 -rw-rw---- 1 mysql mysql 134217728 01-27 14:19 /data/3306/data/ibdata1
@@ -52,7 +42,7 @@ innodb_file_per_table
 innodb_data_home_dir = /data/xxx
 
  有关事务内容  了解
-http://www.cnblogs.com/ymy124/p/3718439.html 
+http://www.cnblogs.com/ymy124/p/3718439.html
 
 
 
@@ -204,9 +194,4 @@ ERROR 1046 (3D000) at line 22: No database selected
 http://www.cnblogs.com/pedro/p/4627239.html
 
 
-	   
-			   
-			   
-			   
-			   
-			   
+

@@ -1,6 +1,21 @@
+<!-- TOC -->
+
+- [Linux系统启动流程](#linux%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B)
+    - [一．BIOS自检](#%E4%B8%80%EF%BC%8Ebios%E8%87%AA%E6%A3%80)
+    - [二．启动GRUB/LILO](#%E4%BA%8C%EF%BC%8E%E5%90%AF%E5%8A%A8grublilo)
+    - [三．加载内核](#%E4%B8%89%EF%BC%8E%E5%8A%A0%E8%BD%BD%E5%86%85%E6%A0%B8)
+    - [四．执行init进程](#%E5%9B%9B%EF%BC%8E%E6%89%A7%E8%A1%8Cinit%E8%BF%9B%E7%A8%8B)
+    - [五．通过/etc/inittab文件进行初始化](#%E4%BA%94%EF%BC%8E%E9%80%9A%E8%BF%87etcinittab%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E5%88%9D%E5%A7%8B%E5%8C%96)
+        - [/etc/rc.d/rc.sysinit](#etcrcdrcsysinit)
+        - [/etc/rc.d/rcX.d/[KS]](#etcrcdrcxdks)
+        - [执行/etc/ec.d/rc.local](#%E6%89%A7%E8%A1%8Cetcecdrclocal)
+    - [六．执行/bin/login程序](#%E5%85%AD%EF%BC%8E%E6%89%A7%E8%A1%8Cbinlogin%E7%A8%8B%E5%BA%8F)
+
+<!-- /TOC -->
+
+# Linux系统启动流程
+
 下面是整个Linux系统的启动过程：
-
-
 
 Linux Boot Step
 
@@ -29,8 +44,6 @@ od –xa mbr.bin
 
 它从/dev/had（第一个IDE盘）上读取前512个字节的内容，并将其写入mbr.bin文件中。od命令会以十六进制和ASCII码格式打印这个二进制文件的内容。
 
-
-
 ## 二．启动GRUB/LILO
 
 GRUB和LILO都是引导加载程序。引导加载程序用于引导操作系统启动。当机器引导它的操作系统时，BIOS会读取引导介质上最前面的512字节（主引导记录）。在单一的MBR中只能存储一个操作系统的引导记录，所以当需要多个操作系统时就会出现问题，需要更灵活的引导加载程序。
@@ -43,13 +56,9 @@ LILO将可以引导操作系统的信息存储在MBR中。
 
 如果修改了LILO配置文件，必须将LILO第一阶段引导加载程序重写到MBR。相对于GRUB，这是一个更为危险的选择，因为错误配置的MBR可能会让系统无法引导。使用GRUB时，如果配置文件配置错误，则只是默认转到GRUB命令行界面。
 
-
-
 ## 三．加载内核
 
 接下来的步骤就是加载内核映像到内存中，内核映像并不是一个可执行的内核，而是一个压缩过的内核映像。通常它是一个zImage（压缩映像，小于512KB）或是一个bzImage（较大的压缩映像，大于512KB），它是提前使用zlib压缩过的。在这个内核映像前面是一个例程，它实现少量硬件设置，并对内核映像中包含的内核进行解压缩，然后将其放入高端内存中。如果有初始RAM磁盘映像，系统就会将它移动到内存中，并标明以后使用。然后该例程会调用内核，并开始启动内核引导的过程。
-
-
 
 ## 四．执行init进程
 
@@ -61,13 +70,11 @@ init进程的第一个作用是扮演终结父进程的角色。因为init进程
 
 init的第二个作用是在进入某个特定的运行级别时运行相应的程序，以此对各种运行级别进行管理。它的这个作用是由/etc/inittab文件定义的。
 
-
-
 ## 五．通过/etc/inittab文件进行初始化
 
 Init的工作是根据/etc/inittab来执行相应的脚本，进行系统初始化，如设置键盘、字体、装载模块，设置网络等。
 
-1．/etc/rc.d/rc.sysinit
+### /etc/rc.d/rc.sysinit
 
 在init的配置文件中有如下一行：
 si::sysinit:/etc/rc.d/rc.sysinit
@@ -99,7 +106,7 @@ rc.sysinit是由init执行的第一个脚本，它主要完成一些系统初始
 
 
 
-2．/etc/rc.d/rcX.d/[KS]
+### /etc/rc.d/rcX.d/[KS]
 
 在rc.sysinit执行后，将返回init，继续执行/etc/rc.d/rc程序。以运行级别5为例，init将执行配置文件inittab中的以下内容：
 15:5:wait:/etc/rc.d/rc 5
@@ -130,11 +137,9 @@ Xinetd：支持多种网络服务的核心守护进程，可以管理wuftp、ssh
 
 
 
-3．执行/etc/ec.d/rc.local
+### 执行/etc/ec.d/rc.local
 
 RHEL 4中的运行模式2、3、5都把/etc/rc.d/rc.local做为初始化脚本中的最后一个，所以用户可以自己在这个文件中添加一些需要在其他初始化工作之后、登录之前执行的命令。在维护Linux系统时一般会遇到需要系统管理员对开机或关机命令脚本进行修改的情况。如果所做的修改只在引导开机的时候起作用，并且改动不大的话，可以考虑简单地编辑一下/etc/rc.d/rc.local脚本。这个命令脚本程序是在引导过程的最后一步被执行的。
-
-
 
 ## 六．执行/bin/login程序
 

@@ -1,4 +1,4 @@
-mysql 多实例status监控脚本
+# mysql 多实例status监控脚本
 
 [root@db02 ~]# cat 12-mysql.sh
 #!/bin/bash

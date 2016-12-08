@@ -4,6 +4,6 @@
 set from=brave0517@163.com 
 set smtp=smtp.163.com
 set smtp-auth-user=brave0517@163.com
-set smtp-auth-password=jiejie0000
+set smtp-auth-password=xxxx   ### 密码
 set smtp-auth=login
 EOF
