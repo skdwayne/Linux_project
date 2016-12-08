@@ -1,7 +1,7 @@
 
-使用kvm安装centos    用图形安装，因为CentOS6用文本安装不可自定义分区
+浣跨敤kvm瀹夎centos    鐢ㄥ浘褰㈠畨瑁咃紝鍥犱负CentOS6鐢ㄦ枃鏈畨瑁呬笉鍙嚜瀹氫箟鍒嗗尯
 
-使用vnc
+浣跨敤vnc
 
 
 

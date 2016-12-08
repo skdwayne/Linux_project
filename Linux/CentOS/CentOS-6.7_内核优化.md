@@ -1,5 +1,8 @@
-## CentOS 6.7 内核优化 ##
+# CentOS-6内核优化
 
+## CentOS 6.7 内核优化
+
+```bash
     net.ipv4.tcp_fin_timeout = 2
     net.ipv4.tcp_tw_reuse = 1
     net.ipv4.tcp_tw_recycle = 1
@@ -14,8 +17,11 @@
     net.core.somaxconn = 16384
     net.core.netdev_max_backlog =  16384
     net.ipv4.tcp_max_orphans = 16384
+```
 
-##防火墙优化
+## 防火墙优化
+
+```bash
     net.nf_conntrack_max = 25000000
     net.netfilter.nf_conntrack_max = 25000000
     net.netfilter.nf_conntrack_tcp_timeout_established = 180
@@ -23,7 +29,7 @@
     net.netfilter.nf_conntrack_tcp_timeout_close_wait = 60
     net.netfilter.nf_conntrack_tcp_timeout_fin_wait = 120
 
-----
+
     net.ipv4.tcp_max_syn_backlog = 65536
     net.core.wmem_default = 8388608
     net.core.rmem_default = 8388608
@@ -33,18 +39,15 @@
     net.ipv4.tcp_tw_recycle = 1
     net.ipv4.tcp_tw_reuse = 1
     net.ipv4.tcp_mem = 94500000 915000000 927000000
-
-    
-
-
+```
 
 > 让改动配置立即生效
 
     /sbin/sysctl -p
 
-
 > 修改ulimit
 
+```bash
     1.vi /etc/security/limits.conf
     *soft   nproc  65535
     *hard   nproc  65535
@@ -52,3 +55,4 @@
     *hard   nofile  65535
     2. vi /etc/security/limits.d/90-nproc.conf
     *  softnproc65535
+```
