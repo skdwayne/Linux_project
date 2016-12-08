@@ -15,8 +15,9 @@
 
     光盘安装的时候，在安装界面做如下操作：
     点击Tab，打开kernel启动选项后，增加net.ifnames=0 biosdevname=0，如下图所示。
-    ![CentOS7-1](http://i.imgur.com/JONm3jy.png)
-    ![CentOS7-2](http://i.imgur.com/64i8Dg5.png)
+![CentOS7-1](http://i.imgur.com/JONm3jy.png)
+
+![CentOS7-2](http://i.imgur.com/64i8Dg5.png)
 
 ## CentOS-7修改网卡为eth0(已安装-修改)
 
