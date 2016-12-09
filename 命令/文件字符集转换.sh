@@ -1,3 +1,6 @@
+
+## 文件字符集转换方法
+
 iconv -f gb2312 -t UTF-8 2.html -o 2.utf8.html
 
 [root@web01 scripts]# iconv --help
