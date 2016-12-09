@@ -1,8 +1,9 @@
 <!-- TOC -->
 
 - [CentOS7](#centos7)
+    - [使用cobbler](#%E4%BD%BF%E7%94%A8cobbler)
     - [CentOS-7 全新安装，直接修改网卡为eth0](#centos-7-%E5%85%A8%E6%96%B0%E5%AE%89%E8%A3%85%E7%9B%B4%E6%8E%A5%E4%BF%AE%E6%94%B9%E7%BD%91%E5%8D%A1%E4%B8%BAeth0)
-    - [CentOS-7修改网卡为eth0(已安装-修改)](#centos-7%E4%BF%AE%E6%94%B9%E7%BD%91%E5%8D%A1%E4%B8%BAeth0%E5%B7%B2%E5%AE%89%E8%A3%85-%E4%BF%AE%E6%94%B9)
+    - [CentOS-7 修改网卡为eth0(已安装-修改)](#centos-7-%E4%BF%AE%E6%94%B9%E7%BD%91%E5%8D%A1%E4%B8%BAeth0%E5%B7%B2%E5%AE%89%E8%A3%85-%E4%BF%AE%E6%94%B9)
         - [编辑网卡信息](#%E7%BC%96%E8%BE%91%E7%BD%91%E5%8D%A1%E4%BF%A1%E6%81%AF)
         - [修改grub](#%E4%BF%AE%E6%94%B9grub)
         - [验证是否修改成功](#%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E4%BF%AE%E6%94%B9%E6%88%90%E5%8A%9F)
@@ -10,6 +11,10 @@
 <!-- /TOC -->
 
 # CentOS7
+
+## 使用cobbler
+
+    使用cobbler自动化安装，配置内核参数net.ifnames=0 biosdevname=0，安装即可
 
 ## CentOS-7 全新安装，直接修改网卡为eth0
 
@@ -19,7 +24,7 @@
 
 ![CentOS7-2](http://i.imgur.com/64i8Dg5.png)
 
-## CentOS-7修改网卡为eth0(已安装-修改)
+## CentOS-7 修改网卡为eth0(已安装-修改)
 
 ### 编辑网卡信息
 

@@ -3,7 +3,9 @@
   "ignoreWordsList": [
     "openssl",
     "md5sum",
-    "uuidgen"
+    "uuidgen",
+    "centos7",
+    "systemd"
   ],
   "mistakeTypeToStatus": {
     "Passive voice": "Hint",
