@@ -1,6 +1,6 @@
 <!-- TOC -->
 
-- [CentOS 6 7](#centos-6-7)
+- [CentOS 6、7之间的差异](#centos-67%E4%B9%8B%E9%97%B4%E7%9A%84%E5%B7%AE%E5%BC%82)
     - [启动方式的差异](#%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F%E7%9A%84%E5%B7%AE%E5%BC%82)
         - [CentOS 6 - SystemV init](#centos-6---systemv-init)
             - [特点](#%E7%89%B9%E7%82%B9)
@@ -19,7 +19,7 @@
 
 <!-- /TOC -->
 
-# CentOS 6 7
+# CentOS 6、7之间的差异
 
 ## 启动方式的差异
 
@@ -236,7 +236,7 @@ Sysvinit、systemd命令区别
 
 ### 补全
 
->systemctl 命令补全 安装之后，需要退出重新登录
+>systemctl 命令补全：bash-completion安装之后，需要退出重新登录
 
 >[root@centos7 ~]# rpm -ivh http://mirrors.aliyun.com/centos/7/os/x86_64/Packages/bash-completion-2.1-6.el7.noarch.rpm
 
