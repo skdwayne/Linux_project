@@ -15,7 +15,7 @@
     - [运行级别Runlevel区别](#%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%ABrunlevel%E5%8C%BA%E5%88%AB)
         - [/etc/inittab](#etcinittab)
     - [管理服务区别](#%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%E5%8C%BA%E5%88%AB)
-        - [补全](#%E8%A1%A5%E5%85%A8)
+        - [命令补全](#%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8)
 
 <!-- /TOC -->
 
@@ -234,7 +234,7 @@ drwxr-xr-x. 2 root root   43 Dec 10 00:29 system-update.target.wants
 Sysvinit、systemd命令区别
 ![sysvinit-systemd](http://i.imgur.com/JBHkklM.jpg)
 
-### 补全
+### 命令补全
 
 >systemctl 命令补全：bash-completion安装之后，需要退出重新登录
 
