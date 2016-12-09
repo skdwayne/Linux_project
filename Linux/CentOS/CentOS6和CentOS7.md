@@ -2,7 +2,7 @@
 
 - [CentOS 6、7之间的差异](#centos-67%E4%B9%8B%E9%97%B4%E7%9A%84%E5%B7%AE%E5%BC%82)
     - [启动方式的差异](#%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F%E7%9A%84%E5%B7%AE%E5%BC%82)
-        - [CentOS 6 - SystemV init](#centos-6---systemv-init)
+        - [SystemV init](#systemv-init)
             - [特点](#%E7%89%B9%E7%82%B9)
             - [应用场景](#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF)
             - [优点&缺点](#%E4%BC%98%E7%82%B9%E7%BC%BA%E7%82%B9)
@@ -23,7 +23,7 @@
 
 ## 启动方式的差异
 
-### CentOS 6 - SystemV init
+### SystemV init
 
 #### 特点
 
