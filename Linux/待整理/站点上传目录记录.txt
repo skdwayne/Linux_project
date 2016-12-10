@@ -10,8 +10,6 @@ RewriteRule . /index.php [L]
 </IfModule>
 
 
-
-
 ..../uploads     默认上传目录[必须可写入]
 ..../a        默认HTML文件存放目录[必须可写入]
 ..../templets    系统默认内核模板目录

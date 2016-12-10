@@ -36,8 +36,6 @@ Redis的出现，很大程度补偿了memcached这类key/value存储的不足，
 
 
 
-
-
 mongodb
 
 消息中间件

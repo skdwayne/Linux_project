@@ -133,10 +133,7 @@ mysql> show databases;
 
 
 
-
-
-
-delimiter $$
+delimiter $$  指定结束符
 
 drop procedure if exists pro_test $$
 
@@ -146,9 +143,6 @@ delimiter ;
 
 call pro_test(5000000);
 会比较慢，需要等
-
-
-
 
 
 [root@db01 tmp]# gzip -d b.sql.gz 
