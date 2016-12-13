@@ -10,6 +10,7 @@
         - [2.3 安装Tomcat](#23-%E5%AE%89%E8%A3%85tomcat)
         - [2.4 Tomcat目录介绍](#24-tomcat%E7%9B%AE%E5%BD%95%E4%BB%8B%E7%BB%8D)
         - [2.5 启动Tomcat](#25-%E5%90%AF%E5%8A%A8tomcat)
+            - [2.5.1 tomcat启动脚本](#251-tomcat%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC)
         - [2.6 访问网站](#26-%E8%AE%BF%E9%97%AE%E7%BD%91%E7%AB%99)
         - [2.7 Tomcat日志](#27-tomcat%E6%97%A5%E5%BF%97)
     - [3. Tomcat配置文件](#3-tomcat%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
@@ -182,6 +183,73 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
 
     [root@centos7 ~]# ps -ef|grep [j]ava
     root       9857      1 21 01:47 pts/1    00:00:13 /application/jdk/binjava -Djava.util.logging.config.file=/application/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/application/tomcat/endorsed -classpath /application/tomcat/bin/bootstrap.jar:/application/tomcat/bin/tomcat-juli.jar -Dcatalina.base=/application/tomcat -Dcatalina.home=/application/tomcat -Djava.io.tmpdir=/application/tomcat/temp org.apache.catalina.startup.Bootstrap start
+```
+
+#### 2.5.1 tomcat启动脚本
+
+```bash
+    # 适用于Sysvinit技术，多实例需要完善
+    [root@centos7 ~]# cat tomcat
+    #!/bin/sh
+    #
+    # tomcat          Start/Stop the tomcat daemon.
+    #
+    # chkconfig: 2345 85 60
+    # description:  The Apache Tomcat® software is an open source implementation of the Java Servlet, JavaServer Pages, Java Expression Language and Java WebSocket technologies. The Java Servlet, JavaServer Pages, Java Expression Language and Java WebSocket specifications are developed under the Java Community Process. 
+
+    prog="tomcat"
+    tomcat="/application/tomcat/bin/"
+    tomcat1="/application/tomcat8_1/bin/"
+    tomcat2="/application/tomcat8_2/bin/"
+    lockfile=/var/lock/subsys/tomcat
+
+    # Source function library.
+    . /etc/rc.d/init.d/functions
+
+    start() {
+        if [ $UID -ne 0 ] ; then
+            echo "User has insufficient privilege."
+            exit 4
+        fi
+        $tomcat/startup.sh &&\
+        success && echo  
+    }
+
+    stop() {
+        if [ $UID -ne 0 ] ; then
+            echo "User has insufficient privilege."
+            exit 4
+        fi
+        $tomcat/shutdown.sh &&\
+        success && echo $"Stopping $prog" 
+    }
+
+    restart() {
+        stop &&\
+        start
+    }
+
+    configtest(){
+        $tomcat/configtest.sh
+    }
+
+    case "$1" in
+        start)
+            $1
+            ;;
+        stop)
+            $1
+            ;;
+        restart)
+            $1
+            ;;
+        configtest)
+            $1
+            ;;
+        *)
+            echo $"Usage: $0 {start|stop|status|restart|configtest}"
+            exit 2
+    esac
 ```
 
 ### 2.6 访问网站
