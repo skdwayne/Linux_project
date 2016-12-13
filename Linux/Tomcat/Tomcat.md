@@ -29,6 +29,8 @@
             - [5.1.3 启动多实例](#513-%E5%90%AF%E5%8A%A8%E5%A4%9A%E5%AE%9E%E4%BE%8B)
         - [5.2 Tomcat集群](#52-tomcat%E9%9B%86%E7%BE%A4)
     - [6. Tomcat监控](#6-tomcat%E7%9B%91%E6%8E%A7)
+        - [tomcat远程监控](#tomcat%E8%BF%9C%E7%A8%8B%E7%9B%91%E6%8E%A7)
+        - [使用zabbix监控tomcat](#%E4%BD%BF%E7%94%A8zabbix%E7%9B%91%E6%8E%A7tomcat)
     - [7. Tomcat安全优化和性能优化](#7-tomcat%E5%AE%89%E5%85%A8%E4%BC%98%E5%8C%96%E5%92%8C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96)
         - [7.1 安全优化](#71-%E5%AE%89%E5%85%A8%E4%BC%98%E5%8C%96)
         - [7.2 性能优化](#72-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96)
@@ -555,6 +557,42 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
     [root@localhost logs]# jstack 2633 | grep e18 -A 30
     将输出的信息发给开发部进行确认，这样就能找出有问题的代码。
 ```
+
+### tomcat远程监控
+
+```bash
+    [root@backup ~]# vim /application/tomcat/bin/catalina.sh
+
+    97 CATALINA_OPTS="$CATALINA_OPTS
+    98 -Dcom.sun.management.jmxremote
+    99 -Dcom.sun.management.jmxremote.port=12345
+    100 -Dcom.sun.management.jmxremote.authenticate=false
+    101 -Dcom.sun.management.jmxremote.ssl=false
+    102 -Djava.rmi.server.hostname=10.0.0.41"   ## ip地址
+
+    ## 需要做host解析
+
+```
+
+### 使用zabbix监控tomcat
+
+> zabbix监控tomcat通过JMX interfaces监控
+
+条件：
+1. zabbix-server开启JavaGateway
+2. tomcat开启远程监控，注意端口
+3. web配置jvm接口，添加模板
+
+```bash
+zabbix-server配置，配置后重启zabbix-server
+sed -i -e '217a JavaGateway=127.0.0.1' -e '225a JavaGatewayPort=10052'  -e '235a StartJavaPollers=5' /etc/zabbix/zabbix_server.conf
+
+## 启动zabbix-java-gateway
+[root@m01 ~]# /etc/init.d/zabbix-java-gateway start
+
+```
+
+
 
 ## 7. Tomcat安全优化和性能优化
 
