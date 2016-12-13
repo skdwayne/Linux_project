@@ -487,14 +487,27 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
 
 ### 5.2 Tomcat集群
 
-> 使用nginx+Tomcat反向代理集群
+> 使用nginx+Tomcat反向代理集群，通过nginx反向代理实现
 
 ```bash
+    本地安装nginx，配置如下：
     [root@centos7 ~]# vim /application/nginx/conf/nginx.conf
+    worker_processes  1;
+    events {
+        worker_connections  1024;
+    }
+    http {
+        include       mime.types;
+        default_type  application/octet-stream;
+        sendfile        on;
+        keepalive_timeout  65;
+
         upstream web_pools {
+            server 127.0.0.1:8080;
             server 127.0.0.1:8081;
             server 127.0.0.1:8082;
-            }
+        }
+
         server {
             listen       80;
             server_name  localhost;
@@ -503,12 +516,13 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
                 index  index.jsp index.html index.htm;
                 proxy_pass http://web_pools;
             }
-         }
+        }
+    }
     [root@centos7 ~]# /application/nginx/sbin/nginx -t
     [root@centos7 ~]# /application/nginx/sbin/nginx
 ```
 
-> 浏览器可以访问http://10.0.0.77/meminfo.jsp
+> 浏览器可以访问http://10.0.0.77/meminfo.jsp，已实现tomcat集群
 
 ## 6. Tomcat监控
 
