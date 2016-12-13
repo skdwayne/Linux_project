@@ -620,6 +620,7 @@ sed -i -e '217a JavaGateway=127.0.0.1' -e '225a JavaGatewayPort=10052'  -e '235a
 
 ```txt
     优化catalina.sh配置文件。在catalina.sh配置文件中添加以下代码：
+    ## 根据内存大小修改，1G内存的标配：注意加载配置文件前几行，因为是配置变量，放脚本后面就没有效果了
     JAVA_OPTS="-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms1024m -Xmx1024m -XX:NewSize=512m -XX:MaxNewSize=512m -XX:PermSize=512m -XX:MaxPermSize=512m"
     server:一定要作为第一个参数，在多个CPU时性能佳
     -Xms：初始堆内存Heap大小，使用的最小内存,cpu性能高时此值应设的大一些
