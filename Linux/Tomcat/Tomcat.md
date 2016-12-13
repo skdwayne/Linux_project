@@ -255,7 +255,7 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
 ### 2.6 访问网站
 
     网址：http://10.0.0.77:8080/
-    ![Tomcat1](./Tomcat1.png)
+    ![tomcat1](http://i.imgur.com/ZfUDq3t.png)
 
 ### 2.7 Tomcat日志
 
@@ -329,8 +329,8 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
     Using JRE_HOME:        /application/jdk
     Using CLASSPATH:       /application/tomcat/bin/bootstrap.jar:/application/tomcat/bin/tomcat-juli.jar
     Tomcat started.
-    ![Tomcat2](./Tomcat2.png)
 ```
+![Tomcat2](http://i.imgur.com/gJcujWB.png)
 
 ### 3.3 Tomcat主配置文件Server.xml详解
 
@@ -466,8 +466,8 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
     自动生成一个memtest目录
 
     浏览器访问：http://10.0.0.77:8080/memtest/meminfo.jsp
-    ![Tomcat3](./Tomcat3.png)
 ```
+![Tomcat3](http://i.imgur.com/XPCWXvY.png)
 
 ### 4.2 自定义默认网站目录
 
