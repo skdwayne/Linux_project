@@ -163,8 +163,8 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
 ### 2.5 启动Tomcat
 
 ```bash
-    #→启动程序/application/tomcat/bin/startup.sh
-    #→关闭程序/application/tomcat/bin/shutdown.sh
+    # 启动程序/application/tomcat/bin/startup.sh
+    # 关闭程序/application/tomcat/bin/shutdown.sh
 
     [root@centos7 ~]# /application/tomcat/bin/startup.sh
     Using CATALINA_BASE:   /application/tomcat
@@ -196,7 +196,7 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
     catalina.out                 localhost_access_log.2016-12-11.txt
     host-manager.2016-12-11.log  manager.2016-12-11.log
 
-    #→tomcat实时日志
+    # tomcat实时日志
     [root@centos7 logs]# tailf catalina.out
     11-Dec-2016 01:48:50.698 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /application/apache-tomcat-8.0.27/webapps/docs has finished in 186 ms
     11-Dec-2016 01:48:50.698 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /application/apache-tomcat-8.0.27/webapps/examples
@@ -237,13 +237,13 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
 ```bash
     Tomcat管理功能用于对Tomcat自身以及部署在Tomcat上的应用进行管理的web应用。在默认情况下是处于禁用状态的。如果需要开启这个功能，就需要配置管理用户，即配置前面说过的tomcat-users.xml。
 
-    [root@centos7 conf]# vim /application/tomcat/conf/tomcat-users.xml 
+    [root@centos7 conf]# vim /application/tomcat/conf/tomcat-users.xml
 
     [root@centos7 conf]# tail -4 /application/tomcat/conf/tomcat-users.xml
         <role rolename="manager-gui"/>
         <role rolename="admin-gui"/>
         <user username="tomcat" password="tomcat" roles="manager-gui,admin-gui"/>
-    </tomcat-users>  #→在此行前加入上面三行
+    </tomcat-users>  # 在此行前加入上面三行
 
     [root@centos7 conf]# /application/tomcat/bin/shutdown.sh
     Using CATALINA_BASE:   /application/tomcat
@@ -309,7 +309,8 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
     <!--
     <Server>元素代表整个容器,是Tomcat实例的顶层元素.由org.apache.catalina.Server接口来定义.它包含一个<Service>元素.并且它不能做为任何元素的子元素.
         port指定Tomcat监听shutdown命令端口.终止服务器运行时,必须在Tomcat服务器所在的机器上发出shutdown命令.该属性是必须的.
-        shutdown指定终止Tomcat服务器运行时,发给Tomcat服务器的shutdown监听端口的字符串.该属性必须设置
+        shutdown指定终止Tomcat服务器运行时,发给Tomcat服务器的shutdown监听端口的字符串.该属性必须设置，
+        *****优化方式，可以将端口修改为其他端口，关闭字符修改为其他字符。
     -->
     <Server port="8005" shutdown="SHUTDOWN">
       <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
@@ -342,6 +343,7 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
                    connectionTimeout="20000"
                    redirectPort="8443" />
         <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+        <!--AJP是一种协议，如果使用nginx和tomcat，他们之间通信是通过http协议，就可以注释上条-->
         <!--engine,核心容器组件,catalina引擎,负责通过connector接收用户请求,并处理请求,将请求转至对应的虚拟主机host
             defaultHost指定缺省的处理请求的主机名，它至少与其中的一个host元素的name属性值是一样的
         -->
@@ -387,7 +389,7 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
 ```bash
     [root@centos7 webapps]# pwd
     /application/tomcat/webapps
-    [root@centos7 webapps]# rz   #→上传memtest.war，此文件也在上面的百度网盘里
+    [root@centos7 webapps]# rz   # 上传memtest.war，此文件也在上面的百度网盘里
     [root@centos7 webapps]#
     [root@centos7 webapps]# ls
     docs  examples  host-manager  manager  memtest  memtest.war  ROOT
