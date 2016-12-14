@@ -286,12 +286,12 @@ Options:
   --modprobe=<command>		try to insert modules using this command
   --set-counters PKTS BYTES	set the counter during insert/append
 [!] --version	-V		print package version.
---sport num  ## 匹配源端口号，例：匹配指定端口--dport 80，或者匹配范围--dport 80:1000
---dport num  ## 匹配目的端口号，例：匹配指定端口--dport 80，或者匹配范围--dport 80:1000
--m mulitport  ## 匹配多端口，例：-m mulitport -dport 21,22,23,24
--m  ## 扩展匹配，例：“-m tcp”的意思是使用 tcp 扩展模块的功能 (tcp扩展模块提供了 --dport, --tcp-flags, --sync等功能）
--p icmp --icmp-type 8  ## 表示匹配icmp协议的类型8
--m state或--state  ## 匹配网络状态：
+  --sport num  ## 匹配源端口号，例：匹配指定端口--dport 80，或者匹配范围--dport 80:1000
+  --dport num  ## 匹配目的端口号，例：匹配指定端口--dport 80，或者匹配范围--dport 80:1000
+  -m mulitport  ## 匹配多端口，例：-m mulitport -dport 21,22,23,24
+  -m  ## 扩展匹配，例：“-m tcp”的意思是使用 tcp 扩展模块的功能 (tcp扩展模块提供了 --dport, --tcp-flags, --sync等功能）
+  -p icmp --icmp-type 8  ## 表示匹配icmp协议的类型8
+  -m state或--state  ## 匹配网络状态：
 NEW：已经或将启动新的连接
     ESTABLISHED：已建立的连接
     RELATED：正在启动的新连接
