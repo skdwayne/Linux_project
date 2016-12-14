@@ -362,10 +362,8 @@ target     prot opt source               destination
 ```
 
 使用-A和-I的顺序，防火墙的过滤根据规则顺序的。
-
--A 是添加规则到指定链的结尾，最后一条。
-
--I 是添加规则到指定链的开头，第一条。
+1. -A 是添加规则到指定链的结尾，最后一条。
+2. -I 是添加规则到指定链的开头，第一条。
 
 ```BASH
 [root@web01 ~]# iptables -t filter -I INPUT -p tcp --dport 50517 -j ACCEPT
