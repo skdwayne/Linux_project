@@ -201,20 +201,20 @@ ip_tables              17831  1 iptable_filter
 ```bash
 modprobe ip_tables
 modprobe iptable_filter
-modprobe iptable_nat   
+modprobe iptable_nat
 modprobe ip_conntrack
 modprobe ip_conntrack_ftp
 modprobe ip_nat_ftp
 modprobe ipt_state
 
 [root@web01 ~]# lsmod|egrep "nat|filter"
-nf_nat_ftp              3443  0 
+nf_nat_ftp              3443  0
 nf_conntrack_ftp       11953  1 nf_nat_ftp
-iptable_nat             5923  0 
+iptable_nat             5923  0
 nf_nat                 22676  2 nf_nat_ftp,iptable_nat
 nf_conntrack_ipv4       9154  3 iptable_nat,nf_nat
 nf_conntrack           79206  6 xt_state,nf_nat_ftp,nf_conntrack_ftp,iptable_nat,nf_nat,nf_conntrack_ipv4
-iptable_filter          2793  0 
+iptable_filter          2793  0
 ip_tables              17831  2 iptable_nat,iptable_filter
 ```
 
@@ -562,7 +562,6 @@ modprobe ipt_state
 #Remove any existing rules
 $IPT -F
 $IPT -X
-$IPT -Z
 
 #setting default firewall policy
 $IPT --policy OUTPUT ACCEPT
