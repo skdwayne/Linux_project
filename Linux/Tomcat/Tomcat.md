@@ -465,7 +465,7 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
     docs  examples  host-manager  manager  memtest  memtest.war  ROOT
     自动生成一个memtest目录
 
-    浏览器访问：http://10.0.0.77:8080/memtest/meminfo.jsp
+    浏览器访问：`http://10.0.0.77:8080/memtest/meminfo.jsp`
 ```
 ![Tomcat3](http://i.imgur.com/XPCWXvY.png)
 
@@ -592,7 +592,7 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
     [root@centos7 ~]# /application/nginx/sbin/nginx
 ```
 
-> 浏览器可以访问http://10.0.0.77/meminfo.jsp，已实现tomcat集群
+> 浏览器可以访问`http://10.0.0.77/meminfo.jsp`，已实现tomcat集群
 
 ## 6. Tomcat监控
 
