@@ -7,14 +7,31 @@
     - [iptables匹配流程](#iptables%E5%8C%B9%E9%85%8D%E6%B5%81%E7%A8%8B)
         - [iptables工作流程小结](#iptables%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%B0%8F%E7%BB%93)
         - [iptables 4张表（tables）](#iptables-4%E5%BC%A0%E8%A1%A8tables)
-            - [filter（默认的表，主机防火墙使用的表）：确定是否放行该数据包（过滤）](#filter%E9%BB%98%E8%AE%A4%E7%9A%84%E8%A1%A8%E4%B8%BB%E6%9C%BA%E9%98%B2%E7%81%AB%E5%A2%99%E4%BD%BF%E7%94%A8%E7%9A%84%E8%A1%A8%E7%A1%AE%E5%AE%9A%E6%98%AF%E5%90%A6%E6%94%BE%E8%A1%8C%E8%AF%A5%E6%95%B0%E6%8D%AE%E5%8C%85%E8%BF%87%E6%BB%A4)
-            - [nat（网络地址转换）：修改数据包中的源、目标IP地址或端口](#nat%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%8C%85%E4%B8%AD%E7%9A%84%E6%BA%90%E7%9B%AE%E6%A0%87ip%E5%9C%B0%E5%9D%80%E6%88%96%E7%AB%AF%E5%8F%A3)
-            - [mangle：为数据包设置标记，修改报文原数据](#mangle%E4%B8%BA%E6%95%B0%E6%8D%AE%E5%8C%85%E8%AE%BE%E7%BD%AE%E6%A0%87%E8%AE%B0%E4%BF%AE%E6%94%B9%E6%8A%A5%E6%96%87%E5%8E%9F%E6%95%B0%E6%8D%AE)
-            - [raw：确定是否对该数据包进行状态跟踪](#raw%E7%A1%AE%E5%AE%9A%E6%98%AF%E5%90%A6%E5%AF%B9%E8%AF%A5%E6%95%B0%E6%8D%AE%E5%8C%85%E8%BF%9B%E8%A1%8C%E7%8A%B6%E6%80%81%E8%B7%9F%E8%B8%AA)
+            - [filter](#filter)
+            - [nat](#nat)
+            - [mangle](#mangle)
+            - [raw](#raw)
     - [iptables表和链工作的流程图](#iptables%E8%A1%A8%E5%92%8C%E9%93%BE%E5%B7%A5%E4%BD%9C%E7%9A%84%E6%B5%81%E7%A8%8B%E5%9B%BE)
     - [iptabes命令帮助信息](#iptabes%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9%E4%BF%A1%E6%81%AF)
         - [iptables版本](#iptables%E7%89%88%E6%9C%AC)
+        - [iptables模块](#iptables%E6%A8%A1%E5%9D%97)
         - [iptables -h](#iptables--h)
+        - [iptables常用命令](#iptables%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4)
+        - [实例](#%E5%AE%9E%E4%BE%8B)
+            - [禁止当前SSH端口，此处为50517](#%E7%A6%81%E6%AD%A2%E5%BD%93%E5%89%8Dssh%E7%AB%AF%E5%8F%A3%E6%AD%A4%E5%A4%84%E4%B8%BA50517)
+            - [禁止80端口](#%E7%A6%81%E6%AD%A280%E7%AB%AF%E5%8F%A3)
+            - [限制指定时间包的允许通过数量及并发数](#%E9%99%90%E5%88%B6%E6%8C%87%E5%AE%9A%E6%97%B6%E9%97%B4%E5%8C%85%E7%9A%84%E5%85%81%E8%AE%B8%E9%80%9A%E8%BF%87%E6%95%B0%E9%87%8F%E5%8F%8A%E5%B9%B6%E5%8F%91%E6%95%B0)
+            - [匹配端口范围](#%E5%8C%B9%E9%85%8D%E7%AB%AF%E5%8F%A3%E8%8C%83%E5%9B%B4)
+            - [匹配ICMP类型](#%E5%8C%B9%E9%85%8Dicmp%E7%B1%BB%E5%9E%8B)
+            - [匹配指定的网络接口](#%E5%8C%B9%E9%85%8D%E6%8C%87%E5%AE%9A%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3)
+            - [允许关联的状态包通过(web服务不要使用FTP服务)](#%E5%85%81%E8%AE%B8%E5%85%B3%E8%81%94%E7%9A%84%E7%8A%B6%E6%80%81%E5%8C%85%E9%80%9A%E8%BF%87web%E6%9C%8D%E5%8A%A1%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8ftp%E6%9C%8D%E5%8A%A1)
+            - [生产场景iptables示例：](#%E7%94%9F%E4%BA%A7%E5%9C%BA%E6%99%AFiptables%E7%A4%BA%E4%BE%8B)
+        - [局域网共享的两条命令方法](#%E5%B1%80%E5%9F%9F%E7%BD%91%E5%85%B1%E4%BA%AB%E7%9A%84%E4%B8%A4%E6%9D%A1%E5%91%BD%E4%BB%A4%E6%96%B9%E6%B3%95)
+        - [iptables常用企业案例](#iptables%E5%B8%B8%E7%94%A8%E4%BC%81%E4%B8%9A%E6%A1%88%E4%BE%8B)
+        - [脚本](#%E8%84%9A%E6%9C%AC)
+            - [v1.1](#v11)
+            - [v1.2](#v12)
+    - [问题记录](#%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95)
 
 <!-- /TOC -->
 
@@ -28,10 +45,13 @@
 
 ## iptables防火墙简介
 
+```txt
 UNIX/Linux自带的优秀且开放源代码的完全自由的基于包过滤的防火墙工具，功能强大，使用非常灵活，可以对流入流出服务器的数据包进行很精细的控制。可在低配下跑的非常好。iptables主要工作在OSI二、三、四层，若重新编译内核，iptables也可以支持7层控制（squid代理+iptables）。
 
 ntop iptraf iftop 查看流量
+
 squid web正向代理，查看http访问日志
+```
 
 ## iptables术语和名词
 
@@ -217,55 +237,66 @@ Usage: iptables -[ACD] chain rule-specification [options]
 
 Commands:
 Either long or short options are allowed.
-  --append  -A chain		Append to chain
+  --append  -A chain		Append to chain  ## 在规则链的末尾加入新规则
   --check   -C chain		Check for the existence of a rule
   --delete  -D chain		Delete matching rule from chain
   --delete  -D chain rulenum
-				Delete rule rulenum (1 = first) from chain
+				Delete rule rulenum (1 = first) from chain  ## 删除某一条规则
   --insert  -I chain [rulenum]
-				Insert in chain as rulenum (default 1=first)
+				Insert in chain as rulenum (default 1=first)  ## 在指定规则链的头部加入新规则
   --replace -R chain rulenum
 				Replace rule rulenum (1 = first) in chain
   --list    -L [chain [rulenum]]
-				List the rules in a chain or all chains
+				List the rules in a chain or all chains  ## 列表规则链
   --list-rules -S [chain [rulenum]]
 				Print the rules in a chain or all chains
-  --flush   -F [chain]		Delete all rules in  chain or all chains
+  --flush   -F [chain]		Delete all rules in  chain or all chains  ## 清除所有规则，不会处理默认的规则
   --zero    -Z [chain [rulenum]]
-				Zero counters in chain or all chains
-  --new     -N chain		Create a new user-defined chain
+				Zero counters in chain or all chains  ## 所有链的记数器清零
+  --new     -N chain		Create a new user-defined chain  ## 创建新的自定义链
   --delete-chain
-            -X [chain]		Delete a user-defined chain
+            -X [chain]		Delete a user-defined chain  ## 删除用户自定义的链
   --policy  -P chain target
-				Change policy on chain to target
+				Change policy on chain to target  ##设置默认策略：iptables -P INPUT (DROP|ACCEPT)
   --rename-chain
             -E old-chain new-chain
 				Change chain name, (moving any references)
 Options:
-[!] --proto	-p proto	protocol: by number or name, eg. `tcp'
-[!] --source	-s address[/mask][...]
+[!] --proto	-p proto	protocol: by number or name, eg. `tcp'  ## 匹配协议，如：全部协议/TCP协议/UDP协议/ICMP协议，加叹号“!”表示除这个IP之外
+[!] --source	-s address[/mask][...]  ## 匹配源地址IP/MASK，加叹号“!”表示除这个IP之外
 				source specification
-[!] --destination -d address[/mask][...]
+[!] --destination -d address[/mask][...]  ## 匹配目标地址，加叹号“!”表示除此之外
 				destination specification
-[!] --in-interface -i input name[+]
+[!] --in-interface -i input name[+]  ## 匹配从这块网卡进入的数据，例：“-i eth0” 表示从eth0进入的数据，加叹号“!”表示除此之外
 				network interface name ([+] for wildcard)
  --jump	-j target
-				target for rule (may load target extension)
+				target for rule (may load target extension)  ## 目标的处理，例如：ACCEPT（接受）、DROP（丢弃）、REJECT（拒绝）
   --goto      -g chain
                               jump to chain with no return
   --match	-m match
 				extended match (may load extension)
-  --numeric	-n		numeric output of addresses and ports
-[!] --out-interface -o output name[+]
+  --numeric	-n		numeric output of addresses and ports  ## 数字输出
+[!] --out-interface -o output name[+]  ## 匹配从这块网卡流出的数据，例：“-o eth1” 表示从eth1出去的数据，加叹号“!”表示除此之外
 				network interface name ([+] for wildcard)
-  --table	-t table	table to manipulate (default: `filter')
+  --table	-t table	table to manipulate (default: `filter')  ## 指定表类型
   --verbose	-v		verbose mode
-  --line-numbers		print line numbers when listing
+  --line-numbers		print line numbers when listing  ## 显示规则的序号（行号）
   --exact	-x		expand numbers (display exact values)
 [!] --fragment	-f		match second or further fragments only
   --modprobe=<command>		try to insert modules using this command
   --set-counters PKTS BYTES	set the counter during insert/append
 [!] --version	-V		print package version.
+--sport num  ## 匹配源端口号，例：匹配指定端口--dport 80，或者匹配范围--dport 80:1000
+--dport num  ## 匹配目的端口号，例：匹配指定端口--dport 80，或者匹配范围--dport 80:1000
+-m mulitport  ## 匹配多端口，例：-m mulitport -dport 21,22,23,24
+-m  ## 扩展匹配，例：“-m tcp”的意思是使用 tcp 扩展模块的功能 (tcp扩展模块提供了 --dport, --tcp-flags, --sync等功能）
+-p icmp --icmp-type 8  ## 表示匹配icmp协议的类型8
+-m state或--state  ## 匹配网络状态：
+NEW：已经或将启动新的连接
+    ESTABLISHED：已建立的连接
+    RELATED：正在启动的新连接
+    INVALID：非法或无法识别的
+注：FTP服务是特殊的，需要配状态连接
 ```
 
 ### iptables常用命令
@@ -276,17 +307,22 @@ iptables -F   ## 清除所有规则，不会处理默认的规则 等价于--flu
 iptables -X   ## 删除用户自定义的链 等价于--delete-chain
 iptables -Z   ## 链的计数器清零 等价于--zero
 
--n         数字
--L         列表
--t         指定表
--A         添加规则到指定链的结尾，最后一条
--I         添加规则到指定链的开头，第一条
--p         协议
---dport    目的端口
--j --jump  处理的行为
+-n             数字
+-L             列表
+-t             指定表
+-A             添加规则到指定链的结尾，最后一条
+-I             添加规则到指定链的开头，第一条
+-p             协议
+--dport        目的端口
+-j --jump      处理的行为
+--line-numbers 显示序号
+-s             指定源地址
 ```
 
-禁止当前SSH端口，此处为50517
+### 实例
+
+#### 禁止当前SSH端口，此处为50517
+
 ```bash
 [root@web01 ~]# ss -lntup|grep sshd
 tcp    LISTEN     0      128                   :::50517                :::*      users:(("sshd",5455,4))
@@ -348,6 +384,8 @@ iptables -X
 iptables -Z
 ```
 
+#### 禁止80端口
+
 开启web01，nginx
 
 ```bash
@@ -373,4 +411,359 @@ target     prot opt source               destination
 
 Chain OUTPUT (policy ACCEPT)
 target     prot opt source               destination       
+添加规则之后，80端口无法访问
+```
+
+#### 限制指定时间包的允许通过数量及并发数
+
+```bash
+-m limit --limit n/{second/minute/hour}:
+指定时间内的请求速率"n"为速率，后面为时间分别为：秒、分、时
+--limit-burst [n]：
+在同一时间内允许通过的请求"n"为数字,不指定默认为5
+iptables -I INPUT -s 10.0.1.0/24 -p icmp --icmp-type 8 -m limit --limit 5/min --limit-burst 2 -j ACCEPT
+```
+
+#### 匹配端口范围
+
+```bash
+iptables -A INPUT -p tcp --sport 22:80
+iptables -I INPUT -p tcp --dport 21,22,23,24 -j ACCEPT===》错误语法
+iptables -I INPUT -p tcp -m multiport --dport 21,22,23,24 -j ACCEPT
+iptables -I INPUT -p tcp --dport 3306:8809 -j ACCEPT
+iptables -I INPUT -p tcp --dport 18:80 -j DROP
+```
+
+#### 匹配ICMP类型
+
+```bash
+iptables -A INPUT -p icmp --icmp-type 8
+例：iptables -A INPUT -p icmp --icmp-type 8 -j DROP
+iptables -A INPUT -p icmp -m icmp --icmp-type any -j ACCEPT
+iptables -A FORWARD -s 192.168.1.0/24 -p icmp -m icmp --icmp-type any -j ACCEPT
+```
+
+#### 匹配指定的网络接口
+
+```bash
+iptables -A INPUT -i eth0
+iptables -A FORWARD -o eth0
+```
+
+#### 允许关联的状态包通过(web服务不要使用FTP服务)
+
+```bash
+#others RELATED ftp协议
+#允许关联的状态包
+iptables -A INPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
+
+#### 生产场景iptables示例：
+
+```bash
+iptables -A INPUT -s 124.43.62.96/27 -p all -j ACCEPT   办公室固定IP段。
+iptables -A INPUT -s 192.168.1.0/24 -p all -j ACCEPT    IDC机房的内网网段。
+iptables -A INPUT -s 10.0.0.0/24 -p all -j ACCEPT       其他机房的内网网段。
+iptables -A INPUT -s 203.83.24.0/24 -p all -j ACCEPT    IDC机房的外网网段
+iptables -A INPUT -s 201.82.34.0/24 -p all -j ACCEPT    其它IDC机房的外网网段
+```
+
+iptables实战应用场景
+
+```bash
+1. 主机防火墙 filter(INPUT)
+2. 局域网共享上网 nat(POSTROUTING)
+iptables -t nat -A POSTROUTING -s 172.16.1.0/24 -o eth0 -j SNAT --to-source 10.0.0.9
+```
+
+###  局域网共享的两条命令方法
+
+方法1：适合于有固定外网地址的：
+
+```bash
+iptables -t nat -A POSTROUTING -s 172.16.1.0/24 -o eth0 -j SNAT--to-source 10.0.0.7
+
+1. -s 192.168.1.0/24 办公室或IDC内网网段。
+2. -o eth0 为网关的外网卡接口。
+3. -j SNAT --to-source 10.0.0.7 是网关外网卡IP地址。
+```
+
+方法2：适合变化外网地址（ADSL）：
+
+```bash
+iptables -t nat -A POSTROUTING -s 172.16.1.0/24 -j MASQUERADE
+MASQUERADE #为伪装
+```
+
+端口映射：
+
+```bash 
+iptables -t nat -A PREROUTING -d 10.0.0.9 -p tcp --dport 80 -j DNAT--to-destination 172.16.1.6:80
+```
+
+端口映射企业应用场景：
+
+```txt
+1. 把访问外网IP及端口的请求映射到内网某个服务器及端口（企业内部）。
+2. 硬件防火墙，把访问LVS/nginx外网VIP及80端口的请求映射到IDC 负载均衡服务器内部IP及端口上（IDC机房的操作）
+```
+
+### iptables常用企业案例
+
+```bash
+1. Linux主机防火墙（表：FILTER  链：INPUT）。
+2. 局域网机器共享上网（表：NAT 链：POSTROUTING）：
+iptables -t nat POSTROUTING-s 172.16.1.0/24 -o eth0 -j SNAT --to-source 10.0.0.7
+
+3. 外部地址和端口，映射为内部地址和端口（表：NAT  链：PREROUTING）：
+iptables -t nat -A PREROUTING -d 10.0.0.7 -p tcp --dport 80 -j DNAT--to-destination 172.16.1.8:9000
+```
+
+实现10网段外网IP和内网172网段IP一对一映射
+
+```bash
+实现公网IP：124.42.34.112一对一映射到内部server 10.0.0.8：
+网关IP：eth0:124.42.60.109    eth1:10.0.0.254
+首先在路由网关上绑定124.42.34.112，可以是别名的方式：
+-A PREROUTING -d 124.42.34.112 -j DNAT --to-destination 10.0.0.8
+-A POSTROUTING -s 10.0.0.8 -o eth0 -j SNAT --to-source 124.42.34.112
+-A POSTROUTING -S 10.0.0.0/255.255.240.0 -d 124.42.34.112 -j SNAT--to-source 10.0.0.254
+
+映射多个外网IP上网
+iptables -t nat -A POSTROUTING -s 10.0.1.0/255.255.240.0 -o eth0 -jSNAT --to-source 124.42.60.11-124.42.60.16
+
+```
+
+###  脚本
+
+#### v1.1
+
+```bash
+#!/bin/bash
+# function: a server firewall
+# version:1.1 
+################################################
+#define variable PATH
+IPT=/sbin/iptables
+LAN_GW_IP=192.168.0.15
+WAN_GW_IP=10.0.0.15
+LAN_SERVER=192.168.0.14
+
+echo 1 > /proc/sys/net/ipv4/ip_forward
+modprobe ip_tables
+modprobe iptable_filter
+modprobe iptable_nat
+modprobe ip_conntrack
+modprobe ip_conntrack_ftp
+modprobe ip_nat_ftp
+modprobe ipt_state
+
+#Remove any existing rules
+$IPT -F
+$IPT -X
+$IPT -Z
+
+#setting default firewall policy
+$IPT --policy OUTPUT ACCEPT
+$IPT --policy FORWARD ACCEPT
+$IPT -P INPUT DROP
+
+#setting for loopback interface
+$IPT -A INPUT -i lo -j ACCEPT
+$IPT -A OUTPUT -o lo -j ACCEPT
+
+
+# prevent all Stealth Scans and TCP State Flags
+$IPT -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
+# All of the bits are cleared
+$IPT -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
+$IPT -A INPUT -p tcp --tcp-flags ALL FIN,URG,PSH -j DROP
+#SYN and RST are both set
+$IPT -A INPUT -p tcp --tcp-flags SYN,RST SYN,RST -j DROP
+# SYN and FIN are both set
+$IPT -A INPUT -p tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
+# FIN and RST are both set
+$IPT -A INPUT -p tcp --tcp-flags FIN,RST FIN,RST -j DROP
+# FIN is the only bit set, without the expected accompanying ACK
+$IPT -A INPUT -p tcp --tcp-flags ACK,FIN FIN -j DROP
+# PSH is the only bit set, without the expected accompanying ACK
+$IPT -A INPUT -p tcp --tcp-flags ACK,PSH PSH -j DROP
+# URG is the only bit set, without the expected accompanying ACK
+$IPT -A INPUT -p tcp --tcp-flags ACK,URG URG -j DROP
+
+
+#setting access rules
+#one,ip access rules,allow all the ips of hudong.com
+$IPT -A INPUT -s 202.81.17.0/24 -p all -j ACCEPT
+$IPT -A INPUT -s 202.81.18.0/24 -p all -j ACCEPT
+$IPT -A INPUT -s 124.43.62.96/27 -p all -j ACCEPT
+$IPT -A INPUT -s 192.168.1.0/24 -p all -j ACCEPT
+$IPT -A INPUT -s 10.0.0.0/24 -p all -j ACCEPT
+
+
+#second,port access rules
+#nagios
+$IPT -A INPUT  -s 192.168.1.0/24  -p tcp  --dport 5666 -j ACCEPT
+$IPT -A INPUT  -s 202.81.17.0/24  -p tcp  --dport 5666 -j ACCEPT
+$IPT -A INPUT  -s 202.81.18.0/24  -p tcp  --dport 5666 -j ACCEPT
+
+#db
+$IPT -A INPUT  -s 192.168.1.0/24  -p tcp  --dport 3306 -j ACCEPT
+$IPT -A INPUT  -s 192.168.1.0/24  -p tcp  --dport 3307 -j ACCEPT
+$IPT -A INPUT  -s 192.168.1.0/24  -p tcp  --dport 3308 -j ACCEPT
+$IPT -A INPUT  -s 192.168.1.0/24  -p tcp  --dport 1521 -j ACCEPT
+
+#ssh difference from other servers here.........................................................>>
+$IPT -A INPUT -s 202.81.17.0/24  -p tcp  --dport 50718 -j ACCEPT
+$IPT -A INPUT -s 202.81.18.0/24  -p tcp  --dport 50718 -j ACCEPT
+$IPT -A INPUT -s 124.43.62.96/27  -p tcp  --dport 50718 -j ACCEPT
+$IPT -A INPUT -s 192.168.1.0/24  -p tcp  --dport 50718 -j ACCEPT
+$IPT -A INPUT   -p tcp  -s 10.0.0.0/24 --dport 22 -j ACCEPT
+#ftp
+#$IPT -A INPUT   -p tcp  --dport 21 -j ACCEPT
+
+#http
+$IPT -A INPUT   -p tcp  --dport 80 -j ACCEPT
+$IPT -A INPUT   -s 192.168.1.0/24  -p  tcp  -m multiport --dport 8080,8081,8082,8888,8010,8020,8030,8150 -j ACCEPT
+$IPT -A INPUT   -s 202.81.17.0/24  -p tcp  -m multiport --dport 8080,8081,8082,8888,8010,8020,8030,8150 -j ACCEPT
+$IPT -A INPUT   -s 124.43.62.96/27 -p tcp  -m multiport --dport 8080,8081,8082,8888,8010,8020,8030,8150 -j ACCEPT
+
+
+#snmp
+$IPT -A INPUT -s 192.168.1.0/24 -p UDP  --dport 161 -j ACCEPT 
+$IPT -A INPUT -s 202.81.17.0/24 -p UDP  --dport 161 -j ACCEPT 
+$IPT -A INPUT -s 202.81.18.0/24 -p UDP  --dport 161 -j ACCEPT 
+
+#rsync
+$IPT -A INPUT -s 192.168.1.0/24 -p tcp -m tcp --dport 873   -j ACCEPT
+$IPT -A INPUT -s 202.81.17.0/24 -p tcp -m tcp --dport 873   -j ACCEPT
+$IPT -A INPUT -s 202.81.18.0/24 -p tcp -m tcp --dport 873   -j ACCEPT
+$IPT -A INPUT -s 124.43.62.96/27 -p tcp -m tcp --dport 873   -j ACCEPT
+
+#nfs 2049,portmap 111
+$IPT -A INPUT -s 192.168.1.0/24 -p udp  -m multiport --dport 111,892,2049 -j ACCEPT 
+$IPT -A INPUT -s 192.168.1.0/24 -p tcp  -m multiport --dport 111,892,2049 -j ACCEPT 
+
+#others RELATED
+#$IPT -A INPUT -p icmp -m icmp --icmp-type any -j ACCEPT
+$IPT -A INPUT -s 124.43.62.96/27 -p icmp -m icmp --icmp-type any -j ACCEPT
+$IPT -A INPUT -s 192.168.1.0/24 -p icmp -m icmp --icmp-type any -j ACCEPT
+
+$IPT -A INPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPT -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+###############nat start##############################
+#nat internet
+iptables -t nat -A POSTROUTING -s 192.168.0.0/255.255.255.0 -o eth1 -j SNAT --to-source $LAN_GW_IP
+
+#www server nat wan to lan
+iptables -t nat -A PREROUTING  -d $WAN_GW_IP -p tcp -m tcp --dport 80 -j DNAT --to-destination $LAN_SERVER:80
+iptables -t nat -A POSTROUTING -d $LAN_SERVER -p tcp --dport 80 -j SNAT --to $LAN_GW_IP
+```
+
+#### v1.2
+
+```bash
+#!/bin/bash
+# function: a server firewall
+# version:1.2
+################################################
+#define variable PATH
+
+IPT=/sbin/iptables
+
+#Remove any existing rules
+$IPT -F
+$IPT -X
+$IPT -Z
+#setting default firewall policy
+$IPT --policy OUTPUT ACCEPT
+$IPT --policy FORWARD DROP
+$IPT -P INPUT DROP
+
+#setting for loopback interface
+$IPT -A INPUT -i lo -j ACCEPT
+$IPT -A OUTPUT -o lo -j ACCEPT
+
+# Source Address Spoofing and Other Bad Addresses
+$IPT -A INPUT -i eth0 -s 172.16.0.0/12 -j DROP
+$IPT -A INPUT -i eth0 -s 0.0.0.0/8 -j DROP
+$IPT -A INPUT -i eth0 -s 169.254.0.0/16 -j DROP
+$IPT -A INPUT -i eth0 -s 192.0.2.0/24 -j DROP
+
+# prevent all Stealth Scans and TCP State Flags
+$IPT -A INPUT -p tcp --tcp-flags ALL ALL -j DROP
+# All of the bits are cleared
+$IPT -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
+$IPT -A INPUT -p tcp --tcp-flags ALL FIN,URG,PSH -j DROP
+#SYN and RST are both set
+$IPT -A INPUT -p tcp --tcp-flags SYN,RST SYN,RST -j DROP
+# SYN and FIN are both set
+$IPT -A INPUT -p tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
+# FIN and RST are both set
+$IPT -A INPUT -p tcp --tcp-flags FIN,RST FIN,RST -j DROP
+# FIN is the only bit set, without the expected accompanying ACK
+$IPT -A INPUT -p tcp --tcp-flags ACK,FIN FIN -j DROP
+# PSH is the only bit set, without the expected accompanying ACK
+$IPT -A INPUT -p tcp --tcp-flags ACK,PSH PSH -j DROP
+# URG is the only bit set, without the expected accompanying ACK
+$IPT -A INPUT -p tcp --tcp-flags ACK,URG URG -j DROP
+
+
+
+#setting access rules
+#one,ip access rules,allow all the ips of 
+$IPT -A INPUT -s 10.0.10.0/24 -p all -j ACCEPT
+$IPT -A INPUT -s 10.0.0.0/24 -p all -j ACCEPT
+
+#下面的是重复的，作为知识点保留
+
+#second,port access rules
+#nagios
+$IPT -A INPUT  -s 10.0.10.0/24  -p tcp  --dport 5666 -j ACCEPT
+$IPT -A INPUT  -s 10.0.0.0/24  -p tcp  --dport 5666 -j ACCEPT
+
+#db
+$IPT -A INPUT  -s 10.0.0.0/24  -p tcp  --dport 3306 -j ACCEPT
+$IPT -A INPUT  -s 10.0.0.0/24  -p tcp  --dport 3307 -j ACCEPT
+$IPT -A INPUT  -s 10.0.10.0/24  -p tcp  --dport 3306 -j ACCEPT
+$IPT -A INPUT  -s 10.0.10.0/24  -p tcp  --dport 3307 -j ACCEPT
+
+#ssh difference from other servers here.>>
+$IPT -A INPUT -s 10.0.0.0/24  -p tcp  --dport 52113 -j ACCEPT
+$IPT -A INPUT -s 10.0.10.0/24  -p tcp  --dport 52113 -j ACCEPT
+
+$IPT -A INPUT   -p tcp  --dport 22 -j ACCEPT
+
+#http
+$IPT -A INPUT   -p tcp  --dport 80 -j ACCEPT
+
+#snmp
+$IPT -A INPUT -s 10.0.0.0/24 -p UDP  --dport 161 -j ACCEPT 
+$IPT -A INPUT -s 10.0.10.0/24 -p UDP  --dport 161 -j ACCEPT 
+
+#rsync
+$IPT -A INPUT -s 10.0.0.0/24 -p tcp -m tcp --dport 873   -j ACCEPT
+$IPT -A INPUT -s 10.0.10.0/24 -p tcp -m tcp --dport 873   -j ACCEPT
+
+#icmp
+#$IPT -A INPUT -p icmp -m icmp --icmp-type any -j ACCEPT
+
+#others RELATED
+$IPT -A INPUT  -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPT -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
+
+## 问题记录
+
+dmesg里面显示 ip_conntrack:table full, dropping packet.的错误提示.如何解决。
+
+```bash
+net.nf_conntrack_max = 25000000
+net.netfilter.nf_conntrack_max = 25000000
+net.netfilter.nf_conntrack_tcp_timeout_established = 180
+net.netfilter.nf_conntrack_tcp_timeout_time_wait = 120
+net.netfilter.nf_conntrack_tcp_timeout_close_wait = 60
+net.netfilter.nf_conntrack_tcp_timeout_fin_wait = 120
 ```
