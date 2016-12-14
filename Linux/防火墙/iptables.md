@@ -362,7 +362,9 @@ target     prot opt source               destination
 ```
 
 使用-A和-I的顺序，防火墙的过滤根据规则顺序的。
+
 -A 是添加规则到指定链的结尾，最后一条。
+
 -I 是添加规则到指定链的开头，第一条。
 
 ```BASH
