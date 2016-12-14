@@ -7,6 +7,7 @@
     - [iptables匹配流程](#iptables%E5%8C%B9%E9%85%8D%E6%B5%81%E7%A8%8B)
         - [iptables工作流程小结](#iptables%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%B0%8F%E7%BB%93)
         - [iptables 4张表（tables）](#iptables-4%E5%BC%A0%E8%A1%A8tables)
+    - [iptables工作流程](#iptables%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B)
 
 <!-- /TOC -->
 
@@ -88,19 +89,33 @@ POSTROUTING：在进行路由选择后处理数据包
 ### iptables 4张表（tables）
 
 1. filter（默认的表，主机防火墙使用的表）：确定是否放行该数据包（过滤）
+
     包含三个链：INPUT，OUTPUT，FORWARD
+
 2. nat（网络地址转换）：修改数据包中的源、目标IP地址或端口
+
     应用场景：一、用于局域网共享上网；二、端口及IP映射。
     包含三个链：PREROUTING，OUTPUT，POSTROUTING
     PREROUTING：数据包到达防火墙最先经过的链 (for altering packets as soon as they come in)
     POSTROUTING：数据包离开防火墙最后经过的链 (for altering packets as they are about to go out)
     OUTPUT： (for altering locally-generated packets before routing) 在路由前对本地生成的数据包进行修改
+
 3. mangle：为数据包设置标记，修改报文原数据
+
     This table is used for specialized packet alteration.
     例如：一些路由标记。
     修改数据包中特殊的路由标记，如TTL，TOS，MARK等
+
 4. raw：确定是否对该数据包进行状态跟踪
+
     This table is used  mainly  for  configuring  exemptions from connection tracking in combination with the NOTRACK target.
 
 使用raw表内的TRACE target即可实现对iptables规则的跟踪调试。
+
+## iptables工作流程
+
+![iptables2](http://oi480zo5x.bkt.clouddn.com/Linux_project/iptables-flow1.jpg)
+
+iptables重点工作流程
+![iptables3](http://oi480zo5x.bkt.clouddn.com/Linux_project/iptables-flow2.jpg)
 
