@@ -351,11 +351,17 @@ iptables -Z
 开启web01，nginx
 
 ```bash
+[root@web01 ~]# ip a |grep 10.0.0
+    inet 10.0.0.8/24 brd 10.0.0.255 scope global eth0
 [root@web01 ~]# ss -lntup |grep 80
 tcp    LISTEN     0      511                    *:80                    *:*      users:(("nginx",1971,6),("nginx",5681,6))
+```
+
+访问如下：
 
 ![web](http://oi480zo5x.bkt.clouddn.com/Linux_project/web.png)
 
+```bash
 [root@web01 ~]# iptables -t filter -A INPUT -p tcp --dport 80 -j DROP
 [root@web01 ~]# iptables -nL
 Chain INPUT (policy ACCEPT)
