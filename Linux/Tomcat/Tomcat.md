@@ -649,7 +649,7 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
 条件：
 1. zabbix-server开启JavaGateway
 2. tomcat开启远程监控，注意端口
-3. web配置jvm接口，添加模板
+3. web配置jmx接口，添加模板
 
 ```bash
 zabbix-server配置，配置后重启zabbix-server
