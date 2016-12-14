@@ -471,9 +471,9 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
 
 ### 4.2 自定义默认网站目录
 
-> 上面访问的网址为`http://10.0.0.77:8080/memtest/meminfo.jsp`
+> 上面访问的网址为http://10.0.0.77:8080/memtest/meminfo.jsp
 
-> 现在我想访问格式为`http://10.0.0.77:8080/meminfo.jsp`
+> 现在我想访问格式为http://10.0.0.77:8080/meminfo.jsp
 
 > 怎么做？
 
@@ -592,7 +592,7 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
     [root@centos7 ~]# /application/nginx/sbin/nginx
 ```
 
-> 浏览器可以访问`http://10.0.0.77/meminfo.jsp`，已实现tomcat集群
+> 浏览器可以访问http://10.0.0.77/meminfo.jsp, 已实现tomcat集群
 
 ## 6. Tomcat监控
 
