@@ -596,6 +596,13 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
 
 ## 6. Tomcat监控
 
+1. Tomcat自带函数检测
+2. jps命令
+3. jstack
+4. jmap
+5. jconsole和jvisualvm
+6. zabbix
+
 > 企业案例：Linux下java/http进程高解决案例
 
 > 生产环境下某台tomcat7服务器，在刚发布时的时候一切都很正常，在运行一段时间后就出现CPU占用很高的问题，基本上是负载一天比一天高。请搞定！
@@ -641,6 +648,8 @@ Tomcat和Nginx、Apache(httpd)、lighttpd等Web服务器一样，具有处理HTM
     ## 需要做host解析
 
 ```
+
+![jconsole1](http://imgur.com/a/gc1Z5)
 
 ### 使用zabbix监控tomcat
 
