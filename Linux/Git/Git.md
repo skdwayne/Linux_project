@@ -283,7 +283,6 @@ Git的设置文件为.gitconfig，它可以在用户主目录下（全局配置�
     $ git add file1.txt
     $ git add file2.txt file3.txt
     $ git commit -m "add 3 files."
-
 ```
 
 ##  小结
