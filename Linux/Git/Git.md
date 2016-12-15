@@ -277,12 +277,12 @@ Git的设置文件为.gitconfig，它可以在用户主目录下（全局配置�
 
 >简单解释一下git commit命令
 
-```
-git commit命令执行成功后会告诉你，1个文件被改动（我们新添加的readme.txt文件），插入了两行内容（readme.txt有两行内容）。
-为什么Git添加文件需要add，commit一共两步呢？因为commit可以一次提交很多文件，所以你可以多次add不同的文件，比如：
-$ git add file1.txt
-$ git add file2.txt file3.txt
-$ git commit -m "add 3 files."
+```bash
+    git commit命令执行成功后会告诉你，1个文件被改动（我们新添加的readme.txt文件），插入了两行内容（readme.txt有两行内容）。
+    为什么Git添加文件需要add，commit一共两步呢？因为commit可以一次提交很多文件，所以你可以多次add不同的文件，比如：
+    $ git add file1.txt
+    $ git add file2.txt file3.txt
+    $ git commit -m "add 3 files."
 
 ```
 
