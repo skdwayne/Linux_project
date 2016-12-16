@@ -1,5 +1,5 @@
 
-# （一）企业面试口试题
+# 1. 企业面试口试题
 
 1、详述iptales工作流程以及规则过滤顺序？
 
@@ -32,7 +32,7 @@
 
 3、iptables的几个表以及每个表对应链的作用，对应企业应用场景？
 
-
+    见上题
 
 4、画图讲解iptables包过滤经过不同表和链简易流程图并阐述。
 
@@ -40,19 +40,24 @@
 
 5、请写出查看iptables当前所有规则的命令。
 
+    iptables -nL
     iptables -S
 
 6、禁止来自10.0.0.188 ip地址访问80端口的请求
 
     iptables -t filter -A INPUT -s 10.0.0.188 -p tcp --dport 80 -j DROP
+    -t filter 可省略
 
 7、如何使在命令行执行的iptables规则永久生效？
+
+    [root@web01 ~]# /etc/init.d/iptables save
+    iptables: Saving firewall rules to /etc/sysconfig/iptables:[  OK  ]
 
     iptables-save >/etc/sysconfig/iptables
 
 8、实现把访问10.0.0.3:80的请求转到172.16.1.17:80
 
-
+    iptables -t nat -A PREROUTING -d 10.0.0.3 -p tcp --dport 80 -j DNAT --to-destination 172.16.1.17:80
 
 9、实现172.16.1.0/24段所有主机通过124.32.54.26外网IP共享上网。
 
@@ -60,9 +65,7 @@
 
 10、描述tcp 3次握手及四次断开过程？
 
-（课外参考：http://user.qzone.qq.com/49000448/blog/1426987479）
-
-
+![tcp-ip-20161216](http://oi480zo5x.bkt.clouddn.com/Linux_project/tcp-ip-20161216.jpg?imageView/2/w/500/q/100)
 
 11.详细描述HTTP工作原理？
 
@@ -85,11 +88,9 @@ iptables -A syn-flood -j DROP
 
 
 
-（二）企业运维经验面试题：
+## 2. 企业运维经验面试题：
 
 15、写一个防火墙配置脚本，只允许远程主机访问本机的80端口（奇虎360面试题）
-
-（http://user.qzone.qq.com/49000448/blog/1429755081）
 
 
 
