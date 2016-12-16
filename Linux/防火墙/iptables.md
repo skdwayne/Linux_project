@@ -40,13 +40,13 @@
 > 大并发的情况，不能开iptables，会影响性能，用硬件防火墙。
 
 安全优化：
-1. 尽可能不给服务器配置外网IP。可以通过代理转发。
+1. 尽可能不给服务器配置外网IP。可以通过代理转发，或者通过防火墙映射。
 2. 并发不是特别大的情况，在外网IP的环境，开启防火墙。
 
 ## iptables防火墙简介
 
 ```txt
-UNIX/Linux自带的优秀且开放源代码的完全自由的基于包过滤的防火墙工具，功能强大，使用非常灵活，可以对流入流出服务器的数据包进行很精细的控制。可在低配下跑的非常好。iptables主要工作在OSI二、三、四层，若重新编译内核，iptables也可以支持7层控制（squid代理+iptables）。
+UNIX/Linux自带的优秀且开放源代码的完全自由的**基于包过滤**的防火墙工具，功能强大，使用非常灵活，可以对流入流出服务器的数据包进行很精细的控制。可在低配下跑的非常好。iptables主要工作在OSI二、三、四层，若重新编译内核，iptables也可以支持7层控制（squid代理+iptables）。
 
 ntop iptraf iftop 查看流量
 
@@ -101,7 +101,7 @@ POSTROUTING：在进行路由选择后处理数据包
 > iptables采用数据包过滤机制工作的，会对请求的数据包的包头数据进行分析，根据预先设定的规则进行匹配决定是否放行。
 
 数据包流向：从左至右
-![iptables1](http://oi480zo5x.bkt.clouddn.com/Linux_project/iptables.jpg)
+![iptables-20161216](http://oi480zo5x.bkt.clouddn.com/Linux_project/iptables-20161216.jpg)
 
 ### iptables工作流程小结
 
@@ -117,14 +117,17 @@ POSTROUTING：在进行路由选择后处理数据包
 #### filter
 
 ```txt
-    （默认的表，主机防火墙使用的表）：确定是否放行该数据包（过滤）
+    默认的表，主机防火墙使用的表：确定是否放行该数据包（过滤）
     包含三个链：INPUT，OUTPUT，FORWARD
+        INPUT：负责过滤所有目标地址是本机地址的数据包。通俗的讲，及时过滤进入主机的数据包。
+        FORWARD：负责转发流经主机的数据包。起转发作用，和NAT关系很大。
+        OUTPUT：处理出站的数据包
 ```
 
 #### nat
 
 ```txt
-   （网络地址转换）：修改数据包中的源、目标IP地址或端口
+   网络地址转换：修改数据包中的源、目标IP地址或端口
 
     应用场景：一、用于局域网共享上网；二、端口及IP映射。
     包含三个链：PREROUTING，OUTPUT，POSTROUTING
@@ -239,7 +242,7 @@ Commands:
 Either long or short options are allowed.
   --append  -A chain		Append to chain  ## 在规则链的末尾加入新规则
   --check   -C chain		Check for the existence of a rule
-  --delete  -D chain		Delete matching rule from chain
+  --delete  -D chain		Delete matching rule from chain  ## 删除链上的规则
   --delete  -D chain rulenum
 				Delete rule rulenum (1 = first) from chain  ## 删除某一条规则
   --insert  -I chain [rulenum]
@@ -262,12 +265,12 @@ Either long or short options are allowed.
             -E old-chain new-chain
 				Change chain name, (moving any references)
 Options:
-[!] --proto	-p proto	protocol: by number or name, eg. `tcp'  ## 匹配协议，如：全部协议/TCP协议/UDP协议/ICMP协议，加叹号“!”表示除这个IP之外
-[!] --source	-s address[/mask][...]  ## 匹配源地址IP/MASK，加叹号“!”表示除这个IP之外
+[!] --proto	-p proto	protocol: by number or name, eg. 'tcp'  ## 匹配协议，如：全部协议/TCP协议/UDP协议/ICMP协议，加叹号"!"表示除这个IP之外
+[!] --source	-s address[/mask][...]  ## 匹配源地址IP/MASK，加叹号"!"表示除这个IP之外
 				source specification
-[!] --destination -d address[/mask][...]  ## 匹配目标地址，加叹号“!”表示除此之外
+[!] --destination -d address[/mask][...]  ## 匹配目标地址，加叹号"!"表示除此之外
 				destination specification
-[!] --in-interface -i input name[+]  ## 匹配从这块网卡进入的数据，例：“-i eth0” 表示从eth0进入的数据，加叹号“!”表示除此之外
+[!] --in-interface -i input name[+]  ## 匹配从这块网卡进入的数据，例："-i eth0" 表示从eth0进入的数据，加叹号"!"表示除此之外
 				network interface name ([+] for wildcard)
  --jump	-j target
 				target for rule (may load target extension)  ## 目标的处理，例如：ACCEPT（接受）、DROP（丢弃）、REJECT（拒绝）
@@ -276,9 +279,9 @@ Options:
   --match	-m match
 				extended match (may load extension)
   --numeric	-n		numeric output of addresses and ports  ## 数字输出
-[!] --out-interface -o output name[+]  ## 匹配从这块网卡流出的数据，例：“-o eth1” 表示从eth1出去的数据，加叹号“!”表示除此之外
+[!] --out-interface -o output name[+]  ## 匹配从这块网卡流出的数据，例："-o eth1" 表示从eth1出去的数据，加叹号"!"表示除此之外
 				network interface name ([+] for wildcard)
-  --table	-t table	table to manipulate (default: `filter')  ## 指定表类型
+  --table	-t table	table to manipulate (default: 'filter')  ## 指定表类型
   --verbose	-v		verbose mode
   --line-numbers		print line numbers when listing  ## 显示规则的序号（行号）
   --exact	-x		expand numbers (display exact values)
@@ -289,7 +292,7 @@ Options:
   --sport num  ## 匹配源端口号，例：匹配指定端口--sport 80，或者匹配范围--sport 80:1000
   --dport num  ## 匹配目的端口号，例：匹配指定端口--dport 80，或者匹配范围--dport 80:1000
   -m mulitport  ## 匹配多端口，例：-m mulitport -dport 21,22,23,24
-  -m  ## 扩展匹配，例：“-m tcp”的意思是使用 tcp 扩展模块的功能 (tcp扩展模块提供了 --dport, --tcp-flags, --sync等功能）
+  -m  ## 扩展匹配，例："-m tcp"的意思是使用 tcp 扩展模块的功能 (tcp扩展模块提供了 --dport, --tcp-flags, --sync等功能）
   -p icmp --icmp-type 8  ## 表示匹配icmp协议的类型8
   -m state或--state  ## 匹配网络状态：
 NEW：已经或将启动新的连接
@@ -329,6 +332,12 @@ tcp    LISTEN     0      128                   :::50517                :::*     
 tcp    LISTEN     0      128                    *:50517                 *:*      users:(("sshd",5455,3))
 [root@web01 ~]# iptables -t filter -A INPUT -p tcp --dport 50517 -j DROP
 
+删除临时规则:
+    1. iptables -F
+    2. iptables -t filter -D INPUT -p tcp --dport 50517 -j DROP
+    3. iptables -D INPUT 序列号（iptables --line-numbers -L）
+    4. /etc/init.d/iptables stop(restart)
+
 iptables -A INPUT -p tcp --dport 50517 -j DROP
 iptables -t filter -A INPUT -p tcp --dport 50517 -j DROP
 注：
@@ -336,7 +345,7 @@ iptables -t filter -A INPUT -p tcp --dport 50517 -j DROP
 2. 其中INPUT DROP要大写
 3. --jump  -j  target
     target for rule (may load target extension)
-    
+
 基本的处理行为：ACCEPT（接受）、DROP（丢弃）、REJECT（拒绝）
 使用DROP代替REJECT
 
@@ -351,14 +360,17 @@ iptables -t filter -A INPUT -p tcp --dport 50517 -j DROP
 ```bash
 [root@web01 ~]# iptables -nL
 Chain INPUT (policy ACCEPT)
-target     prot opt source               destination         
+target     prot opt source               destination
 DROP       tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:50517   ## 此规则禁止SSH连接
 
 Chain FORWARD (policy ACCEPT)
-target     prot opt source               destination         
+target     prot opt source               destination
 
 Chain OUTPUT (policy ACCEPT)
-target     prot opt source               destination         
+target     prot opt source               destination
+
+iptables --line-numbers -L ## 查看序号
+iptables -D INPUT 1        ## 删除指定规则
 ```
 
 使用-A和-I的顺序，防火墙的过滤根据规则顺序的。
