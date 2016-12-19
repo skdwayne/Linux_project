@@ -631,17 +631,17 @@ iptables -t nat -A PREROUTING -d 10.0.0.9 -p tcp --dport 80 -j DNAT --to-destina
 
 ```txt
 1. 把访问外网IP及端口的请求映射到内网某个服务器及端口（企业内部）。
-2. 硬件防火墙，把访问LVS/nginx外网VIP及80端口的请求映射到IDC 负载均衡服务器内部IP及端口上（IDC机房的操作）
+2. 硬件防火墙，把访问LVS/nginx外网VIP及80端口的请求映射到IDC负载均衡服务器内部IP及端口上（IDC机房的操作）
 ```
 
 ### iptables常用企业案例
 
 ```bash
 1. Linux主机防火墙（表：FILTER  链：INPUT）。
-2. 局域网机器共享上网（表：NAT 链：POSTROUTING）：
+2. 局域网机器共享上网（表：NAT 链：POSTROUTING）
 iptables -t nat POSTROUTING-s 172.16.1.0/24 -o eth0 -j SNAT --to-source 10.0.0.7
 
-3. 外部地址和端口，映射为内部地址和端口（表：NAT  链：PREROUTING）：
+3. 外部地址和端口，映射为内部地址和端口（表：NAT  链：PREROUTING）
 iptables -t nat -A PREROUTING -d 10.0.0.7 -p tcp --dport 80 -j DNAT --to-destination 172.16.1.8:9000
 ```
 

@@ -73,15 +73,19 @@
 
 12.请描述iptables的常见生产应用场景。
 
-
+    Linux主机防火墙（表：FILTER  链：INPUT）。
+    局域网机器共享上网（表：NAT 链：POSTROUTING）
+    外部地址和端口，映射为内部地址和端口（表：NAT  链：PREROUTING）
 
 13、请描述下面iptables命令的作用
 
-iptables -N syn-flood
-iptables -A INPUT -i eth0 -syn -j syn-flood
-iptables -A syn-flood -m limit -limit 5000/s -limit-burst 200 -j RETURN
+```bash
+iptables -N syn-flood    ### 自定义链
+iptables -A INPUT -i eth0 --syn -j syn-flood    ### 
+iptables -A INPUT -i eth0 -p tcp --syn -j syn-flood  ### 从网卡eth0进来的tcp连接，如果syn位置置1，ack、fin、rst置零，就讲请求转到目标syn-flood
+iptables -A syn-flood -m limit --limit 5000/s --limit-burst 200 -j RETURN
 iptables -A syn-flood -j DROP
-
+```
 
 
 14、企业WEB应用较大并发场景如何优化iptables?

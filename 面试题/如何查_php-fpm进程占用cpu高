@@ -1,2 +1,5 @@
 如何查 php-fpm进程占用cpu高
 使用strace  跟踪查询
+
+根据服务器配置，在 php-fmp.conf 里增加 max_children 的值（一个 PHP-FPM 大约用掉 20M 内存，如果你的内存是 1G，1024/20=50 个左右）。
+使用 reload 参数定时重新加载 php-fpm。释放 php-fpm 使用的内存，php 脚本执行时间过长造成内存使用过高，重载 php-fpm 能杜绝这个问题。
