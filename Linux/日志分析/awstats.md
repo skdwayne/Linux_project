@@ -84,20 +84,20 @@ AWStats 是一个在GNU通用公共许可证下发行的免费软件. 你可以�
 
 ## awstats 运行原理
 
-> 1. 工作原理
+> 工作原理
 
 ```txt
 AWStats的功能很多，我在此主要用它来分析apache服务器的日志。安装使用之前还是说说大致的工作原理，AWStats提供一系列的perl脚本实现：服务配置，日志读取，报表生成等功能。而功能实现的具体执行过程是：首先，当然是apache将访问情况记录到日志中，AWStats每次执行更新时读取这些日志，分析日志数据，将结果存储到数据库中，(这个数据库是AWStats自带的（就是一文本文件），并不需要第三方软件支持。)，最后AWStats提供一个cgi程序通过web页面来显示数据库中所统计的数据。
 ```
 
-> 2. 工作模式
+> 工作模式
 
 ```txt
 AWStats的工作模式：
 分析日志：运行后将这样的日志统计结果归档到一个AWStats的数据库（纯文本）里
 输出日志：分两种形式:
     * 一种是通过cgi程序读取统计结果数据库输出(Linux)
-    * 一种是运行后台脚本将输出导出成静态文件(Windows)。
+    * 一种是运行后台脚本将输出导出成静态文件(Windows)
 ```
 
 ## 环境准备
@@ -333,7 +333,9 @@ Include /usr/local/awstats/tools/httpd_conf
 
 修改web界面显示语言
 
+```sh
 [root@web01 awstats]# sed -i.bak 's#Lang="auto"#Lang="cn"#g' /etc/awstats/awstats.test.conf
+```
 
 ![awstats2-20161219](http://oi480zo5x.bkt.clouddn.com/Linux_project/awstats2-20161219.jpg)
 
