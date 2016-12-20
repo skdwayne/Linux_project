@@ -3,7 +3,7 @@
 - [Linux 日志分析工具之awstats](#linux-%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E4%B9%8Bawstats)
     - [前言](#%E5%89%8D%E8%A8%80)
     - [awstats 简介](#awstats-%E7%AE%80%E4%BB%8B)
-    - [[Features](http://www.awstats.org/)](#featureshttpwwwawstatsorg)
+    - [Features](#features)
     - [详细介绍(百度百科)](#%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D%E7%99%BE%E5%BA%A6%E7%99%BE%E7%A7%91)
     - [awstats 运行原理](#awstats-%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86)
     - [环境准备](#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87)
@@ -32,7 +32,9 @@
 
 > AWStats 软件是一个免费的强大的服务器的日志文件分析工具，显示你所有的网页/邮件/ FTP统计包括访问，访问者，页面，点击，高峰时间，操作系统，浏览器，搜索引擎，关键字，机器人访问，断开的链接和更多的阻力截图排序。
 
-## [Features](http://www.awstats.org/)
+## Features
+
+[Features](http://www.awstats.org/)
 
 A full log analysis enables AWStats to show you the following information:
 * Number of visits, and number of unique visitors,
@@ -103,7 +105,9 @@ AWStats的工作模式：
 ## 环境准备
 
 ```sh
-操作系统 CentOS 6.4 x86_64，软件版本 awstats 7.6（稳定版），
+操作系统 CentOS 6.7 x86_64
+软件版本 awstats 7.6（稳定版）
+
 [root@web01 ~]# cat /etc/redhat-release 
 CentOS release 6.7 (Final)
 [root@web01 ~]# uname -r
@@ -360,7 +364,7 @@ Include /usr/local/awstats/tools/httpd_conf
                     '"$http_referer" "$http_user_agent" '
                     '"$gzip_ratio" "$http_x_forwarded_for" ';
 
-3. 执行awstats_configure.pl，其他一致
+3. 执行awstats_configure.pl，注意填写域名，其他一致
 
     -----> Check for web server install    ## 检查安装的web server
 
@@ -386,16 +390,16 @@ Nginx 产生日志 –> 日志切割 –> Nginx 继续产生日志 –> 另存�
     # mkdir  /data/webroot/awstats
 
     # /usr/local/awstats/tools/awstats_buildstaticpages.pl -update  \
-    -config=www.moabc.net -lang=cn -dir=/data/admin_web/awstats  \
+    -config=www.yjjztt.top -lang=cn -dir=/www/wwwroot/www.yjjztt.top/awstats  \
     -awstatsprog=/usr/local/awstats/wwwroot/cgi-bin/awstats.pl
 
 上述命令的具体意思如下：
 
-        /usr/local/awstats/tools/awstats_buildstaticpages.pl Awstats 静态页面生成工具
-        -update -config=www.jackbillow.com 更新配置项
-        -lang=cn 语言为中文
-        -dir=/www/wwwroot/www.jackbillow.com/awstats 统计结果输出目录
-        -awstatsprog=/usr/local/awstats/wwwroot/cgi-bin/awstats.pl Awstats 日志更新程序路径。
+        /usr/local/awstats/tools/awstats_buildstaticpages.pl   ## Awstats静态页面生成工具
+        -update -config=www.yjjztt.top   ## 更新配置项
+        -lang=cn    ## 语言为中文
+        -dir=/www/wwwroot/www.yjjztt.top/awstats   ## 统计结果输出目录
+        -awstatsprog=/usr/local/awstats/wwwroot/cgi-bin/awstats.pl   ## Awstats 日志更新程序路径。
 
 接下来，只需在nginx.conf 中，把该目录配置上去即可。
 根据Apache配置修改server标签，定义转发规则（请自行修改），示例：
@@ -411,7 +415,7 @@ Nginx 产生日志 –> 日志切割 –> Nginx 继续产生日志 –> 另存�
     }
 
     location ~ ^/awstats/ {     # html 静态页面目录
-            root   /www/wwwroot/www.test.com/awstats;
+            root   /www/wwwroot/wwww.yjjztt.top/awstats;
             index  index.html;
             access_log off;
             error_log off;
@@ -444,8 +448,8 @@ Awstats默认安装之后是不具有识别访问者的国家和地区信息的�
     [root@web01 src]# wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
     [root@web01 src]# ls
     backup  GeoIP.dat.gz  GeoLiteCity.dat.gz
-    [root@web01 src]# gunzip GeoIP.dat.gz 
-    [root@web01 src]# gunzip GeoLiteCity.dat.gz 
+    [root@web01 src]# gunzip GeoIP.dat.gz
+    [root@web01 src]# gunzip GeoLiteCity.dat.gz
     [root@web01 src]# ls
     backup  GeoIP.dat  GeoLiteCity.dat
 
