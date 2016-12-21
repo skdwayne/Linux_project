@@ -41,6 +41,7 @@
     - [控制Nginx并发连接数](#%E6%8E%A7%E5%88%B6nginx%E5%B9%B6%E5%8F%91%E8%BF%9E%E6%8E%A5%E6%95%B0)
     - [控制客户端请求Nginx的速率](#%E6%8E%A7%E5%88%B6%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%B7%E6%B1%82nginx%E7%9A%84%E9%80%9F%E7%8E%87)
     - [配置普通用户启动nginx](#%E9%85%8D%E7%BD%AE%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E5%90%AF%E5%8A%A8nginx)
+    - [完整配置](#%E5%AE%8C%E6%95%B4%E9%85%8D%E7%BD%AE)
 
 <!-- /TOC -->
 
@@ -821,7 +822,7 @@ jpg|png|swf|flv|rar|zip   表示对jpg、gif等zip为后缀的文件实行防盗
  *.yjjztt.top yjjztt.top  表示这个请求可以正常访问上面指定的文件资源
 if{}中内容的意思是：如果地址不是上面指定的地址就跳转到通过rewrite指定的地址，也可以直接通过retum返回403错误
 return 403为定义的http返回状态码
-rewrite ^/ http://bbs.yjjztt.top.org/img/nolink.gif;表示显示一张防盗链图片
+rewrite ^/ http://bbs.yjjztt.top/img/nolink.gif;表示显示一张防盗链图片
 access_log off;表示不记录访问日志，减轻压力
 expires 3d指的是所有文件3天的浏览器缓存
 ```
@@ -1113,3 +1114,81 @@ http {
 2. 按用户设置站点权限，使站点更安全（无需虚拟化隔离）
 3. 开发不需要用root即可完整管理服务及站点
 4. 可实现对责任划分，网络问题属于运维的责任，打开不就是开发责任或共同承担
+
+## 完整配置
+
+```sh
+[root@nginx conf]# cat nginx.conf
+worker_processes  4;
+worker_cpu_affinity 0001 0010 0100 1000;
+worker_rlimit_nofile 65535;
+user nginx;
+events {
+    use epoll;
+    worker_connections  2048;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    tcp_nopush on;
+    keepalive_timeout  65;
+    tcp_nodelay on;
+    client_header_timeout 15; 
+    client_body_timeout 15; 
+    send_timeout 15;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    server_tokens off;
+    fastcgi_connect_timeout 240;
+    fastcgi_send_timeout 240;
+    fastcgi_read_timeout 240;
+    fastcgi_buffer_size 64k;
+    fastcgi_buffers 4 64k;
+    fastcgi_busy_buffers_size 128k;
+    fastcgi_temp_file_write_size 128k;
+    #fastcgi_temp_path /data/ngx_fcgi_tmp;
+    fastcgi_cache_path /data/ngx_fcgi_cache levels=2:2 keys_zone=ngx_fcgi_cache:512m inactive=1d max_size=40g;
+
+    #web...............
+    server {
+        listen       80;
+        server_name  blog.yjj.com;
+        root   html/blog;
+        location / {
+            root   html/blog;
+            index  index.php index.html index.htm;
+                }
+        location ~ .*\.(php|php5)?$
+        {      
+         fastcgi_pass  127.0.0.1:9000;
+         fastcgi_index index.php;
+         include fastcgi.conf;
+         fastcgi_cache ngx_fcgi_cache;
+         fastcgi_cache_valid 200 302 1h;
+         fastcgi_cache_valid 301 1d;
+         fastcgi_cache_valid any 1m;
+         fastcgi_cache_min_uses 1;
+         fastcgi_cache_use_stale error timeout invalid_header http_500;
+         fastcgi_cache_key http://$host$request_uri;
+         }
+         access_log  logs/web_blog_access.log  main;
+         }
+
+upstream blog_yjj{
+    server 10.0.0.8:8000 weight=1;
+}
+    server {
+        listen       8000;
+        server_name  blog.yjj.com;
+        location / {
+            proxy_pass http://blog_yjj;
+            proxy_set_header Host  $host;
+            proxy_set_header X-Forwarded-For  $remote_addr;
+              }
+         access_log  logs/proxy_blog_access.log  main;
+           }
+}
+```
