@@ -175,7 +175,7 @@ Example: /etc/httpd/httpd.conf
 Example: /usr/local/apache2/conf/httpd.conf
 Example: c:\Program files\apache group\apache\conf\httpd.conf
 Config file path ('none' to skip web server setup):     ### 设置Apache路径（nginx需要另外设置，默认的Awstats不支持分析）
-> /application/nginx/conf/nginx.conf   
+> none          ## none跳过web server设置
 
 -----> Check and complete web server config file '/application/nginx/conf/nginx.conf'  ## 可以看到添加的设置是Apache的设置
   Add 'Alias /awstatsclasses "/usr/local/awstats/wwwroot/classes/"'

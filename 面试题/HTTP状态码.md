@@ -11,7 +11,7 @@
         - [302 (Moved Temporarily/临时移动)](#302-moved-temporarily%E4%B8%B4%E6%97%B6%E7%A7%BB%E5%8A%A8)
     - [4xx](#4xx)
         - [400 (Bad Request/错误请求)](#400-bad-request%E9%94%99%E8%AF%AF%E8%AF%B7%E6%B1%82)
-        - [403 (Forbidden/禁止)](#403-forbidden%E7%A6%81%E6%AD%A2)
+        - [403 (Forbidden/禁止访问)](#403-forbidden%E7%A6%81%E6%AD%A2%E8%AE%BF%E9%97%AE)
         - [404 (Not Found/未找到)](#404-not-found%E6%9C%AA%E6%89%BE%E5%88%B0)
     - [5xx](#5xx)
         - [500 (Internal Server Error/内部服务器错误)](#500-internal-server-error%E5%86%85%E9%83%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%94%99%E8%AF%AF)
@@ -23,7 +23,7 @@
 
 # HTTP状态码
 
-```
+```txt
 返回一个HTTP状态代码是在响应请求时为您网站上显示的服务器状态，举例如下：
 
 - 当用户在浏览器中访问网页。
@@ -34,7 +34,7 @@
 
 ## 状态码被分为五大类
 
-```
+```txt
 1. 100-199 用于指定客户端应相应的某些动作。临时/信息响应
 2. 200-299 用于表示请求成功。成功
 3. 300-399 用于已经移动的文件并且常被包含在定位头信息中指定新的地址信息。重定向
@@ -49,7 +49,7 @@ HttpServletResponse中的常量代表关联不同标准消息的状态码。在s
 
 ## 1xx
 
-```
+```txt
 100 (Continue/继续)
 如果服务器收到头信息中带有100-continue的请求，这是指客户端询问是否可以在后续的请求中发送附件。在这种情况下，服务器用100(SC_CONTINUE)允许客户端继续或用417 (Expectation Failed)告诉客户端不同意接受附件。这个状态码是 HTTP 1.1中新加入的。
 101 (Switching Protocols/转换协议)
@@ -100,7 +100,7 @@ if (pageVersion >;= currentVersion) {
 
 ### 301 (Moved Permanently)
 
-```
+```txt
 301 (SC_MOVED_PERMANENTLY)状态是指所请求的文档在别的地方；文档新的URL会在定位响应头信息中给出。浏览器会自动连接到新的URL。
 301（永久移动），请求的网页已永久移动到新的位置，当服务器返回此响应（作为一个GET或HEAD请求的响应），它会自动转发请求到新的位置。你应该使用这个代码让Googlebot的知道一个网页或网站已永久移动到新位置。
 
@@ -168,7 +168,7 @@ if (pageVersion >;= currentVersion) {
 401 (SC_UNAUTHORIZED)表示客户端在授权头信息中没有有效的身份信息时访问受到密码保护的页面。这个响应必须包含一个WWW-Authenticate的授权信息头。例如，在本书4.5部分中的“Restricting Access to Web Pages./限制访问Web页。”
 ```
 
-### 403 (Forbidden/禁止)
+### 403 (Forbidden/禁止访问)
 
 ```txt
 403 (SC_FORBIDDEN)的意思是除非拥有授权否则服务器拒绝提供所请求的资源。这个状态经常会由于服务器上的损坏文件或目录许可而引起。
