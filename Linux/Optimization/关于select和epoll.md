@@ -1,7 +1,9 @@
 
 # 关于select与epoll
 
-> 两种IO模型，都属于多路IO就绪通知，提供了对大量文件描述符就绪检查的高性能方案，只不过实现方式有所不同：
+> 两种IO模型，都属于多路IO就绪通知，提供了对大量文件描述符就绪检查的高性能方案，只不过实现方式有所不同
+
+> [Linux IO模式及 select、poll、epoll详解](https://segmentfault.com/a/1190000003063859)
 
 ## select：
 

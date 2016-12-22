@@ -1,6 +1,11 @@
+# Nginx优化
+
+## Table of Contents
+
 <!-- TOC -->
 
 - [Nginx优化](#nginx%E4%BC%98%E5%8C%96)
+    - [Table of Contents](#table-of-contents)
     - [隐藏Nginx版本号](#%E9%9A%90%E8%97%8Fnginx%E7%89%88%E6%9C%AC%E5%8F%B7)
     - [更改Nginx服务用户](#%E6%9B%B4%E6%94%B9nginx%E6%9C%8D%E5%8A%A1%E7%94%A8%E6%88%B7)
     - [更改Nginx master用户，服务降权](#%E6%9B%B4%E6%94%B9nginx-master%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%E9%99%8D%E6%9D%83)
@@ -45,7 +50,6 @@
 
 <!-- /TOC -->
 
-# Nginx优化
 
 ## 隐藏Nginx版本号
 
@@ -169,6 +173,7 @@ Nginx的连接处理机制在于不同的操作系统会采用不同的I/O模型
 要根据系统类型选择不同的事件处理模型，可供使用的选择的有“use [kqueue|rtsig|epoll|/dev/poll|select|pokk]”。
 ```
 
+[Back to TOC](#table-of-contents)
 
 ## 调整worker单个进程的最大连接数，默认1024，不宜过大，也不宜过小
 
@@ -221,6 +226,8 @@ Context:    http, server, location
 
 参数生产条件：激活或禁用tcp_nodelay选项，当一个连接进入到keep-alive状态时生效
 ```
+
+[Back to TOC](#table-of-contents)
 
 ## 优化Nginx连接参数调整连接超时时间
 
@@ -363,6 +370,8 @@ Context:   http
 参数作用：设置存放域名（server names）的最大哈希表大小。
 ```
 
+[Back to TOC](#table-of-contents)
+
 ## 上传文件大小限制
 
 ```txt
@@ -387,6 +396,8 @@ Context:     http, server, location
     FastCGI跟PHP的连接
     Nginx跟客户端的连接
     java使用长链接，java进程时间需要稍长一点
+
+[Back to TOC](#table-of-contents)
 
 ## FastCGI参数调整
 
@@ -444,6 +455,7 @@ fastcgi_cache_key http://$host$request_uri;
 
 [Module ngx_http_proxy_module](http://nginx.org/en/docs/http/ngx_http_proxy_module.html)
 
+[Back to TOC](#table-of-contents)
 
 ## **Nginx gzip压缩**
 
@@ -462,6 +474,8 @@ fastcgi_cache_key http://$host$request_uri;
 
     此压缩功能很类似早起的Apache服务的mod_defalate压缩功能，Nginx的gzip压缩功能依赖于ngx_http_gzip_module模块，默认已安装。
 ```
+
+[Back to TOC](#table-of-contents)
 
 ### 参数说明
 
@@ -499,6 +513,8 @@ http{
 }
 ```
 
+[Back to TOC](#table-of-contents)
+
 ## **Nginx expires缓存实现性能优化**
 
 ### Nginx expires 功能介绍
@@ -509,8 +525,12 @@ http{
 这些HTTP头向客户端表名了内容的有效性和持久性。如果客户端本地有内容缓存，则内容就可以从缓存（除非已经过期）而不是从服务器读取，然后客户端会检查缓存中的副本。
 ```
 
+[Back to TOC](#table-of-contents)
+
 ### Nginx expires作用介绍
     在网站的开发和运营中，对于图片、视频、css、js等网站元素的更改机会较少，特别是图片，这时可以将图片设置在客户端浏览器本地缓存365天或3650天，而降css、js、html等代码缓存10~30天，这样用户第一次打开页面后，会在本地的浏览器按照过期日期缓存响应的内容，下次用户再打开类似页面，重复的元素就无需下载了，从而加快了用户访问速度，由于用户的访问请求和数据减少了，因此节省了服务器端大量的带宽。此功能和apache的expire相似。
+
+[Back to TOC](#table-of-contents)
 
 ### Nginx expires 功能优点
 
@@ -548,6 +568,8 @@ http{
 
 ```
 
+[Back to TOC](#table-of-contents)
+
 ### Nginx expires功能缺点及解决方法
 
 ```sh
@@ -558,6 +580,8 @@ http{
     2. 网站改版升级会修改JS、CSS元素，若改版的时候对这些元素该了名，会使得前端的CDN以及用户需要重新缓存内容。
 ```
 
+[Back to TOC](#table-of-contents)
+
 ### 企业网站缓存日期曾经的案例参考
 
 ```txt
@@ -567,6 +591,8 @@ http{
     - 京东：25年
     - 淘宝：10年
 ```
+
+[Back to TOC](#table-of-contents)
 
 ### 企业网站有可能不希望被缓存的内容
 
@@ -592,9 +618,9 @@ cd /application/nginx/logs && \
 
 将这段脚本保存后加入到定时任务，设置每天凌晨0点进行切割日志
 [root@web02 scripts]# crontab -e
-###cut nginx access log
+### cut nginx access log
 00 00 * * * /bin/sh /server/scripts/cut_nginx.log.sh >/dev/null 2>&1
- 解释：每天0点执行cut_nginx_log.sh脚本，将脚本的输出重定向到空。
+解释：每天0点执行cut_nginx_log.sh脚本，将脚本的输出重定向到空。
 ```
 
 ### 不记录不需要的访问日志
@@ -618,6 +644,8 @@ location ~ .*\.(js|jpg|JPG|jpeg|JPEG|css|bmp|gif|GIF)$ {
 chown -R root.root /app/logs/
 chmod -R 700 /app/logs
 ```
+
+[Back to TOC](#table-of-contents)
 
 ## Nginx站点目录及文件URL访问控制
 
@@ -692,6 +720,8 @@ if ( $remote_addr = 218.247.17.130 ) {
 
 [Nginx变量](http://nginx.org/en/docs/varindex.html)
 
+[Back to TOC](#table-of-contents)
+
 ## 配置Nginx禁止非法域名解析访问企业网站
 
 > Nginx如何预防用户IP访问网站（恶意域名解析，相当于是直接IP访问企业网站）
@@ -717,6 +747,8 @@ tcp协议栈优化、iptables防火墙控制
         return 501;
     }
 ```
+
+[Back to TOC](#table-of-contents)
 
 ## 优雅显示错误页面
 
@@ -764,6 +796,8 @@ if ($http_user_agent ~* "qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googleb
 
 ```
 
+[Back to TOC](#table-of-contents)
+
 ## Nginx图片及目录防盗链解决方案
 
 > 什么是资源盗链
@@ -788,6 +822,8 @@ if ($http_user_agent ~* "qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googleb
     第二，作为高级运维或者运维经理，每天上班的重要任务，就是经常查看网站流量图，关注流量变化，关注异常流量
     第三，对访问日志做分析，对于异常流量迅速定位，并且和公司市场推广等有比较好的默契沟通
 ```
+
+[Back to TOC](#table-of-contents)
 
 ### 常见防盗链解决方案的基本原理
 
@@ -827,6 +863,8 @@ access_log off;表示不记录访问日志，减轻压力
 expires 3d指的是所有文件3天的浏览器缓存
 ```
 
+[Back to TOC](#table-of-contents)
+
 ## Nginx站点目录文件及目录权限优化
 
 > 为了保证网站不遭受木马入侵，所有站点的用户和组都应该为root，所有目录权限是755；所有文件权限是644.
@@ -857,6 +895,8 @@ drw-r--r--  8 root root    4096 May 29 16:41 uploads
 [jd_robots](https://www.jd.com/robots.txt)
 
 [taobao](https://www.taobao.com/robots.txt)
+
+[Back to TOC](#table-of-contents)
 
 ### Nginx防爬虫优化
 
@@ -910,6 +950,8 @@ fastcgi_param  SERVER_NAME        $server_name;
 fastcgi_param  REDIRECT_STATUS    200;
 ```
 
+[Back to TOC](#table-of-contents)
+
 ## 利用Nginx限制HTTP请求的方法
 
 > HTTP最常用的方法为GET/POST，我们可以通过Nginx限制http请求的方法来达到提升服务器安全的目的，例如，让HTTP只能使用GET、HEAD和POST方法配置如下：
@@ -933,6 +975,8 @@ fastcgi_param  REDIRECT_STATUS    200;
 提示：还可以加一层location更具体的限制文件名
 ```
 
+[Back to TOC](#table-of-contents)
+
 ## 使用CDN做网站内容加速
 
 ```
@@ -947,6 +991,8 @@ CDN的价值
 3. 可以阻挡大部分流量攻击，例如：DDOS攻击
 ```
 
+[Back to TOC](#table-of-contents)
+
 ## Nginx程序架构优化
 
 ```
@@ -957,6 +1003,8 @@ CDN的价值
     3.上传图片服务
     上述三者的功能尽量分离。分离的最佳方式是分别使用独立的服务器（需要改动程序）如果程序实在不好改，次选方案是在前端负载均衡器haproxy/nginx上，根据URI设置
 ```
+
+[Back to TOC](#table-of-contents)
 
 ## 控制Nginx并发连接数
 
@@ -1007,6 +1055,8 @@ http {
         }
 一般不用
 ```
+
+[Back to TOC](#table-of-contents)
 
 ## 控制客户端请求Nginx的速率
 
@@ -1115,6 +1165,8 @@ http {
 3. 开发不需要用root即可完整管理服务及站点
 4. 可实现对责任划分，网络问题属于运维的责任，打开不就是开发责任或共同承担
 
+[Back to TOC](#table-of-contents)
+
 ## 完整配置
 
 ```sh
@@ -1192,3 +1244,5 @@ upstream blog_yjj{
            }
 }
 ```
+
+[Back to TOC](#table-of-contents)

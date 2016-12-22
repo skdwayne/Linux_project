@@ -247,9 +247,9 @@ Sysvinit、systemd命令区别
 | chkconfig foo on        | systemctl enable foo.service             | 在下次启动时或满足其他触发条件时设置服务为启用   |
 | chkconfig foo off       | systemctl disable foo.service            | 在下次启动时或满足其他触发条件时设置服务为禁用   |
 | chkconfig foo           | systemctl is-enabled foo.service         | 用来检查一个服务在当前环境下被配置为启用还是禁用。 |
-| chkconfig –list         | systemctl list-unit-files --type=service | 输出在各个运行级别下服务的启用和禁用情况      |
-| chkconfig foo –list     | ls /etc/systemd/system/*.wants/foo.service | 用来列出该服务在哪些运行级别下启用和禁用。     |
-| chkconfig foo –add      | systemctl daemon-reload                  | 当您创建新服务文件或者变更设置时使用。       |
+| chkconfig --list         | systemctl list-unit-files --type=service | 输出在各个运行级别下服务的启用和禁用情况      |
+| chkconfig foo --list     | ls /etc/systemd/system/*.wants/foo.service | 用来列出该服务在哪些运行级别下启用和禁用。     |
+| chkconfig foo --add      | systemctl daemon-reload                  | 当您创建新服务文件或者变更设置时使用。       |
 | telinit 3               | systemctl isolate multi-user.target (OR systemctl isolate runlevel3.target OR telinit 3) | 改变至多用户运行级别。               |
 
 ### 命令补全
