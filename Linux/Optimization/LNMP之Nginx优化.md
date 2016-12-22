@@ -122,6 +122,8 @@ vim nginx.h
 ```
 ![nginx1-20161220](http://oi480zo5x.bkt.clouddn.com/Linux_project/nginx1-20161220.jpg)
 
+[Back to TOC](#table-of-contents)
+
 ## 更改Nginx服务用户
 
     通过配置文件配置
@@ -150,6 +152,8 @@ worker_processes  1;   ## 调整worker进程数，根据CPU核数设置
 1
 ```
 
+[Back to TOC](#table-of-contents)
+
 ## 绑定不同的Nginx进程到不同的核心上
 
 > 默认情况Nginx的多个进程有可能跑在某一个或某一核的CPU上，导致Nginx进程使用硬件的资源不均。
@@ -166,6 +170,8 @@ worker_cpu_affinity 0001 0010 0100 1000;
     taskset -c  可以指定不同进程的核心
 ```
 
+[Back to TOC](#table-of-contents)
+
 ## 调整Nginx模型为epoll，默认就是
 
 ```txt
@@ -180,6 +186,7 @@ Nginx的连接处理机制在于不同的操作系统会采用不同的I/O模型
 ```sh
 worker_connections  1024;
 ```
+[Back to TOC](#table-of-contents)
 
 ## 配置Nginx Worker进程最大打开文件数
 
@@ -189,6 +196,7 @@ Nginx worker进程的最大打开文件数，这个控制连接数的参数为wo
 worker_rlimit_nofile 65535
 #最大打开文件数，可设置为系统优化有的ulimit-HSn的结果。
 ```
+[Back to TOC](#table-of-contents)
 
 ## 开启高效传输
 
@@ -600,13 +608,17 @@ http{
 2. 网站流量统计工具（js代码）都缓存了流量统计就不准了
 3. 更新很频繁的文件（google的logo），如果按天，缓存效果还是显著的。
 
+[Back to TOC](#table-of-contents)
+
 ## Nginx日志相关优化与安装
+
+[Back to TOC](#table-of-contents)
 
 ### 编写脚本脚本实现Nginx access日志轮询
 
 > Nginx目前没有类似Apache的通过cronlog或者rotatelog对日志分割处理的能力，但是，运维人员可以通过利用脚本开发、Nginx的信号控制功能或reload重新加载，来实现日志自动切割，轮询。
 
-```txt
+```sh
 [root@web02 /]# mkdir /server/scripts/ -p
 [root@web02 /]# cd /server/scripts/
 [root@web02 scripts]# cat cut_nginx_log.sh
@@ -622,6 +634,8 @@ cd /application/nginx/logs && \
 00 00 * * * /bin/sh /server/scripts/cut_nginx.log.sh >/dev/null 2>&1
 解释：每天0点执行cut_nginx_log.sh脚本，将脚本的输出重定向到空。
 ```
+
+[Back to TOC](#table-of-contents)
 
 ### 不记录不需要的访问日志
 
